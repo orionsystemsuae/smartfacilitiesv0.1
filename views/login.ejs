@@ -1,0 +1,72 @@
+﻿<%- include('partials/header') %>
+    <link rel="stylesheet" href="./css/separate/pages/login.min.css">
+    <script src="./js/lib/jquery/jquery.min.js"></script>
+    <script src="./js/lib/hide-show-password/bootstrap-show-password.min.js"></script>
+    <script src="./js/lib/html5-form-validation/jquery.validation.min.js"></script>
+    <script>
+        $(function () {
+			/* ==========================================================================
+			 Validation
+			 ========================================================================== */
+
+            $('#form-login').validate({
+                submit: {
+                    settings: {
+                        inputContainer: '.form-group',
+                        errorListClass: 'form-error-text-block',
+                        display: 'block',
+                        insertion: 'postpend'
+                    }
+                }
+            });
+        });
+    </script>
+    <% if(locals.error) { %>
+        <div class="alert alert-danger">
+            <%= error %>
+        </div>
+        <% } %>
+            <% if(locals.success) { %>
+                <div class="alert alert-success">
+                    <%= success %>
+                </div>
+                <% } %>
+                    <!-- <div class="page-center"> -->
+                    <!-- <div class="page-center-in"> -->
+                    <div class="container-fluid sign-box">
+                        <form id="form-login" name="form-login" method="POST">
+                            <div class="sign-avatar no-photo">
+                                <span class="glyphicon glyphicon-user"></span>
+                            </div>
+                            <header class="sign-title">Sign In</header>
+                            <div class="form-group input-group">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-envelope"></span>
+                                </div>
+                                <input id="email" type="email" class="form-control" name="email" data-validation="[EMAIL]" placeholder="E-Mail" />
+                            </div>
+                            <div class="form-group">
+                                <input id="password" type="password" class="form-control" name="password" data-validation="[NOTEMPTY]" data-toggle="password"
+                                    data-placement="before" placeholder="Password" />
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="chkKeepSignIn" />
+                                <label class="text-muted" for="chkKeepSignIn">Keep me signed in.</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary sign-up">Login</button>
+                        </form>
+                        <br/>
+                        <p class="sign-note">New to our website?
+                            <a href="/register">
+                                <span class="label label-pill label-primary">Register</span>
+                            </a>
+                        </p>
+                        <p class="sign-note">Forgotten Password?
+                            <a href="/reset">
+                                <span class="label label-pill label-danger">Reset</span>
+                            </a>
+                        </p>
+                    </div>
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <%- include('partials/footer') %>

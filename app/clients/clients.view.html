@@ -1,0 +1,121 @@
+﻿<style>
+        .st-sort-ascent:before{
+          content: '\25B2';
+        }
+        .st-sort-descent:before{
+          content: '\25BC';
+        }
+        .btn-group {
+          display: flex;
+        }
+        .no-animate {
+            -webkit-transition: none !important;
+            transition: none !important;
+        }
+</style>
+<style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        tr:hover {background-color: #f5f5f5;}
+        /* th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 0px solid #ddd;
+        } */
+        .st-selected{
+          background: #f5f5f5 !important;
+          color: black !important;
+          font-weight:bold;
+        }
+       
+        </style>
+<form id="form-user" name="form-user" method="post">
+    <div class="card">
+        <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+        <div class="card-body">
+            <h6 class="semibold"><a ui-sref="settings">Control Panel</a> > <a ui-sref="clients">Clients</a> > View</h6> 
+            <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12">
+                                <table st-table="displayedCollection" st-safe-src="vm.clients" class="table" height="200">
+                                    <thead>
+                                            <tr style="background-color: #f5f5f5;">
+                                                    <td colspan="3" class="align-top">
+                                                        <div class="pull-left align-top semibold" st-template="pagination.html" st-pagination="" st-items-by-page="vm.itemsByPage"></div>
+                                                    </td>
+                                                    <td colspan="6">
+                                                            <div class="pull-right">
+                                                                    <!-- <a class="btn btn-primary-warning" href="#"><i class=" fa fa-lock"></i>&nbsp;&nbsp;&nbsp;Suspend User&nbsp;&nbsp;</a>  
+                                                                    <a class="btn btn-primary-danger" href="#"><i class="fa fa-user-times"></i>&nbsp;&nbsp;&nbsp;Delete User&nbsp;&nbsp;</a> -->
+                                                                    <a class="btn btn-sm btn-primary-success" href="#" onclick="window.history.back();"><i class="fa fa-arrow-circle-left"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go Back&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>  
+                                                                    <a ng-if="vm.loggedInUser.role == 'Platform Admin.'" class="btn btn-sm btn-primary" ui-sref="clients_add"><sup><i class="fa fa-dollar-sign"></i></sup><i class="fa fa-user-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Add Client&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                                                            </div>   
+                                                    </td>
+                                            </tr>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th st-sort="name">Name</th>
+                                        <th st-sort="abbrv">Abbrv.</th>
+                                        <th st-sort="description">Description</th>
+                                        <th class="text-center" st-sort="status">Status</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="9"><input st-search="" class="form-control" placeholder="Global Search ..." type="text"/></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                            <!-- style="background-color:black;" ng-class="{'selected':$index == vm.selectedRow}" -->
+                                            <!-- <tr st-select-row="row" st-select-mode="multiple" ng-repeat="row in displayedCollection"  ng-click="vm.setClickedRow($index)"> -->
+                                        <tr ng-repeat="row in displayedCollection"  ng-click="vm.setClickedRow($index)">
+                                            <td cs-select="row">
+                                                <input type="checkbox" title="{{$index == selectedRow ? 'checked': ''}}" ng-click="vm.setClickedRow($index)"/>
+                                            </td>
+                                            <td>{{row.name.replace(' ', '&nbsp;')}}</td>
+                                            <td>{{row.abbrv.replace(' ', '&nbsp;')}}</td>
+                                            <td>{{row.description.replace(' ', '&nbsp;')}}</td>
+                                            <td class="text-center"><i ng-class="row.status == 'true'? 'glyphicon glyphicon-flag color-green': 'glyphicon glyphicon-flag color-orange'" title="{{row.status ? 'Active' : 'Suspended'}}"></i></td>
+                                            <td>
+                                                <div ng-if="vm.loggedInUser.role == 'Platform Admin.'" class="btn-group pull-right" role="group" aria-label="...">
+                                                    <a ui-sref="clients_edit({_id:row._id})" title="Edit"  class="btn btn-sm btn-primary">
+                                                        <i class="fa fa-pencil-alt"></i>
+                                                    </a>
+                                                    <!-- <a ng-href="mailto:{{row.email}}"  title="Message : {{row.email}}" class="btn btn-sm btn-primary-success">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </a>  -->
+                                                    <a href="javascript:void(0);" ng-if="row.status =='true'" ng-confirm-click="Are you sure to suspend this record ?" confirmed-click="vm.activateClient({{row}}, 'false');" title="Suspend Account" class="btn btn-sm btn-primary-warning no-animate">
+                                                            &nbsp;<i class="fa fa-lock"></i>
+                                                    </a> 
+                                                    <a href="javascript:void(0);"  ng-if="row.status =='false'" ng-confirm-click="Are you sure to activate this record ?" confirmed-click="vm.activateClient({{row}}, 'true');" title="Activate Account" class="btn btn-sm btn-primary-warning no-animate">
+                                                        <i class="fa fa-lock-open"></i>
+                                                    </a> 
+                                                    <a href="javascript:void(0);" ng-confirm-click="Are you sure to delete this record ?" confirmed-click="vm.deleteClient({{row}});" title="Delete" class="btn btn-sm btn-primary-danger">
+                                                        <i class="fa fa-trash-alt"></i>
+                                                    </a>                              
+                                                </div> 
+                                                <div ng-if="vm.loggedInUser.role != 'Platform Admin.'">
+
+                                                </div>
+                                            </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                           
+                                    </tfoot>
+                                </table>
+                        </div> 
+            </div>
+            <!--.row-->     
+        </div>
+    </div>
+<!--.row-->     
+</form>
+
+<!-- stylesheets for the page -->
+
+<!-- scripts for the page -->
+<scrip>
+    
+</scrip>
+

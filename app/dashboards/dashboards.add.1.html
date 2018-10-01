@@ -1,0 +1,1514 @@
+﻿<style>
+    .stitched {
+        height: 10em;
+        position: relative;
+        padding: 0px;
+        margin: 0px;
+        /* background: url(app-content/img/statistic-box-grid.png) 50% 0; */
+        /* background-color:whitesmoke; */
+        /* background-color: #269;
+        background-image: linear-gradient(white 3px, transparent 3px),
+        linear-gradient(90deg, white 3px, transparent 3px),
+        linear-gradient(rgba(255, 255, 255, .6) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .6) 1px, transparent 1px);
+        background-size: 100px 218px, 218px 100px, 20px 25px, 25px 20px;
+        background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px; */
+        line-height: 1.3em;
+        /* border: 3px dashed #ffffff; */
+        border-radius: 0px;
+        /* box-shadow: 0 0 0 4px #005cb8, 2px 1px 6px 4px rgba(10, 10, 0, 0.5); */
+    }
+
+    .background-solid-primary {
+        background-color: #005cb8;
+        border: 3px solid #005cb8;
+        border-radius: 0px;
+        /* box-shadow: 0 0 0 4px #005cb8, 2px 1px 6px 4px rgba(10, 10, 0, 0.5); */
+    }
+
+    .center {
+        margin: 0;
+        background: transparent;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+
+    .title {
+        margin: 0;
+        background: transparent;
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+    .crosshair {
+        cursor: crosshair;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdown:active .dropdown-content {
+        display: block;
+    }
+</style>
+
+<!--.page-content-->
+<div class="card text-center">
+    <div class="card-header">
+        <h6 class="with-border semibold d-flex p-2">
+            <a ui-sref="dashboards_view">Dashboards</a>&nbsp;>&nbsp;{{currentState.name == "dashboards_edit" ? "Edit" : "Add"}}
+        </h6>
+
+        <ul class="nav nav-pills float-right">
+            <li class="nav-item ">
+                <button class="btn btn-danger btn-block" ng-click="vm.clearAllWidgets()">
+                    <i class="far fa-trash-alt"></i>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clear All&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </button>
+            </li>
+            <li class="nav-item ">
+                <button class="btn btn-primary btn-block" ng-disabled="vm.dashboard.widgets.length == 0">
+                    <i class="far fa-eye"></i>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Sneak Preview&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </button>
+            </li>
+
+            <li class="nav-item">
+                <button class="btn btn-primary btn-block" ng-disabled="vm.dashboard.widgets.length == 0" onclick="javascript:$('#dashboardSaveModal').modal('show');">
+                    <i class="fa fa-save"></i>&nbsp;&nbsp;&nbsp;Save Dashboard&nbsp;&nbsp;&nbsp;</button>
+            </li>
+            <li class="nav-item">
+                <!-- <button class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" >
+                    <i class="far fa-window-maximize"></i>
+                    <sup>
+                        <i class="fa fa-plus"></i>
+                    </sup>&nbsp;&nbsp;Add Widget&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                        <li class="dropdown-header">Label Widgets</li>
+                        <li><a ng-click="vm.addWidget(1)">Single Value</a></li>
+                        <li><a href="">CSS</a></li>
+                        <li><a href="">JavaScript</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Dropdown header 2</li>
+                        <li><a href="">About Us</a></li>
+                      </ul> -->
+                <!-- Example split danger button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary">
+                        <i class="far fa-window-maximize"></i>&nbsp;
+                        <sup>
+                            <i class="fa fa-plus"></i>
+                        </sup>&nbsp;Add Widget</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <span class="dropdown-header">Configuration Widgets</span>
+                        <a class="dropdown-item" href="" ng-click="vm.addWidget(0)">Settings Tile</a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-header">Information Widgets</span>
+                        <a class="dropdown-item" href="" ng-click="vm.addWidget(1)">Information Tile</a>
+                        <a class="dropdown-item" href="">Information Board</a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-header">Control Widgets</span>
+                        <a class="dropdown-item" href="">Slider Switch</a>
+                        <a class="dropdown-item" href="">Switch Board</a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-header">Chart Widgets</span>
+                        <a class="dropdown-item" href="">Line Chart</a>
+                        <a class="dropdown-item" href="">Bar Chart</a>
+                        <a class="dropdown-item" href="">Pie Chart</a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-header">GPS Widgets</span>
+                        <a class="dropdown-item" href="">Single Coordinates</a>
+                        <a class="dropdown-item" href="">List Coordinates</a>
+                        <a class="dropdown-item" href="">Map</a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-header">Utility Widgets</span>
+                        <a class="dropdown-item" href="">News</a>
+                        <a class="dropdown-item" href="" ng-click="vm.addWidget(3)">Weather</a>
+                        <!-- <a class="dropdown-item" href="">Currency</a> -->
+                        <a class="dropdown-item" href="">Stocks</a>
+                        <div class="dropdown-divider"></div>
+                        <span class="dropdown-header">Communication Widgets</span>
+                        <a class="dropdown-item" href="">Chat Room</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="bordered">
+        <div class="card">
+            <div class="stitched crosshair" gridster="vm.dashboard.options">
+                <div ng-if="vm.dashboard.widgets.length == 0" class="center label">
+                    <h4 class="bg-dark rounded">&nbsp;&nbsp;This dashboard is empty.
+                        <br> &nbsp;Please use the add widget button on the top to begin.&nbsp;&nbsp;</h5>
+                </div>
+                <ul>
+                    <!-- style="position: absolute; top: 0px; bottom: 0; width: 100%; display: flex; align-items: center; justify-content: center;  word-wrap: break-word;overflow-wrap: break-word;" -->
+                    <div ng-repeat="widget in vm.dashboard.widgets">
+                        <!-- <settings-grid settings="{{vm.dashboard.widgets[0].settings}}" ></settings-grid> -->
+                        <widget-information-tile ng-if="widget.typeId == 1"></widget-information-tile>
+                        <widget-utility-weather-tile ng-if="widget.typeId == 3"></widget-utility-weather-tile>
+                        <!-- <li class="card clickable  border-0 rounded d-flex align-items-stretch justify-content-between block" style="align-items: center; "
+                        gridster-item="widget" ng-click="vm.selectWidget($index)" ondblclick="javascript:$('#widgetSingleValueModal').modal('show');">
+                        <div class="btn btn-primary btn-block">{{widget.typeId}}</div> -->
+                    </li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Popups -->
+<div class="container">
+    <!-- Add Site Modal -->
+    <div class="modal fade" id="widgetSingleValueModal" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        <span class="fa fa-cog"></span>&nbsp;Settings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tabs-section-nav tabs-section-nav-inline">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active color-blue" href="#tabs-4-tab-1" role="tab" data-toggle="tab">
+                                            <span class="fa fa-cog"></span>&nbsp;General&nbsp;&nbsp;
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link color-blue" href="#tabs-4-tab-2" role="tab" data-toggle="tab">
+                                            <i class="fa fa-window-maximize"></i>&nbsp;Header&nbsp;&nbsp;
+                                        </a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle color-blue" data-toggle="dropdown" href="" role="button" aria-haspopup="true" aria-expanded="true">
+                                            <i class="fa fa-square"></i>&nbsp;Body&nbsp;&nbsp;</a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item color-blue" href="#tabs-4-tab-4" role="tab" data-toggle="tab">
+                                                <i class="fa fa-tag"></i>&nbsp;&nbsp;Tag
+                                            </a>
+                                            <a class="dropdown-item color-blue" href="#tabs-4-tab-5" role="tab" data-toggle="tab">
+                                                <i class="fa fa-ellipsis-h"></i>&nbsp;&nbsp;Icon
+                                            </a>
+                                            <a class="dropdown-item color-blue" href="#tabs-4-tab-3" role="tab" data-toggle="tab">
+                                                <i class="fa fa-font"></i>&nbsp;&nbsp;Text
+                                            </a>
+                                            <a class="dropdown-item color-blue" href="#tabs-4-tab-7" role="tab" data-toggle="tab">
+                                                <i class="fa fa-th-list"></i>&nbsp;&nbsp;State Table
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link color-blue" href="#tabs-4-tab-6" role="tab" data-toggle="tab">
+                                            <i class="fa fa-window-maximize fa-rotate-180"></i>&nbsp;Footer&nbsp;&nbsp;
+                                        </a>
+                                    </li>
+                                    <!-- <li class="nav-item">
+                                        <a class="nav-link color-blue" href="#tabs-4-tab-7" role="tab" data-toggle="tab">
+                                            <i class="fa fa-magic"></i>&nbsp;Animation&nbsp;&nbsp;
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </div>
+                            <!--.tabs-section-nav-->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tab-content" style="border:none;">
+
+                                <!-- General pane -->
+                                <div role="tabpanel" class="tab-pane fade in active show" id="tabs-4-tab-1">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="name">Name
+                                                            <span class="color-red">&nbsp;*</span>
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-align-justify"></span>
+                                                                </span>
+                                                            </div>
+                                                            <input id="name" class="form-control" name="name" type="text" placeholder="Name" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].name"
+                                                                required>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="name">Template
+                                                            <span class="color-red">&nbsp;*</span>
+                                                        </label>
+                                                        <div class="form-group input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-align-justify"></span>
+                                                                </span>
+                                                            </div>
+                                                            <div class="input-group-btn">
+                                                                <button type="button" class="btn btn-default-outline btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">
+                                                                    Select
+                                                                </button>
+                                                                <div class="dropdown-menu dropdown-menu-right">
+                                                                    <a class="dropdown-item rounded-0 btn btn-primary" href="">Orion Blue (Default)</a>
+                                                                    <a class="dropdown-item rounded-0 btn btn-primary-outline" href="">Orion Blue Outline</a>
+                                                                    <a class="dropdown-item rounded-0 btn btn-info" href="">Information</a>
+                                                                    <a class="dropdown-item rounded-0 btn btn-info-outline" href="">Information Outline</a>
+                                                                    <a class="dropdown-item rounded-0 btn btn-success" href="">Success</a>
+                                                                    <a class="dropdown-item rounded-0 btn btn-success-outline" href="">Success Outline</a>
+                                                                    <a class="dropdown-item rounded-0 btn btn-warning" href="">Warning</a>
+                                                                    <a class="dropdown-item rounded-0 btn btn-warning-outline" href="">Warning Outline</a>
+                                                                    <a class="dropdown-item rounded-0 btn btn-danger" href="">Danger</a>
+                                                                    <a class="dropdown-item rounded-0 btn btn-danger-outline" href="">Danger Outline</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="description">Description
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-align-justify"></span>
+                                                                </span>
+                                                            </div>
+                                                            <input id="description" class="form-control" name="description" type="text" placeholder="Description" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].description">
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--.tab-pane-->
+
+                                <!-- Header pane -->
+                                <div role="tabpanel" class="align-top tab-pane fade" id="tabs-4-tab-2">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="headerText">Header Text
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend ">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-window-maximize"></span>
+                                                                </span>
+                                                            </div>
+                                                            <input id="headerText" name="headerText" class="form-control" type="text" placeholder="Header Text" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].header.text">
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="headerTextAlignment">Text Alignment
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="btn-group" data-toggle="buttons">
+                                                                <button class="btn {{vm.dashboard.widgets[vm.selectedWidgetIndex].header.textAlignment == '1'? ' active' : ''}}" title="Align Left"
+                                                                    ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].header.textAlignment = '1';">
+                                                                    <i class="fa fa-align-left"></i>
+                                                                </button>
+                                                                <button class="btn {{vm.dashboard.widgets[vm.selectedWidgetIndex].header.textAlignment == '2'? ' active' : ''}}" title="Align Center"
+                                                                    ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].header.textAlignment = '2';">
+                                                                    <i class="fa fa-align-center"></i>
+                                                                </button>
+                                                                <button class="btn {{vm.dashboard.widgets[vm.selectedWidgetIndex].header.textAlignment == '3'? ' active' : ''}}" title="Align Right"
+                                                                    ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].header.textAlignment = '3';">
+                                                                    <i class="fa fa-align-right"></i>
+                                                                </button>
+                                                                <button class="btn {{vm.dashboard.widgets[vm.selectedWidgetIndex].header.textAlignment == '4'? ' active' : ''}}" title="Align Justify"
+                                                                    ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].header.textAlignment = '4';">
+                                                                    <i class="fa fa-align-justify"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="headerTextSize">Font Size
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend ">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-text-height"></span>
+                                                                </span>
+                                                            </div>
+                                                            <input id="headerTextSize" name="headerTextSize" class="form-control" type="number" min="1" placeholder="Size" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].header.fontSize"
+                                                                required>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div layout="row" layout-align="start center">
+                                                        <fieldset class="form-group">
+                                                            <label class="form-label semibold" for="headerTextBold">
+                                                                <b>Bold</b>
+                                                            </label>
+                                                            <md-switch id="headerTextBold" name="headerTextBold" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].header.fontBold"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </fieldset>
+                                                        <fieldset class="form-group">
+                                                            <label class="form-label semibold" for="headerTextItalic">
+                                                                <i>Italic</i>
+                                                            </label>
+                                                            <md-switch id="headerTextItalic" name="headerTextItalic" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].header.fontItalic"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </fieldset>
+
+                                                        <fieldset class="form-group">
+                                                            <label class="form-label semibold" for="headerTextUnderline">
+                                                                <u>Under</u>
+                                                            </label>
+                                                            <md-switch id="headerTextUnderline" name="headerTextUnderline" class="md-primary " ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].header.fontUnderline"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </fieldset>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="bgcolor">Background Colour
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-paint-brush"></span>
+                                                                </span>
+                                                            </div>
+                                                            <input class="form-control rounded-0" id="bgcolor" name="bgcolor" colorpicker="hex" type="text" style="text-transform: uppercase;"
+                                                                ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].header.backgroundColor"
+                                                            />
+                                                            <div class="input-group-append">
+                                                                <label class="form-control" style="background-color:{{vm.dashboard.widgets[vm.selectedWidgetIndex].header.backgroundColor}};"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="bgcolor">Font Colour
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-paint-brush"></span>
+                                                                </span>
+                                                            </div>
+                                                            <input class="form-control" id="fontColor" name="fontColor" colorpicker="hex" type="text" style="text-transform: uppercase;"
+                                                                ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].header.fontColor"
+                                                            />
+                                                            <div class="input-group-append">
+                                                                <label class="input-group-text" style="background-color:{{vm.dashboard.widgets[vm.selectedWidgetIndex].header.fontColor}};">
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="headerBorderShow">Border
+                                                        </label>
+                                                        <div layout-align="start center">
+                                                            <md-switch id="headerBorderShow" name="headerBorderShow" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].header.borderShow"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="headerTextShow">Visibility
+                                                        </label>
+                                                        <div layout-align="start center">
+                                                            <md-switch id="headerTextShow" name="headerTextShow" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].header.show"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--.tab-pane-->
+
+                                <!-- Body Text pane -->
+                                <div role="tabpanel" class="align-top tab-pane fade" id="tabs-4-tab-3">
+                                    <br>
+                                    <div class="row">
+                                        <!-- <div class="col-md-12">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyText">Body Text
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-square"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input id="bodyText" name="bodyText" class="form-control" type="text" placeholder="Body Text" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.text.text">
+                                                </div>
+                                            </fieldset>
+                                        </div> -->
+                                        <div class="col-md-8">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyTextSize">Font Size
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-text-height"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input id="bodyTextSize" name="bodyTextSize" class="form-control" type="number" min="1" placeholder="Size" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.text.fontSize"
+                                                        required>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div layout="row" layout-align="start center">
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="bodyTextBold">
+                                                        <b>Bold</b>
+                                                    </label>
+                                                    <md-switch id="bodyTextBold" name="bodyTextBold" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.text.fontBold"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </fieldset>
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="bodyTextItalic">
+                                                        <i>Italic</i>
+                                                    </label>
+                                                    <md-switch id="bodyTextItalic" name="bodyTextItalic" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.text.fontItalic"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </fieldset>
+
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="bodyTextUnderline">
+                                                        <u>Under</u>
+                                                    </label>
+                                                    <md-switch id="bodyTextUnderline" name="bodyTextUnderline" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.text.fontUnderline"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </fieldset>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bgcolor">Background Colour
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-paint-brush"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input class="form-control" id="bgcolor" name="bgcolor" colorpicker="hex" type="text" style="text-transform: uppercase;"
+                                                        ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.backgroundColor"
+                                                    />
+                                                    <div class="input-group-append">
+                                                        <label class="form-control" style="background-color:{{vm.dashboard.widgets[vm.selectedWidgetIndex].body.backgroundColor}};"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bgcolor">Font Colour
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-paint-brush"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input class="form-control" id="fontColor" name="fontColor" colorpicker="hex" type="text" style="text-transform: uppercase;"
+                                                        ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.text.fontColor"
+                                                    />
+                                                    <div class="input-group-append">
+                                                        <label class="form-control" style="background-color:{{vm.dashboard.widgets[vm.selectedWidgetIndex].body.text.fontColor}};"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyBorderShow">Border
+                                                </label>
+                                                <div layout-align="start center">
+                                                    <md-switch id="bodyBorderShow" name="bodyBorderShow" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.borderShow"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyTextShow">Visibility
+                                                </label>
+                                                <div layout-align="start center">
+                                                    <md-switch id="bodyTextShow" name="bodyTextShow" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.text.show"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--.tab-pane-->
+
+                                <!-- Body Tag pane -->
+                                <div role="tabpanel" class="align-top tab-pane fade" id="tabs-4-tab-4">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyValue">Topic Address
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-tag"></span>
+                                                        </span>
+                                                    </div>
+                                                    <textarea id="bodyValue" name="bodyValue" class="form-control" type="text" placeholder="Topic Address" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.topic.address"></textarea>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyValueShow">Visibility
+                                                </label>
+                                                <div layout-align="start center">
+                                                    <md-switch id="bodyValueShow" name="bodyValueShow" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.topic.show"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyValueSize">Font Size
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-text-height"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input id="bodyValueSize" name="bodyValueSize" class="form-control" type="number" min="1" placeholder="Size" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.topic.fontSize"
+                                                        required>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="fontColor">Font Colour
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-paint-brush"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input class="form-control" id="fontColor" name="fontColor" colorpicker="hex" type="text" style="text-transform: uppercase;"
+                                                        ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.topic.fontColor"
+                                                    />
+                                                    <div class="input-group-append">
+                                                        <label class="form-control" style="background-color:{{vm.dashboard.widgets[vm.selectedWidgetIndex].body.topic.fontColor}};"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div layout="row" layout-align="start center">
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="bodyValueBold">
+                                                        <b>Bold</b>
+                                                    </label>
+                                                    <md-switch id="bodyValueBold" name="bodyValueBold" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.topic.fontBold"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </fieldset>
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="bodyValueItalic">
+                                                        <i>Italic</i>
+                                                    </label>
+                                                    <md-switch id="bodyValueItalic" name="bodyValueItalic" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.topic.fontItalic"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </fieldset>
+
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="bodyValueUnderline">
+                                                        <u>Under</u>
+                                                    </label>
+                                                    <md-switch id="bodyValueUnderline" name="bodyValueUnderline" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.topic.fontUnderline"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </fieldset>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--.tab-pane-->
+
+                                <!-- Body Icon pane -->
+                                <div role="tabpanel" class="align-top tab-pane fade" id="tabs-4-tab-5">
+                                    <br>
+                                    <div class="row">
+                                        <!-- <div class="col-md-8">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyValue">Icon
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-ellipsis-h"></span>
+                                                        </span>
+                                                    </div>
+                                                    <label class="form-control">
+                                                         <span class="font-control" ng-repeat="icon in vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon">
+                                                            <i class="{{icon['0'] ? icon['0'] : 'fas fa-asterisk'}}"></i>
+                                                        </span> 
+                                                        <span class="font-control">
+                                                            <i class="{{vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.text['10'] ? vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.text['0'] : 'fas fa-asterisk'}}"></i>
+                                                        </span>
+                                                    </label>
+                                                    <input type="text" class="form-control" ng-model="vm.iconKey">
+                                                    <input type="text" class="form-control" ng-model="vm.iconValue">
+                                                    <div class="input-group-append ">
+                                                        <button title="Clear Icon(s)" class="input-group-text btn btn-primary" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.text = {'*':'fas fa-asterisk'};">
+                                                            <span class="fa fa-times"></span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="input-group-append ">
+                                                        <button title="Add Icon(s)" class="input-group-text btn btn-primary" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.text[vm.iconKey] = vm.iconValue;">
+                                                            <span class="fa fa-plus"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyIconShow">Visibility
+                                                </label>
+                                                <div layout-align="start center">
+                                                    <md-switch id="bodyIconShow" name="bodyIconShow" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.show"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </div>
+                                            </fieldset>
+                                        </div> -->
+                                        <div class="col-md-4">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyIconSize">Icon Size
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-text-height"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input id="bodyIconSize" name="bodyIconSize" class="form-control" type="number" min="1" placeholder="Size" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.fontSize"
+                                                        required>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="fontColor">Icon Colour
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-paint-brush"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input class="form-control" id="fontColor" name="fontColor" colorpicker="hex" type="text" style="text-transform: uppercase;"
+                                                        ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.fontColor"
+                                                    />
+                                                    <div class="input-group-append">
+                                                        <label class="input-group-text" style="background-color:{{vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.fontColor}};">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div layout="row" layout-align="start center">
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="bodyIconBold">
+                                                        <b>Bold</b>
+                                                    </label>
+                                                    <md-switch id="bodyIconBold" name="bodyIconBold" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.fontBold"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </fieldset>
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="bodyIconItalic">
+                                                        <i>Italic</i>
+                                                    </label>
+                                                    <md-switch id="bodyIconItalic" name="bodyIconItalic" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.fontItalic"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </fieldset>
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="bodyIconItalic">
+                                                        <i>Visibility</i>
+                                                    </label>
+                                                    <md-switch id="bodyIconShow" name="bodyIconShow" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.show"
+                                                        aria-label="Switch 1">
+                                                    </md-switch>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Body State table pane -->
+                                <div role="tabpanel" class="align-top tab-pane fade" id="tabs-4-tab-7">
+                                    <br>
+                                    <div class="row">
+                                        <!-- <div class="col-md-8">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="bodyValue">Icon
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend ">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-ellipsis-h"></span>
+                                                                </span>
+                                                            </div>
+                                                            <label class="form-control">
+                                                                 <span class="font-control" ng-repeat="icon in vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon">
+                                                                    <i class="{{icon['0'] ? icon['0'] : 'fas fa-asterisk'}}"></i>
+                                                                </span> 
+                                                                <span class="font-control">
+                                                                    <i class="{{vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.text['10'] ? vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.text['0'] : 'fas fa-asterisk'}}"></i>
+                                                                </span>
+                                                            </label>
+                                                            <input type="text" class="form-control" ng-model="vm.iconKey">
+                                                            <input type="text" class="form-control" ng-model="vm.iconValue">
+                                                            <div class="input-group-append ">
+                                                                <button title="Clear Icon(s)" class="input-group-text btn btn-primary" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.text = {'*':'fas fa-asterisk'};">
+                                                                    <span class="fa fa-times"></span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="input-group-append ">
+                                                                <button title="Add Icon(s)" class="input-group-text btn btn-primary" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.text[vm.iconKey] = vm.iconValue;">
+                                                                    <span class="fa fa-plus"></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="bodyIconShow">Visibility
+                                                        </label>
+                                                        <div layout-align="start center">
+                                                            <md-switch id="bodyIconShow" name="bodyIconShow" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.show"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </div>
+                                                    </fieldset>
+                                                </div> -->
+                                        <div class="col-md-12">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="bodyIconSize">State Table
+                                                </label>
+                                                <!-- <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-text-height"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input id="bodyIconSize" name="bodyIconSize" class="form-control" type="number" min="1" placeholder="Size" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].body.icon.fontSize"
+                                                        required>
+                                                </div> -->
+                                                <div class="box-typical-body">
+                                                    <div class="table-responsive">
+                                                        <table id="table-xs" class="table table-fixed table-bordered table-hover table-xs">
+                                                            <thead>
+                                                                <tr>
+                                                                    <!-- <th class="table-icon-cell text-center" width="1" rowspan="2">
+                                                                        #
+                                                                    </th> -->
+                                                                    <th class="table-icon-cell text-middle" rowspan="2">
+                                                                        Value</th>
+                                                                    <th class="table-icon-cell text-center" colspan="3">
+                                                                        Icon
+                                                                    </th>
+                                                                    <th class="table-icon-cell text-center" colspan="2">
+                                                                        Text</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="table-icon-cell text-center" width="2">
+                                                                        Icon
+                                                                    </th>
+                                                                    <th class="table-icon-cell text-center">
+                                                                        Icon Color
+                                                                    </th>
+                                                                    <th class="table-icon-cell text-center">
+                                                                        Animation</th>
+                                                                    <th class="table-icon-cell text-center">
+                                                                        Text</th>
+                                                                    <th class="table-icon-cell text-center">
+                                                                        Text Color
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="state in vm.dashboard.widgets[vm.selectedWidgetIndex].body.stateTable">
+                                                                    <!-- <td>{{$index + 1}}</td> -->
+                                                                    <td>{{state.value}}</td>
+                                                                    <td align="center">
+                                                                        <i class="{{state.icon + ' faa-fast ' + state.animation}}" style="color:{{state.iconColor}};"></i>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="input-group border border-primary">
+                                                                            <!-- <div class="input-group-prepend">
+                                                                                <span class="input-group-text input-xs label label-primary rounded-0">
+                                                                                    <span class="fa fa-paint-brush"></span>
+                                                                                </span>
+                                                                            </div> -->
+                                                                            <input class="form-control form-control-sm input-xs" id="fontColor" name="fontColor" colorpicker="hex" type="text" style="text-transform: uppercase;"
+                                                                                ng-model="state.iconColor" />
+                                                                            <div class="input-group-append">
+                                                                                <label class="input-group-text rounded-0" style="background-color:{{state.iconColor}};">
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="btn-group">
+                                                                            <select class="form-control form-control-sm" ng-model="state.animation">
+                                                                                <option ng-repeat="animation in vm.animations" value="{{animation.value}}">{{animation.name}}</option>
+                                                                            </select>
+                                                                            <!-- <button type="button" class="btn btn-mini dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
+                                                                                aria-expanded="false">
+                                                                                <span class="sr-only">Toggle Dropdown</span>
+                                                                            </button> -->
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-control form-control-sm" style="color:#FF0000;" type="text" ng-model="state.text"> </td>
+                                                                    <td>
+                                                                        <div class="input-group border border-primary">
+                                                                            <!-- <div class="input-group-prepend">
+                                                                                <span class="input-group-text input-xs label label-primary rounded-0">
+                                                                                    <span class="fa fa-paint-brush"></span>
+                                                                                </span>
+                                                                            </div> -->
+                                                                            <input class="form-control form-control-sm input-xs" id="fontColor" name="fontColor" colorpicker="hex" type="text" style="text-transform:uppercase;"
+                                                                                ng-model="state.textColor" />
+                                                                            <div class="input-group-append">
+                                                                                <label class="input-group-text rounded-0" style="background-color:{{state.textColor}};">
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                            <tfoot>
+                                                                <tr class="table-icon-cell">
+                                                                    <td colspan="7">
+                                                                        <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="vm.addState()">
+                                                                            <i class="fa fa-cog"></i>
+                                                                            <sup>
+                                                                                <i class="fa fa-plus"></i>
+                                                                            </sup>&nbsp;&nbsp;Add State&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--.tab-pane-->
+
+                                <!-- Footer pane -->
+                                <div role="tabpanel" class="align-top tab-pane fade" id="tabs-4-tab-6">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="footerText">Footer Text
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend ">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-window-maximize fa-rotate-180"></span>
+                                                                </span>
+                                                            </div>
+                                                            <input id="footerText" name="footerText" class="form-control" type="text" placeholder="Last Update: ##/##/##" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.text">
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="footerTextAlignment">Text Alignment
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="btn-group" data-toggle="buttons">
+                                                                <button class="btn {{vm.dashboard.widgets[vm.selectedWidgetIndex].footer.textAlignment == '1'? ' active' : ''}}" title="Align Left"
+                                                                    ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.textAlignment = '1';">
+                                                                    <i class="fa fa-align-left"></i>
+                                                                </button>
+                                                                <button class="btn {{vm.dashboard.widgets[vm.selectedWidgetIndex].footer.textAlignment == '2'? ' active' : ''}}" title="Align Center"
+                                                                    ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.textAlignment = '2';">
+                                                                    <i class="fa fa-align-center"></i>
+                                                                </button>
+                                                                <button class="btn {{vm.dashboard.widgets[vm.selectedWidgetIndex].footer.textAlignment == '3'? ' active' : ''}}" title="Align Right"
+                                                                    ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.textAlignment = '3';">
+                                                                    <i class="fa fa-align-right"></i>
+                                                                </button>
+                                                                <button class="btn {{vm.dashboard.widgets[vm.selectedWidgetIndex].footer.textAlignment == '4'? ' active' : ''}}" title="Align Justify"
+                                                                    ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.textAlignment = '4';">
+                                                                    <i class="fa fa-align-justify"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="footerTextSize">Font Size
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend ">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-text-height"></span>
+                                                                </span>
+                                                            </div>
+                                                            <input id="footerTextSize" name="footerTextSize" class="form-control" type="number" min="1" placeholder="Size" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.fontSize"
+                                                                required>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div layout="row" layout-align="start center">
+                                                        <fieldset class="form-group">
+                                                            <label class="form-label semibold" for="footerTextBold">
+                                                                <b>Bold</b>
+                                                            </label>
+                                                            <md-switch id="footerTextBold" name="footerTextBold" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.fontBold"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </fieldset>
+                                                        <fieldset class="form-group">
+                                                            <label class="form-label semibold" for="footerTextItalic">
+                                                                <i>Italic</i>
+                                                            </label>
+                                                            <md-switch id="footerTextItalic" name="footerTextItalic" class="md-primary " ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.fontItalic"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </fieldset>
+
+                                                        <fieldset class="form-group">
+                                                            <label class="form-label semibold" for="footerTextUnderline">
+                                                                <u>Under</u>
+                                                            </label>
+                                                            <md-switch id="footerTextUnderline" name="footerTextUnderline" class="md-primary " ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.fontUnderline"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </fieldset>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="bgcolor">Background Colour
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-paint-brush"></span>
+                                                                </span>
+                                                            </div>
+                                                            <input class="form-control" id="bgcolor" name="bgcolor" colorpicker="hex" type="text" style="text-transform: uppercase;"
+                                                                ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.backgroundColor"
+                                                            />
+                                                            <div class="input-group-append">
+                                                                <label class="input-group-text" style="background-color:{{vm.dashboard.widgets[vm.selectedWidgetIndex].footer.backgroundColor}};">
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="bgcolor">Font Colour
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text btn btn-primary">
+                                                                    <span class="fa fa-paint-brush"></span>
+                                                                </span>
+                                                            </div>
+                                                            <input class="form-control" id="fontColor" name="fontColor" colorpicker="hex" type="text" style="text-transform: uppercase;"
+                                                                ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.fontColor"
+                                                            />
+                                                            <div class="input-group-append">
+                                                                <label class="input-group-text" style="border:2px;background-color:{{vm.dashboard.widgets[vm.selectedWidgetIndex].footer.fontColor}};">
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="footerBorderShow">Border
+                                                        </label>
+                                                        <div layout-align="start center">
+                                                            <md-switch id="footerBorderShow" name="footerBorderShow" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.borderShow"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <fieldset class="form-group">
+                                                        <label class="form-label semibold" for="footerTextShow">Visibility
+                                                        </label>
+                                                        <div layout-align="start center">
+                                                            <md-switch id="footerTextShow" name="footerTextShow" class="md-primary" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].footer.show"
+                                                                aria-label="Switch 1">
+                                                            </md-switch>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--.tab-pane-->
+
+                            </div>
+                            <!--.tab-content-->
+                        </div>
+                        <!-- <div class="col-md-4">
+                            <label class="form-label semibold" for="name">Quick Preview</label>
+                            <section class="box-typical with-border" onmouseover="this.style.cursor='pointer';">
+                                <div class="row">
+                                    <div class="col-md-12" style="width:100%; height:158px;">
+                                        <div data-tap-disabled="true">
+                                            <map id="createMap" style="width:100%; height:158px;" center="{{vm.mapOptions.markerLocation.latitude}},{{vm.mapOptions.markerLocation.longitude}}"
+                                                zoom="15" on-click="vm.setCirclePosition(event)">
+                                                <marker position="{{vm.mapOptions.markerLocation.latitude}},{{vm.mapOptions.markerLocation.longitude}}"></marker>
+                                                <shape id="circle" name="circle" centered="true" stroke-color='#FF0000' stroke-opacity="0.8" stroke-weight="2" center="{{vm.mapOptions.circleLocation.latitude}},{{vm.mapOptions.circleLocation.longitude}}"
+                                                    radius="50" editable="true" draggable="true" on-dragstart="vm.dragStart()"
+                                                    on-drag="vm.drag()" on-dragend="vm.dragEnd()"></shape>
+                                            </map>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="btn-group special">
+                                            <button class="btn btn-primary" title="Undo Changes" ng-click="vm.discardUnsavedChanges()">
+                                                <span class="fa fa-undo"></span>
+                                            </button>
+                                            <button class="btn btn-primary" title="Center Screen" ng-click="vm.setMarkerCenterMap()">
+                                                <span class="fa fa-dot-circle"></span>
+                                            </button>
+                                            <button class="btn btn-primary" title="Set Location" ng-click="vm.setMarkerPosition()">
+                                                <span class="fa fa-map-pin"></span>&nbsp;
+                                                <sup>
+                                                    <span class="fa fa-plus"></span>
+                                                </sup>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary-success btn-block" ng-click="vm.createNode()" ng-disabled="siteForm.$invalid"
+                                    data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="dashboardSaveModal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        <span class="fa fa-save"></span>&nbsp;Save As</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tab-content" style="border:none;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="name">Name
+                                                        <span class="color-red">&nbsp;*</span>
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text btn btn-primary">
+                                                                <span class="fa fa-align-justify"></span>
+                                                            </span>
+                                                        </div>
+                                                        <input id="name" class="form-control" name="name" type="text" placeholder="Name" ng-model="vm.dashboard.name" required>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="name">Homepage
+                                                        <span class="color-red">&nbsp;*</span>
+                                                    </label>
+                                                    <md-switch id="footerTextBold" name="footerTextBold" class="md-primary" ng-model="vm.dashboard.homepage" aria-label="Switch 1">
+                                                    </md-switch>
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <fieldset class="form-group">
+                                                    <label class="form-label semibold" for="description">Description
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text btn btn-primary">
+                                                                <span class="fa fa-align-justify"></span>
+                                                            </span>
+                                                        </div>
+                                                        <input id="description" class="form-control" name="description" type="text" placeholder="Description" ng-model="vm.dashboard.description">
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary-success btn-block" ng-click="vm.saveDashboard()" ng-disabled="siteForm.$invalid"
+                                    data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<pageslide ps-open="vm.settingsBoxOpen" ps-body-class="true" ps-size="350px" class="scrollbar scrollbar-indigo bordered-indigo thin">
+    <settings-grid settings="vm.dashboard.widgets[vm.selectedWidgetIndex].settings"></settings-grid>
+</pageslide>
+<!-- <settings-grid settings="vm.dashboard.widgets[vm.selectedWidgetIndex].settings"></settings-grid> -->
+
+<!-- <settings-grid configuration="{{vm.dashboard.widgets[vm.selectedWidgetIndex].settings}}" ></settings-grid> -->
+<!-- <p>{{settings1}}</p> -->
+<!-- <settings-grid configuration='[{"key":"general","name":"General","type":"header"},{"key":"name","name":"Name","type":"text","value":"New Widget","min":0,"max":10},{"key":"description","name":"Description","value":"N/A","type":"text","min":0,"max":50},{"key":"border","name":"Border","value":true,"type":"bool"},{"key":"backgroundColour","name":"Background Colour","value":"#FFFFFF","type":"colour"},{"key":"header","name":"Header","type":"header"},{"key":"headerVisible","name":"Visible","value":true,"type":"bool"},{"key":"headerText","name":"Text","value":"Header Text","type":"text","min":0,"max":10},{"key":"headerBorder","name":"Border","value":true,"type":"bool"},{"key":"headerBackgroundColour","name":"Background Colour","value":"#005CB8","type":"colour"},{"key":"headerAlignment","name":"Horizantal Alignment","value":2,"type":"select","options":[{"text":"Left Aligned","value":1,"icon":"fa fa-align-left"},{"text":"Centre Aligned","value":2,"icon":"fa fa-align-center"},{"text":"Right Aligned","value":3,"icon":"fa fa-align-right"}]},{"key":"headerFontSize","name":"Font : Size","value":14,"type":"number","min":0,"max":100},{"key":"headerFontColor","name":"Font : Colour","value":"#FFFFFF","type":"colour"},{"key":"headerFontStyle","name":"Font : Style","type":"text"},{"key":"body","name":"Body","type":"header"},{"key":"bodyBorder","name":"Border","value":true,"type":"bool","min":0,"max":1},{"key":"bodyBackgroundColour","name":"Background Colour","value":"#FFFFFF","type":"colour","min":0,"max":1},{"key":"bodyValueVisible","name":"Value : Visible","value":true,"type":"bool"},{"key":"bodyValueSize","name":"Value : Size","value":36,"type":"number","min":0,"max":100},{"key":"bodyValueStyle","name":"Value : Style","type":"text"},{"key":"bodyIconVisible","name":"Icon : Visible","value":true,"type":"bool"},{"key":"bodyIconSize","name":"Icon : Size","value":28,"type":"number","min":0,"max":100},{"key":"bodyIconStyle","name":"Icon : Style","type":"text"},{"key":"bodyStateTable","name":"State & Animation Settings","value":"","type":"button"},{"key":"footer","name":"Footer","type":"header"},{"key":"footerVisible","name":"Visible","value":true,"type":"bool"},{"key":"footerText","name":"Text","value":"Footer Text","type":"text","min":0,"max":10},{"key":"footerBorder","name":"Border","value":true,"type":"bool"},{"key":"footerBackgroundColour","name":"Background Colour","value":"#005CB8","type":"colour"},{"key":"footerHorizantalAlignment","name":"Horizantal Alignment","value":2,"type":"select","options":[{"text":"Left Aligned","value":1,"icon":"fa fa-align-left"},{"text":"Centre Aligned","value":2,"icon":"fa fa-align-center"},{"text":"Right Aligned","value":3,"icon":"fa fa-align-right"}]},{"key":"footerFontSize","name":"Font : Size","value":14,"type":"number","min":0,"max":100},{"key":"footerFontColor","name":"Font : Colour","value":"#FFFFFF","type":"colour"},{"key":"footerFontStyle","name":"Font : Style","type":"text"}]'></settings-grid> -->
+<!-- <settings-grid test='123' help="{{vm.dashboard}}" configuration='{{loggedInUser}}'></settings-grid> -->
+
+<style>
+    .scrollbar {
+        margin-left: 30px;
+        float: left;
+        height: 300px;
+        width: 65px;
+        background: #fff;
+        overflow-y: scroll;
+        margin-bottom: 25px;
+    }
+
+    .force-overflow {
+        min-height: 450px;
+    }
+
+    .scrollbar-pink::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #F5F5F5;
+  border-radius: 10px; }
+
+.scrollbar-pink::-webkit-scrollbar {
+  width: 12px;
+  background-color: #F5F5F5; }
+
+.scrollbar-pink::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #ec407a; }
+
+.scrollbar-indigo::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #F5F5F5;
+  border-radius: 10px; }
+
+.scrollbar-indigo::-webkit-scrollbar {
+  width: 12px;
+  background-color: #F5F5F5; }
+
+.scrollbar-indigo::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #3f51b5; }
+
+.scrollbar-black::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #F5F5F5;
+  border-radius: 10px; }
+
+.scrollbar-black::-webkit-scrollbar {
+  width: 12px;
+  background-color: #F5F5F5; }
+
+.scrollbar-black::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #000; }
+
+.scrollbar-lady-lips::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #F5F5F5;
+  border-radius: 10px; }
+
+.scrollbar-lady-lips::-webkit-scrollbar {
+  width: 12px;
+  background-color: #F5F5F5; }
+
+.scrollbar-lady-lips::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-image: -webkit-gradient(linear, left bottom, left top, from(#ff9a9e), color-stop(99%, #fecfef), to(#fecfef));
+  background-image: -webkit-linear-gradient(bottom, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+  background-image: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); }
+
+.scrollbar-near-moon::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #F5F5F5;
+  border-radius: 10px; }
+
+.scrollbar-near-moon::-webkit-scrollbar {
+  width: 12px;
+  background-color: #F5F5F5; }
+
+.scrollbar-near-moon::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-image: -webkit-gradient(linear, left bottom, left top, from(#5ee7df), to(#b490ca));
+  background-image: -webkit-linear-gradient(bottom, #5ee7df 0%, #b490ca 100%);
+  background-image: linear-gradient(to top, #5ee7df 0%, #b490ca 100%); }
+
+.bordered-pink::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+  border: 1px solid #ec407a; }
+
+.bordered-pink::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: none; }
+
+.bordered-indigo::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+  border: 1px solid #3f51b5; }
+
+.bordered-indigo::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: none; }
+
+.bordered-black::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+  border: 1px solid #000; }
+
+.bordered-black::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: none; }
+
+.square::-webkit-scrollbar-track {
+  border-radius: 0 !important; }
+
+.square::-webkit-scrollbar-thumb {
+  border-radius: 0 !important; }
+
+.thin::-webkit-scrollbar {
+  width: 6px; }
+</style>
+<style>
+    html {
+        overflow-x: hidden;
+    }
+
+
+    .ng-pageslide {
+        background: #ffffff;
+        opacity: 0.9;
+        overflow-y: scroll;
+
+    }
+
+    body.ng-pageslide-body-open::before {
+        content: '.';
+        display: block;
+        position: absolute;
+        top: 0;
+        background-color: rgb(0, 0, 0);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        opacity: 0.5;
+        transition: opacity 1s;
+        opacity: 0.5;
+        pointer-events: all;
+    }
+
+    body.ng-pageslide-body-closed::before {
+        transition: opacity 1s;
+        content: '.';
+        display: block;
+        position: absolute;
+        top: 0;
+        background-color: rgb(0, 0, 0);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        opacity: 0;
+        pointer-events: none;
+    }
+</style>
+
+<!-- <piety-test></piety-test>
+<line-chart data="" options=""></line-chart>
+<bar-chart data="" options=""></bar-chart> -->
+
+<!-- stylesheets for the page -->
+<link rel="stylesheet" href="app-content/css/separate/pages/widgets.min.css">
+<link rel="stylesheet" href="app-content/css/separate/elements/cards.min.css">
+<link rel="stylesheet" href="app-content/css/separate/pages/user.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel-latest@1.9.0/slick/slick.css">
+
+
+<!-- scripts for the page -->
+
+<script>
+            /* ==========================================================================
+             Widget weather slider
+             ========================================================================== */
+
+            $('.widget-weather-slider').slick({
+                arrows: false,
+                dots: true,
+                infinite: true,
+                autoplay: true,
+                slidesToShow: 6,
+                slidesToScroll: 1
+            });
+      
+    </script>

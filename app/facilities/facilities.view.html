@@ -1,0 +1,1333 @@
+﻿<form id="form-facility" name="form-facility" method="post">
+    <div class="card">
+        <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+        <div class="card-body">
+            <h6 class="semibold">
+                <a ui-sref="settings">Control Panel</a> >
+                <a ui-sref="facilities_view">Device Database</a> > View</h6> 
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12">
+                    <table class="table" height="200">
+                        <col style="width:25%">
+                        <col style="width:75%">
+                        <thead>
+                            <tr>
+                                <th>Facilities & Device Hierarchy</th>
+                                <th>Detail&nbsp;:&nbsp;
+                                    <span ng-if="vm.selectedNode.level == 1" class="fa fa-home"></span>
+                                    <span ng-if="vm.selectedNode.level == 2" class="fa fa-map-marker-alt"></span>
+                                    <span ng-if="vm.selectedNode.level == 3" class="fa fa-building"></span>
+                                    <span ng-if="vm.selectedNode.level == 4" class="fa fa-cube"></span>
+                                    <span ng-if="vm.selectedNode.level == 5" class="fa fa-tag"></span>
+                                    &nbsp;{{vm.selectedNode.level == 1 ? 'Organisation&nbsp;>' : vm.selectedNode.level
+                                    == 2 ? 'Site&nbsp;>' : vm.selectedNode.level == 3 ? 'Facility&nbsp;>' : vm.selectedNode.level
+                                    == 4 ? 'Device&nbsp;>' : vm.selectedNode.level == 5 ? 'Tag&nbsp;>' : 'Nothing Selected&nbsp;'}}&nbsp;{{vm.selectedNode.label}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background-color: #f5f5f5;">
+                                <td class="align-top">
+                                    <div class="card card-blue ">
+                                        <div class="card card-blue btn-toolbar text-right" role="toolbar" style="width:300px; border:1px; border-radius:0px;" aria-label="Toolbar">
+                                            <div class="btn-group btn-group-sm btn-block label-primary" role="group">
+                                                <button type="button" ng-class="vm.selectedNode.level != 2 ? 'btn' : 'btn btn-primary-success'" ng-disabled="vm.selectedNode.level != 2"
+                                                    title="Backup Site Configuration">
+                                                    <span class="fa fa-download"></span>
+                                                </button>
+                                                <button type="button" ng-class="vm.selectedNode.level != 1 ? 'btn' : 'btn btn-primary-success'" ng-disabled="vm.selectedNode.level != 1"
+                                                    title="Restore Site Configuration">
+                                                    <span class="fa fa-upload"></span>
+                                                </button>
+                                                <button type="button" ng-class="vm.selectedNode.level <= 2 ? 'btn' : 'btn btn-primary-success'" ng-disabled="vm.selectedNode.level <= 2"
+                                                    title="Duplicate Record">
+                                                    <span class="fa fa-copy"></span>
+                                                </button>
+                                                <button type="button" ng-class="vm.selectedNode.level == 0 ? 'btn' : 'btn btn-primary-success'" ng-disabled="vm.selectedNode.level == 0"
+                                                    title="Add Record" ng-click="vm.initMapLocation()" data-toggle="modal" data-target="{{vm.selectedNode.level == 1 ? '#siteModal' : vm.selectedNode.level == 2 ? '#facilityModal' : vm.selectedNode.level == 3 ? '#deviceModal' : '#tagModal' }}">
+                                                    <span class="fa fa-plus"></span>
+                                                </button>
+                                                <button type="button" ng-class="vm.selectedNode.level <= 1 ? 'btn' : 'btn btn-primary-danger'" ng-disabled="vm.selectedNode.level <= 1"
+                                                    ng-click="vm.deleteNode()" title="Remove Record">
+                                                    <span class="fa fa-times"></span>
+                                                </button>
+                                                <button type="button" ng-class="vm.selectedNode.level == 0 ? 'btn' : 'btn btn-primary-success'" ng-disabled="vm.selectedNode.level == 0"
+                                                    ng-disabled="facilityEditForm.$invalid" ng-click="vm.updateNode()" title="Update Record">
+                                                    <span class="fa fa-save"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="text-center semibold btn btn-secondary" style="width:300px; height:388px; background-color:white; border:0px; border-color: blue;">
+                                            <span class="text-center semibold color-blue" ng-if="vm.doing_async">
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>Loading data...
+                                                <br>
+                                                <br>
+                                                <i class="fa fa-spinner fa-spin fa-4x"></i>
+                                                <br>
+                                                <br>
+                                            </span>
+                                            <abn-tree tree-data="vm.my_data" tree-control="vm.my_tree" on-select="vm.my_tree_handler(branch)" expand-level="1"></abn-tree>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td class="align-top">
+                                    <form id="facilityEditForm" name="facilityEditForm" novalidate>
+
+                                        <!--Empty detail area-->
+                                        <div ng-if="vm.selectedNode.level < 1" class="card card-blue text-center" style="height:420px;">
+                                            <div class="card-body">
+                                                <p class="semibold card-text">Select an option from left tree menu to begin.</p>
+                                            </div>
+                                        </div>
+
+                                        <!--client detail area-->
+                                        <div ng-if="vm.selectedNode.level == 1" class="card card-blue tabs-section" style="height:420px;">
+                                            <div class="tabs-section-nav tabs-section-nav-inline">
+                                                <ul class="nav" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active color-blue" href="" role="tab" data-toggle="tab">
+                                                            <span class="fa fa-home"></span>
+                                                            <!-- <span class="fa fa-user"></span> -->
+                                                            &nbsp;Organisation&nbsp;&nbsp;&nbsp;
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!--.tabs-section-nav-->
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <fieldset class="form-group">
+                                                                    <label class="form-label semibold" for="name">Name
+                                                                        <span class="color-red">&nbsp;*</span>
+                                                                    </label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend ">
+                                                                            <span class="input-group-text btn btn-primary">
+                                                                                <span ng-if="vm.selectedNode.level == 1" class="fa fa-home"></span>
+                                                                                <span ng-if="vm.selectedNode.level == 2" class="fa fa-map-marker"></span>
+                                                                                <span ng-if="vm.selectedNode.level == 3" class="fa fa-building"></span>
+                                                                                <span ng-if="vm.selectedNode.level == 4" class="fa fa-cube"></span>
+                                                                            </span>
+                                                                        </div>
+                                                                        <input id="name" name="name" class="form-control" type="text" placeholder="Name" ng-model="vm.selectedNode.label" required>
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="abbrv">Abbreviation
+                                                                                <span class="color-red">&nbsp;*</span>
+                                                                            </label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-window-minimize"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.selectedNode.abbrv" required>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="status">Status</label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="glyphicon glyphicon-flag"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <select id="status" name="status" class="form-control" placeholder="Status" ng-model="vm.selectedNode.status" required>
+                                                                                    <option value="true">Active</option>
+                                                                                    <option value="false">Suspended</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="description">Unique Client Identification</label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-hashtag"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input type="text" readonly class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.selectedNode.mqttClientId">
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="description">Description</label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-book"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.selectedNode.description">
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                </div>
+                                                                <!--.row-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label semibold" for="name">Logo</label>
+                                                        <section class="box-typical with-border">                        
+                                                            <div class="row">
+                                                                <div class="col-md-12 centered" style="width:100%; height:162px;">
+                                                                    <img ng-if="vm.selectedNode.logo" id="imgLogo" class="img-circle" height="120" src="{{vm.selectedNode.logo}}" />
+                                                                    <!-- <img ng-if="!vm.selectedNode.logo" id="imgLogo" class="img-circle" height="120" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" /> -->
+                                                                    <div ng-if="!vm.selectedNode.logo">
+                                                                        <span class="fa-stack fa-4x" title="Logo not set.">
+                                                                            <i class="fa fa-image fa-stack-1x color-blue"></i>
+                                                                            <i class="fa fa-ban fa-stack-2x color-red"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <label class="btn btn-primary btn-block">
+                                                                        <input style="display: none;" id="html" accept="image/*" type="file" ng-modal="vm.logoFile" onchange="angular.element(this).scope().vm.updateLogo(event)"> Update Logo
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <!--.widget-simple-sm-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--site detail area-->
+                                        <div ng-if="vm.selectedNode.level == 2" class="card card-blue tabs-section" style="height:420px;">
+                                            <div class="tabs-section-nav tabs-section-nav-inline">
+                                                <ul class="nav" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active color-blue" href="" role="tab" data-toggle="tab">
+                                                            <span class="fa fa-map-marker-alt"></span>
+                                                            &nbsp;Site&nbsp;&nbsp;&nbsp;
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!--.tabs-section-nav-->
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="name">Name
+                                                                                <span class="color-red">&nbsp;*</span>
+                                                                            </label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend ">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-map-marker"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input id="name" name="name" class="form-control" type="text" placeholder="Name" ng-model="vm.selectedNode.label" required>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="abbrv">Abbrv.
+                                                                                <span class="color-red">&nbsp;*</span>
+                                                                            </label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-window-minimize"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.selectedNode.abbrv" required>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="status">Time Zone
+                                                                                <span class="color-red">&nbsp;*</span>
+                                                                            </label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-clock"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <select id="timeZone" name="timeZone" class="form-control" placeholder="Status" ng-model="vm.selectedNode.timeZone" required>
+                                                                                    <option ng-repeat="tZone in vm.timeZones" ng-selected="vm.selectedNode.timeZone.name == tZone.name" value="{{tZone}}">({{tZone.current_utc_offset}})&nbsp;{{tZone.name}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="latitude">Latitude</label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-map-marker-alt"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Latitude" ng-model="vm.selectedNode.latitude">
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="longitude">Longitude</label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-map-marker-alt"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Longitude" ng-model="vm.selectedNode.longitude">
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label semibold" for="name">Location Map</label>
+                                                                <section class="box-typical with-border" onmouseover="this.style.cursor='pointer';">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12" style="width:100%; height:158px;">
+                                                                            <!-- <locationpicker style="width:100%; height:138px;" options="vm.locationpickerOptions"></locationpicker> -->
+                                                                            <div data-tap-disabled="true">
+                                                                                <div class="input-group">
+                                                                                    <!-- <input places-auto-complete types="['geocode']" on-place-changed="vm.searchLocation()" type="text" class="form-control" id="geoAddress" name="geoAddress" placeholder="Location / Address" value="">   -->
+                                                                                </div>
+                                                                                <!-- <div class="row">
+                                                                                                <div class="col-10">
+                                                                                                    <input type="text" class="form-control" id="geoAddress" name="geoAddress" placeholder="Location / Address" value="">
+                                                                                                </div>
+                                                                                                <div class="col-2">
+                                                                                                    <button class="btn btn-primary btn-block" title="Search Location" ng-click="">
+                                                                                                        <span class="fa fa-search"></span>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                    </div> -->
+                                                                                <map id="editMap" style="width:100%; height:158px;" center="{{vm.mapOptions.markerLocation.latitude}},{{vm.mapOptions.markerLocation.longitude}}"
+                                                                                    zoom="15" on-click="vm.setCirclePosition(event)">
+                                                                                    <marker position="{{vm.mapOptions.markerLocation.latitude}},{{vm.mapOptions.markerLocation.longitude}}"></marker>
+                                                                                    <shape id="circle" name="circle" centered="true" stroke-color='#FF0000' stroke-opacity="0.8" stroke-weight="2" center="{{vm.mapOptions.circleLocation.latitude}},{{vm.mapOptions.circleLocation.longitude}}"
+                                                                                        radius="50" editable="true" draggable="true"
+                                                                                        on-dragstart="vm.dragStart()" on-drag="vm.drag()"
+                                                                                        on-dragend="vm.dragEnd()"></shape>
+                                                                                </map>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- <div class="row">
+                                                                            <div class="col-12">
+                                                                                <input style="border: 0px" type="text" id="us3-address" class="w-100" />
+                                                                            </div>
+                                                                        </div> -->
+                                                                    <div class="row">
+                                                                        <div class="col-12 ">
+                                                                            <div class="btn-group special border">
+                                                                                <button class="btn btn-primary" title="Undo Changes" ng-click="vm.discardUnsavedChanges()">
+                                                                                    <span class="fa fa-undo"></span>
+                                                                                </button>
+                                                                                <button class="btn btn-primary" title="Center Screen" ng-click="vm.setMarkerCenterMap()">
+                                                                                    <span class="fa fa-dot-circle"></span>
+                                                                                </button>
+                                                                                <button class="btn btn-primary" title="Set Location" ng-click="vm.setMarkerPosition()">
+                                                                                    <span class="fa fa-map-pin"></span>&nbsp;
+                                                                                    <sup>
+                                                                                        <span class="fa fa-plus"></span>
+                                                                                    </sup>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </section>
+                                                                <!--.widget-simple-sm-->
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <fieldset class="form-group">
+                                                                    <label class="form-label semibold" for="description">Description</label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text btn btn-primary">
+                                                                                <span class="fa fa-book"></span>
+                                                                            </span>
+                                                                        </div>
+                                                                        <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.selectedNode.description">
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--facility detail area-->
+                                        <div ng-if="vm.selectedNode.level == 3" class="card card-blue tabs-section" style="height:420px;">
+                                            <div class="tabs-section-nav tabs-section-nav-inline">
+                                                <ul class="nav" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active color-blue" href="" role="tab" data-toggle="tab">
+                                                            <span class="fa fa-building"></span>&nbsp;Facility&nbsp;&nbsp;&nbsp;
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!--.tabs-section-nav-->
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="name">Name
+                                                                                <span class="color-red">&nbsp;*</span>
+                                                                            </label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend ">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-building"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input id="name" name="name" class="form-control" type="text" placeholder="Name" ng-model="vm.selectedNode.label" required>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="abbrv">Abbreviation
+                                                                                <span class="color-red">&nbsp;*</span>
+                                                                            </label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-window-minimize"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.selectedNode.abbrv" required>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="status">Status</label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="glyphicon glyphicon-flag"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <select id="status" name="status" class="form-control" placeholder="Status" ng-model="vm.selectedNode.status" required>
+                                                                                    <option value="true">Active</option>
+                                                                                    <option value="false">Suspended</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label semibold" for="symbol">Symbol</label>
+                                                                <div class="box-typical with-border centered" style="width:100%;height:120px;">
+                                                                    <span class="fa fa-building fa-5x color-blue"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <fieldset class="form-group">
+                                                                    <label class="form-label semibold" for="description">Description</label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text btn btn-primary">
+                                                                                <span class="fa fa-book"></span>
+                                                                            </span>
+                                                                        </div>
+                                                                        <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.selectedNode.description">
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--device detail area-->
+                                        <div ng-if="vm.selectedNode.level == 4" class="card card-blue tabs-section" style="height:420px;">
+                                            <div class="tabs-section-nav tabs-section-nav-inline">
+                                                <ul class="nav" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active color-blue" href="#tabs-4-tab-1" role="tab" data-toggle="tab">
+                                                            <span class="fa fa-cube"></span>&nbsp;Device&nbsp;&nbsp;&nbsp;
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link color-blue" href="#tabs-4-tab-2" role="tab" data-toggle="tab">
+                                                            <i class="fa fa-tags"></i>&nbsp;Tags&nbsp;&nbsp;&nbsp;
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!--.tabs-section-nav-->
+                                            <div class="tab-content">
+                                                <div role="tabpanel" class="tab-pane fade in active show" id="tabs-4-tab-1">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <fieldset class="form-group">
+                                                                                    <label class="form-label semibold" for="name">Name
+                                                                                        <span class="color-red">&nbsp;*</span>
+                                                                                    </label>
+                                                                                    <div class="input-group">
+                                                                                        <div class="input-group-prepend ">
+                                                                                            <span class="input-group-text btn btn-primary">
+                                                                                                <span class="fa fa-cube"></span>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <input id="name" name="name" class="form-control" type="text" placeholder="Name" ng-model="vm.selectedNode.label" required>
+                                                                                    </div>
+                                                                                </fieldset>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <fieldset class="form-group">
+                                                                                    <label class="form-label semibold" for="abbrv">Abbreviation
+                                                                                        <span class="color-red">&nbsp;*</span>
+                                                                                    </label>
+                                                                                    <div class="input-group">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <span class="input-group-text btn btn-primary">
+                                                                                                <span class="fa fa-window-minimize"></span>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <input id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.selectedNode.abbrv" required>
+                                                                                    </div>
+                                                                                </fieldset>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <fieldset class="form-group">
+                                                                                    <label class="form-label semibold" for="status">Status</label>
+                                                                                    <div class="input-group">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <span class="input-group-text btn btn-primary">
+                                                                                                <span class="glyphicon glyphicon-flag"></span>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <select id="status" name="status" class="form-control" placeholder="Status" ng-model="vm.selectedNode.status" required>
+                                                                                            <option value="true">Active</option>
+                                                                                            <option value="false">Suspended</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </fieldset>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label class="form-label semibold" for="symbol">Symbol</label>
+                                                                        <div class="box-typical with-border centered" style="width:100%;height:120px;">
+                                                                            <span class="fa fa-cube fa-5x color-blue"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="description">Description</label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-book"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.selectedNode.description">
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--.tab-pane-->
+
+                                                <div role="tabpanel" class="align-top tab-pane fade row" id="tabs-4-tab-2" ng-if="vm.selectedNode.level == 4">
+                                                    <!-- <div class="row"> -->
+                                                        <!-- <div class="col-12"> -->
+                                                            <table st-table="displayedCollection" st-safe-src="vm.selectedNode.tags" class="table">
+                                                                <thead>
+                                                                    <tr style="background-color: #f5f5f5;">
+                                                                        <td colspan="4" class="align-top">
+                                                                            <div class="pull-left align-top semibold" st-template="pagination.html" st-pagination="" st-items-by-page="vm.itemsByPage"></div>
+                                                                        </td>
+                                                                        <td class="pull-right">
+                                                                            <button ng-if="vm.loggedInUser.role == 'Platform Admin.'" type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
+                                                                                data-target="#tagModal">
+                                                                                <i class="fa fa-tag"></i>
+                                                                                <sup>
+                                                                                    <i class="fa fa-plus"></i>
+                                                                                </sup>
+                                                                                &nbsp;Add Tag
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>&nbsp;</th>
+                                                                        <th st-sort="name">Name</th>
+                                                                        <th st-sort="description">Description</th>
+                                                                        <th>Latest Value</th>
+                                                                        <th>&nbsp;</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="row in displayedCollection" ng-click="vm.setClickedRow($index)">
+                                                                        <td><i class="fa fa-tag color-blue"></i></td>
+                                                                        <!-- <td cs-select="row">
+                                                                           <input type="checkbox" title="{{$index == selectedRow ? 'checked': ''}}" ng-click="vm.setClickedRow($index)" />
+                                                                        </td> -->
+                                                                        <td>{{row.name.replace(' ', '&nbsp;')}}</td>
+                                                                        <td>{{row.description.replace(' ', '&nbsp;')}}</td>
+                                                                        <td>{{mqtt.subscribedTopics[row.clientId + '/' + row.address][0]}}</td>
+                                                                        <!-- <td>{{mqtt.subscribedTopics['DA_UN404VVVr_DA_DXB_' + 'CBDLTLTGM_WC2_PS']}}</td> -->
+
+                                                                        <td>
+                                                                            <div ng-if="vm.loggedInUser.role == 'Platform Admin.'" class="btn-group pull-right" role="group" aria-label="...">
+                                                                                <a href="" data-toggle="modal" data-target="#tagModal" title="Edit" class="btn btn-sm btn-primary">
+                                                                                    <i class="fa fa-pencil-alt"></i>
+                                                                                </a>
+                                                                                <a href="" ng-confirm-click="Are you sure to delete this record ?" confirmed-click="vm.deleteClient({{row}});" title="Delete"
+                                                                                    class="btn btn-sm btn-primary-danger">
+                                                                                    <i class="fa fa-trash-alt"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                <tfoot>
+                                                                </tfoot>
+                                                            </table>
+                                                        <!-- </div> -->
+                                                    <!-- </div> -->
+                                                </div>
+                                                <!--.tab-pane-->
+                                            </div>
+                                            <!--.tab-content-->
+                                        </div>
+
+                                        <!--tag detail area-->
+                                        <div ng-if="vm.selectedNode.level == 5" class="card card-blue tabs-section" style="height:420px;">
+                                            <div class="tabs-section-nav tabs-section-nav-inline">
+                                                <ul class="nav" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active color-blue" href="#tabs-4-tab-1" role="tab" data-toggle="tab">
+                                                            <span class="fa fa-tag"></span>&nbsp;Tag&nbsp;&nbsp;&nbsp;
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!--.tabs-section-nav-->
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="name">Name
+                                                                                <span class="color-red">&nbsp;*</span>
+                                                                            </label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend ">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-cube"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input id="name" name="name" class="form-control" type="text" placeholder="Name" ng-model="vm.selectedNode.label" required>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <fieldset class="form-group">
+                                                                            <label class="form-label semibold" for="abbrv">Address
+                                                                                <span class="color-red">&nbsp;*</span>
+                                                                            </label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text btn btn-primary">
+                                                                                        <span class="fa fa-window-minimize"></span>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <input id="address" class="form-control" name="address" type="text" placeholder="Abbrv." ng-model="vm.selectedNode.address" required>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label semibold" for="symbol">Symbol</label>
+                                                                <div class="box-typical with-border centered" style="width:100%;height:120px;">
+                                                                    <span class="fa fa-tag fa-5x color-blue"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <fieldset class="form-group">
+                                                                    <label class="form-label semibold" for="description">Description</label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text btn btn-primary">
+                                                                                <span class="fa fa-book"></span>
+                                                                            </span>
+                                                                        </div>
+                                                                        <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.selectedNode.description">
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <!--.row-->
+        </div>
+    </div>
+    <!--.row-->
+</form>
+
+<!-- Popups -->
+<div class="container">
+    <!-- Add Site Modal -->
+    <div class="modal fade" id="siteModal" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        <span class="fa fa-plus"></span>&nbsp;Add&nbsp;{{vm.selectedNode.level == 1? 'Site' : vm.selectedNode.level == 2? 'Facility'
+                        : vm.selectedNode.level == 3? 'Device' : 'Tag'}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <p>Some text in the modal.</p> -->
+                    <form id="siteForm" name="siteForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="name">Name
+                                                <span class="color-red">&nbsp;*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend ">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-map-marker-alt"></span>
+                                                    </span>
+                                                </div>
+                                                <input id="name" name="name" class="form-control" type="text" placeholder="Name" ng-model="vm.newNode.name" required>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="abbrv">Abbrvivation
+                                                <span class="color-red">&nbsp;*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-window-minimize"></span>
+                                                    </span>
+                                                </div>
+                                                <input id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.newNode.abbrv" required>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label ng-if="vm.selectedNode.level == 1" class="form-label semibold" for="organisation">Organisation / Client</label>
+                                            <label ng-if="vm.selectedNode.level == 2" class="form-label semibold" for="organisation">Site</label>
+                                            <label ng-if="vm.selectedNode.level == 3" class="form-label semibold" for="organisation">Facility</label>
+                                            <label ng-if="vm.selectedNode.level == 4" class="form-label semibold" for="organisation">Device</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span ng-if="vm.selectedNode.level == 1" class="fa fa-home"></span>
+                                                        <span ng-if="vm.selectedNode.level == 2" class="fa fa-map-marker"></span>
+                                                        <span ng-if="vm.selectedNode.level == 3" class="fa fa-building"></span>
+                                                        <span ng-if="vm.selectedNode.level == 4" class="fa fa-cube"></span>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="organisation" name="organisation" placeholder="Organisation" value="{{vm.selectedNode.label}}"
+                                                    readonly>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="latitude">Latitude</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-map-marker-alt"></span>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Latitude" ng-model="vm.newNode.latitude">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="longitude">Longitude</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-map-marker-alt"></span>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Longitude" ng-model="vm.newNode.longitude">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label semibold" for="name">Location Map</label>
+                                <section class="box-typical with-border" onmouseover="this.style.cursor='pointer';">
+                                    <div class="row">
+                                        <div class="col-md-12" style="width:100%; height:158px;">
+                                            <div data-tap-disabled="true">
+                                                <map id="createMap" style="width:100%; height:158px;" center="{{vm.mapOptions.markerLocation.latitude}},{{vm.mapOptions.markerLocation.longitude}}"
+                                                    zoom="15" on-click="vm.setCirclePosition(event)">
+                                                    <marker position="{{vm.mapOptions.markerLocation.latitude}},{{vm.mapOptions.markerLocation.longitude}}"></marker>
+                                                    <shape id="circle" name="circle" centered="true" stroke-color='#FF0000' stroke-opacity="0.8" stroke-weight="2" center="{{vm.mapOptions.circleLocation.latitude}},{{vm.mapOptions.circleLocation.longitude}}"
+                                                        radius="50" editable="true" draggable="true" on-dragstart="vm.dragStart()"
+                                                        on-drag="vm.drag()" on-dragend="vm.dragEnd()"></shape>
+                                                </map>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="btn-group special">
+                                                <button class="btn btn-primary" title="Undo Changes" ng-click="vm.discardUnsavedChanges()">
+                                                    <span class="fa fa-undo"></span>
+                                                </button>
+                                                <button class="btn btn-primary" title="Center Screen" ng-click="vm.setMarkerCenterMap()">
+                                                    <span class="fa fa-dot-circle"></span>
+                                                </button>
+                                                <button class="btn btn-primary" title="Set Location" ng-click="vm.setMarkerPosition()">
+                                                    <span class="fa fa-map-pin"></span>&nbsp;
+                                                    <sup>
+                                                        <span class="fa fa-plus"></span>
+                                                    </sup>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!--.widget-simple-sm-->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="status">Time Zone
+                                                <span class="color-red">&nbsp;*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-clock"></span>
+                                                    </span>
+                                                </div>
+                                                <select id="timeZone" name="timeZone" class="form-control" placeholder="Status" ng-model="vm.newNode.timeZone" required>
+                                                    <option ng-repeat="tZone in vm.timeZones" value="{{tZone}}">({{tZone.current_utc_offset}})&nbsp;{{tZone.name}}</option>
+
+                                                </select>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="description">Description</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-book"></span>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.newNode.description">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary-success btn-block" ng-click="vm.createNode()" ng-disabled="siteForm.$invalid"
+                                    data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Add Facility Modal -->
+    <div class="modal fade" id="facilityModal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        <span class="fa fa-plus"></span>&nbsp;Add&nbsp;Facility
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <p>Some text in the modal.</p> -->
+                    <form id="facilityForm" name="facilityForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="name">Name
+                                                <span class="color-red">&nbsp;*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend ">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-building"></span>
+                                                    </span>
+                                                </div>
+                                                <input id="name" name="name" class="form-control" type="text" placeholder="Name" ng-model="vm.newNode.name" required>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="abbrv">Abbrvivation
+                                                <span class="color-red">&nbsp;*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-window-minimize"></span>
+                                                    </span>
+                                                </div>
+                                                <input id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.newNode.abbrv" required>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="organisation">Site</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-map-marker-alt"></span>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="organisation" name="organisation" placeholder="Organisation" value="{{vm.selectedNode.label}}"
+                                                    readonly>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="description">Description</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-book"></span>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.newNode.description">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary-success btn-block" ng-click="vm.createNode()" ng-disabled="facilityForm.$invalid"
+                                    data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add Device Modal -->
+    <div class="modal fade" id="deviceModal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        <span class="fa fa-plus"></span>&nbsp;Add&nbsp;{{vm.selectedNode.level == 3? 'Device' : 'Tag'}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <p>Some text in the modal.</p> -->
+                    <form id="deviceForm" name="deviceForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="name">Name
+                                                <span class="color-red">&nbsp;*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend ">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-cube"></span>
+                                                    </span>
+                                                </div>
+                                                <input id="name" name="name" class="form-control" type="text" placeholder="Name" ng-model="vm.newNode.name" required>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="abbrv">Abbrvivation
+                                                <span class="color-red">&nbsp;*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-window-minimize"></span>
+                                                    </span>
+                                                </div>
+                                                <input id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.newNode.abbrv" required>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="organisation">Facility</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-building"></span>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="organisation" name="organisation" placeholder="Organisation" value="{{vm.selectedNode.label}}"
+                                                    readonly>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="description">Description</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-book"></span>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.newNode.description">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary-success btn-block" ng-click="vm.createNode()" ng-disabled="deviceForm.$invalid"
+                                    data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add Tag Modal -->
+    <div class="modal fade" id="tagModal" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        <span class="fa fa-tag"></span>
+                        <sup>
+                            <span class="fa fa-plus"></span>
+                        </sup>&nbsp;Add&nbsp;Tag</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <p>Some text in the modal.</p> -->
+                    <form id="tagForm" name="tagForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="name">Name
+                                                <span class="color-red">&nbsp;*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-tag"></span>
+                                                    </span>
+                                                    <span class="input-group-addon form-control" ng-bind="vm.selectedNode.fullName"></span>
+
+                                                </div>
+
+                                                <input id="name" name="name" class="form-control" type="text" placeholder="Name" ng-model="vm.newNode.name" required>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="alias">Address
+                                                <span class="color-red">&nbsp;*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-window-minimize"></span>
+                                                    </span>
+                                                </div>
+                                                <input id="address" class="form-control no-animate" name="address" type="text" placeholder="Address" ng-model="vm.newNode.address"
+                                                    ng-if="!vm.newNode.chkAddress" required>
+                                                <input id="address" class="form-control no-animate" name="address" type="text" placeholder="Address" ng-value="vm.selectedNode.fullName + vm.newNode.name.toUpperCase()"
+                                                    ng-if="vm.newNode.chkAddress" readonly required>
+                                            </div>
+                                            <div class="checkbox mb-2 text-right">
+                                                <input type="checkbox" class="form-control" checked id="chkAddress" ng-model="vm.newNode.chkAddress" />
+                                                <label class="text-muted" for="chkAddress">Same as tag name.</label>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="device">Device</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-cube"></span>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="device" name="device" placeholder="Device" value="{{vm.selectedNode.label}}" readonly>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="description">Description</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="fa fa-book"></span>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.newNode.description">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary-success btn-block" ng-click="vm.createNode()" ng-disabled="tagForm.$invalid"
+                                    data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- stylesheets for the page -->
+
+<!-- scripts for the page -->
+<script>
+    function previewFile() {
+        var preview = document.getElementById('imgLogo');
+        var file = document.getElementById('upload').files[0];
+        var reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            preview.src = reader.result;
+            console.log(reader.result);
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+<style>
+    .img-circle {
+        width: 130px;
+        height: 130px;
+        border: 1px solid #ddd;
+        /* Gray border */
+        border-radius: 4px;
+        /* Rounded border */
+        padding: 5px;
+        /* Some padding */
+        border-radius: 50%;
+        object-fit: scale-down;
+    }
+
+    /**
+     * Ranking component
+     */
+
+    div.centered {
+        height: 10em;
+        position: relative
+    }
+
+    div.centered img {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+
+    div.centered span {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+
+    /* Add a hover effect (blue shadow) */
+
+    div.centered img:hover {
+        box-shadow: 0 0 5px 5px #005cb8;
+    }
+
+    /* button group full width*/
+
+    .btn-group.special {
+        display: flex;
+    }
+
+    .special .btn {
+        flex: 1
+    }
+</style>

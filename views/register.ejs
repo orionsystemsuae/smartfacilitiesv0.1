@@ -1,0 +1,158 @@
+﻿<%- include('partials/header') %>
+<link rel="stylesheet" href="./css/separate/pages/login.min.css">
+<link rel="stylesheet" href="./css/lib/bootstrap-sweetalert/sweetalert.css">
+<link rel="stylesheet" href="./css/separate/vendor/sweet-alert-animations.min.css">
+<script src="./js/lib/jquery/jquery.min.js"></script>
+<script src="./js/lib/hide-show-password/bootstrap-show-password.min.js"></script>   
+<script src="./js/lib/html5-form-validation/jquery.validation.min.js"></script>
+<script src="./js/lib/bootstrap-sweetalert/sweetalert.min.js"></script>
+
+
+<script>
+		$(function() {
+             /* ==========================================================================
+			 Terms of Service Pop Up
+			 ========================================================================== */	
+//             $('.terms-btn-text').click(function(e){
+// 				e.preventDefault();
+// 				swal({
+// 					title: "Here's a message!",
+// 					text: "Please read these Terms of Servicarefully before using the www.smartwashrooms.ae website (theoperated by Smart Washrooms"+
+// "Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service."+
+// "By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service. This Terms of Service agreement for Smart Washrooms based on the Terms and Conditions from TermsFeed."
+// 				});
+//             });
+            
+			/* ==========================================================================
+			 Validation
+			 ========================================================================== */	
+
+			$('#form-register').validate({
+				submit: {
+					settings: {
+						inputContainer: '.form-group',
+						errorListClass: 'form-error-text-block',
+						display: 'block',
+						insertion: 'postpend'
+					}
+				}
+			});
+
+			$('#form-signup_v2').validate({
+				submit: {
+					settings: {
+						inputContainer: '.form-group',
+						errorListClass: 'form-tooltip-error'
+					}
+				}
+			});
+		
+		});
+	</script>
+
+    <% if(locals.error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <div class="page-center">
+        <div class="page-center-in">
+                <div class="container-fluid sign-box">
+                    <form id="form-register" name="form-register" method="POST" >
+                    <div class="sign-avatar no-photo">&plus;</div>
+                    <header class="sign-title">Sign Up</header>
+                    <p class="sign-note text-muted">Basic Personal Information</p>   
+                    <!-- <select onchange="changeRoleIcon(this.value)" id="role" name="role" class="form-control">
+                                                  
+                                                                                                        
+                            <option value="1">Site Administrator</option>
+                              
+                            <option value="2">Manager</option>
+                            <option value="3">Standard</option>
+                        
+                        
+                </select>       -->
+                   <div class="form-group input-group">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-star"></span>
+                        </div>            
+                        <select id="role" name="role" readonly class="form-control">                                                                          
+                                <!-- <option value="Administrator">Administrator</option>               
+                                <option value="Manager">Manager</option> -->
+                                <option value="Standard User" selected>Standard User</option>
+                    </select>   
+                    </div>                         
+                    <div class="form-group input-group">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-user"></span>
+                        </div>            
+                        <input id="firstName" type="text" class="form-control" name="firstName" data-validation="[NOTEMPTY]" data-validation-message="First name must not be empty." placeholder="First Name"/>
+                    </div>
+                    <div class="form-group input-group">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-user"></span>
+                        </div>
+                        <input id="lastName" type="text" class="form-control" name="lastName" data-validation="[NOTEMPTY]" data-validation-message="Last name must not be empty." placeholder="Last Name"/>
+                    </div>
+                    <div class="form-group input-group">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-home"></span>
+                        </div>
+                        <input id="organisation" type="text" class="form-control" name="organisation" placeholder="Organisation"/>
+                    </div>              
+                    <div class="form-group input-group">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-earphone"></span>
+                        </div>
+                        <input id="mobileNo" type="text" class="form-control" name="mobileNo" data-validation="[NOTEMPTY]" data-validation-message="Mobile No. must not be empty." placeholder="Mobile No."/>
+                    </div>        
+                    <div class="form-group input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-envelope"></span>
+                            </div>
+                            <input id="email" type="email" class="form-control" name="email" data-validation="[EMAIL]" data-validation-message="Email is not valid."  placeholder="E-Mail"/>
+                    </div>             
+                    <div class="form-group">
+                        <input id="password" type="password"  class="form-control" name="password" data-validation="[L>=6]" data-validation-message="Password must be at least 6 characters." data-toggle="password" data-placement="before" placeholder="Password"/>
+                    </div>
+                    <div class="form-group">
+                        <input id="confirmPassword" type="password"  class="form-control" name="confirmPassword" data-validation="[V==password]" data-validation-message="Confirm password does not match password." data-toggle="password" data-placement="before" placeholder="Confirm Password"/>
+                    </div>                  
+                    <div class="checkbox">
+                            <input type="checkbox" id="newsletter"/>
+                            <label class="text-muted" for="newsletter">Subscribe to monthly newsletter</label>
+                    </div>
+                    <div class="checkbox">
+                            <input type="checkbox" class="form-control" id="serviceTermsAgreement" name="serviceTermsAgreement" data-validation="[NOTEMPTY]" data-validation-message="You must accept the terms of service."/>
+                            <label class="text-muted" for="serviceTermsAgreement">Accept <a class="terms-btn-text" href="#">terms of service</a></label>
+                    </div>
+                    <button type="submit" class="btn btn-primary sign-up">Register</button>
+                </form>
+                <br/>
+                <p class="sign-note">Already have an account? <a href="/login"><span class="label label-pill label-primary">Login</span></a></p>                  
+            </div>
+        </div>
+    </div>
+    <!-- <form method="post">
+        
+        <div class="form-group">
+            <label for="firstName">First name</label>
+            <input type="text" name="firstName" id="firstName" class="form-control" value="<%= locals.firstName || '' %>" required />
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last name</label>
+            <input type="text" name="lastName" id="lastName" class="form-control" value="<%= locals.lastName || '' %>" required />
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" class="form-control" value="<%= locals.username || '' %>" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Register</button>
+            <a href="/login" class="btn btn-link">Cancel</a>
+        </div>
+    
+    </form> -->
+<%- include('partials/footer') %>

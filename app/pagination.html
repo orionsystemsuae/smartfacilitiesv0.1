@@ -1,0 +1,6 @@
+<!-- <ul class="pagination pagination-sm justify-content-top"> -->
+    <ul class="pagination-sm justify-content-top">
+      <li class="page-item page-item-sm"><a class="page-link" ng-click="selectPage(currentPage-1);currentPg=currentPage-1;" href="">Previous</a></li>
+      <li class="page-item page-item-sm" ng-repeat="page in pages" ng-class="{active: page==currentPage}"><a class="page-link" ng-click="selectPage(page);" >{{page}}</a></li>
+      <li class="page-item page-item-sm"><a class="page-link" ng-click="selectPage(currentPage+1);currentPg=currentPage+1;" href="">Next</a></li>
+    </ul>

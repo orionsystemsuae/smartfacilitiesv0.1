@@ -1,0 +1,80 @@
+﻿<link rel="stylesheet" href="app-content/css/separate/pages/widgets.min.css">
+<form id="form-user" name="form-user" method="post">
+        <h6 class="with-border semibold">Control Panel > Sites, Facilities & Assets</h6>
+        <div class="row">
+                <div class="col-6 col-sm-4 col-md-3">
+                        <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" onclick="window.location = '#/settings/sites/view';">
+                            <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                                <sub><i class="fa fa-map"></i></sub><i class="fa fa-map-marker-alt faa-ring faa-slow"></i><sup><i class="fa fa-search fa-bounce animated"></i></sup>         
+                            </div>
+                            <div class="btn btn-primary btn-block">
+                                View Sites
+                            </div>
+                        </section>
+                        <!--.widget-simple-sm-->
+                    </div>
+                    <div ng-if="vm.loggedInUser.role == 'Platform Admin.' || vm.loggedInUser.role == 'Site Admin.'" class="col-6 col-sm-4 col-md-3">
+                            <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" onclick="window.location = '#/settings/sites/add';">
+                                <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                                    <i class="fa fa-map-marker-alt faa-ring faa-slow"></i><sup><i class="fa fa-plus fa-bounce animated"></i></sup>         
+                                </div>
+                                <div class="btn btn-primary btn-block">
+                                    Add Site
+                                </div>
+                            </section>
+                    </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                        <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" onclick="window.location = '#/settings/facilities/view';">
+                            <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                                <sup><i class="fa fa-cubes"></i></sup><sup><i class="fa fa-building "></i></sup><i class="fa fa-building faa-ring faa-slow"></i><sup><i class="fa fa-search fa-bounce animated"></i></sup>         
+                            </div>
+                            <div class="btn btn-primary btn-block">
+                                Manage Facilities & Assets
+                            </div>
+                        </section>
+                </div>
+                <!-- <div ng-if="vm.loggedInUser.role == 'Platform Admin.' || vm.loggedInUser.role == 'Site Admin.'"class="col-6 col-sm-4 col-md-3">
+                    <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" onclick="window.location = '#/settings/facilities/add';">
+                        <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                            <i class="fa fa-building faa-ring faa-slow"></i><sup><i class="fa fa-plus fa-bounce animated"></i></sup>         
+                        </div>
+                        <div class="btn btn-primary btn-block">
+                            Add Facility
+                        </div>
+                    </section>
+            </div> -->
+            
+            <!-- <div class="col-6 col-sm-4 col-md-3">
+                    <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" onclick="window.location = '#/settings/facilities/view';">
+                        <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                                <i class="fa fa-cubes faa-ring faa-slow"></i><sup><i class="fa fa-search fa-bounce animated"></i></sup>         
+                        </div>
+                        <div class="btn btn-primary btn-block">
+                            View Assets
+                        </div>
+                    </section>
+            </div> -->
+            <!-- <div class="col-6 col-sm-4 col-md-3">
+                    <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" onclick="window.location = '#/settings/facilities/add';">
+                        <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                            <i class="fa fa-cube faa-ring faa-slow"></i><sup><i class="fa fa-plus fa-bounce animated"></i></sup>         
+                        </div>
+                        <div class="btn btn-primary btn-block">
+                            Add Asset
+                        </div>
+                    </section>
+            </div> -->
+            <div class="col-6 col-sm-4 col-md-3">
+                    <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" onclick="window.history.back();" >
+                        <div class="widget-simple-sm-icon">
+                            <i class="fa fa-arrow-circle-left color-green faa-horizontal faa-fast animated"></i>      
+                        </div>
+                        <div class="btn btn-primary-success btn-block">
+                            Go Back
+                        </div>
+                    </section>
+                    <!--.widget-simple-sm-->
+            </div>
+        </div>
+        <!--.row-->        
+</form>

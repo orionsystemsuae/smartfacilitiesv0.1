@@ -1,0 +1,1658 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<!-- ALERT BOXES -->
+		<style>
+			.alert {
+			border-radius: 0;
+			-webkit-border-radius: 0;
+			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.11);
+			display: table;
+			width: 100%;
+		}
+
+		.alert-white {
+			background-image: linear-gradient(to bottom, #fff, #f9f9f9);
+			border-top-color: #d8d8d8;
+			border-bottom-color: #bdbdbd;
+			border-left-color: #cacaca;
+			border-right-color: #cacaca;
+			color: #404040;
+			padding: 61px;
+			position: relative;
+		}
+
+		.alert-white.rounded {
+			border-radius: 3px;
+			-webkit-border-radius: 3px;
+		}
+
+		.alert-white.rounded .icon {
+			border-radius: 3px 0 0 3px;
+			-webkit-border-radius: 3px 0 0 3px;
+		}
+
+		.alert-white .icon {
+			text-align: center;
+			width: 45px;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			border: 1px solid #bdbdbd;
+			padding-top: 15px;
+		}
+
+
+		.alert-white .icon:after {
+			-webkit-transform: rotate(45deg);
+			-moz-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			-o-transform: rotate(45deg);
+			transform: rotate(45deg);
+			display: block;
+			content: '';
+			width: 10px;
+			height: 10px;
+			border: 1px solid #bdbdbd;
+			position: absolute;
+			border-left: 0;
+			border-bottom: 0;
+			top: 50%;
+			right: -6px;
+			margin-top: -3px;
+			background: #fff;
+		}
+
+		.alert-white .icon i {
+			font-size: 20px;
+			color: #fff;
+			left: 12px;
+			margin-top: -10px;
+			position: absolute;
+			top: 50%;
+		}
+
+		/*============ colors ========*/
+
+		.alert-success {
+			color: #3c763d;
+			background-color: #dff0d8;
+			border-color: #d6e9c6;
+		}
+
+		.alert-white.alert-success .icon,
+		.alert-white.alert-success .icon:after {
+			border-color: #54a754;
+			background: #60c060;
+		}
+
+		.alert-info {
+			background-color: #d9edf7;
+			border-color: #98cce6;
+			color: #3a87ad;
+		}
+
+		.alert-white.alert-info .icon,
+		.alert-white.alert-info .icon:after {
+			border-color: #005cb8;
+			background: #005cb8;
+		}
+
+
+		.alert-white.alert-warning .icon,
+		.alert-white.alert-warning .icon:after {
+			border-color: #d68000;
+			background: #fc9700;
+		}
+
+		.alert-warning {
+			background-color: #fcf8e3;
+			border-color: #f1daab;
+			color: #c09853;
+		}
+
+		.alert-danger {
+			background-color: #f2dede;
+			border-color: #e0b1b8;
+			color: #b94a48;
+		}
+
+		.alert-white.alert-danger .icon,
+		.alert-white.alert-danger .icon:after {
+			border-color: #ca452e;
+			background: #da4932;
+		}
+	</style>
+
+
+
+		<style>
+			/*******************************
+			  * MODAL AS LEFT/RIGHT SIDEBAR
+			  * Add "left" or "right" in modal parent div, after class="modal".
+			  * Get free snippets on bootpen.com
+			  *******************************/
+
+		.no-horizantal-scroll {
+			overflow-x: hidden;
+		}
+
+		.modal-dialog {
+			overflow-y: initial !important
+		}
+
+		.modal-body {
+			height: 250px;
+			overflow-y: auto;
+		}
+
+		.modal.left .modal-dialog,
+		.modal.right .modal-dialog {
+			position: fixed;
+			margin: auto;
+			/* width: 520px; */
+			height: 100%;
+			-webkit-transform: translate3d(0%, 0, 0);
+			-ms-transform: translate3d(0%, 0, 0);
+			-o-transform: translate3d(0%, 0, 0);
+			transform: translate3d(0%, 0, 0);
+		}
+
+		.modal.left .modal-content,
+		.modal.right .modal-content {
+			height: 100%;
+			overflow-y: auto;
+		}
+
+		.modal.left .modal-body,
+		.modal.right .modal-body {
+			padding: 15px 15px 80px;
+		}
+
+		/*Left*/
+
+		.modal.left.fade .modal-dialog {
+			left: -520px;
+			-webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+			-moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+			-o-transition: opacity 0.3s linear, left 0.3s ease-out;
+			transition: opacity 0.3s linear, left 0.3s ease-out;
+		}
+
+		.modal.left.fade.show .modal-dialog {
+			left: 0;
+		}
+
+		/*Right*/
+
+		.modal.right.fade .modal-dialog {
+			right: -520px;
+			-webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+			-moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+			-o-transition: opacity 0.3s linear, right 0.3s ease-out;
+			transition: opacity 0.3s linear, right 0.3s ease-out;
+		}
+
+		.modal.right.fade.show .modal-dialog {
+			right: 0;
+		}
+
+		/* ----- MODAL STYLE ----- */
+
+		.modal-content {
+			-webkit-border-radius: 0px;
+			-moz-border-radius: 0px;
+			border-radius: 0px;
+			border: none;
+		}
+
+		.modal-header {
+			border-bottom-color: #EEEEEE;
+			background-color: #FAFAFA;
+		}
+
+		.modal-dialog {
+			border: 0px !important;
+		}
+
+		body {
+			background-color: #78909C;
+		}
+
+		body.modal-open {
+			overflow: hidden;
+			position: fixed;
+		}
+
+		body.viewport-lg {
+			position: absolute;
+		}
+	</style>
+
+		<style>
+			/* ----- settings table ----- */
+
+		.truncate {
+			/* width: 250px; */
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.pgTable {
+			border: solid 1px #005cb8;
+			border-spacing: 0;
+		}
+
+		.pgGroupRow {
+			background-color: #E0ECFF;
+			font-weight: bold;
+			color: #ffffff;
+		}
+
+		.pgGroupCell {
+			background-color: #005cb8;
+			padding: 0px;
+		}
+
+		.pgRow {}
+
+		.pgCell {
+			border: dotted 1px #ccc;
+			padding: 0px;
+		}
+
+		.pgTextBox {
+			border: solid 0px #ccc;
+			width: 100%;
+			padding: 0px;
+			padding-left: 5px;
+			-webkit-box-sizing: border-box;
+			/* Safari/Chrome, other WebKit */
+			-moz-box-sizing: border-box;
+			/* Firefox, other Gecko */
+			box-sizing: border-box;
+			/* Opera/IE 8+ */
+		}
+
+		.pgTooltip {
+			margin-left: 5px;
+		}
+	</style>
+
+		<style>
+			.scrollbar-y {
+			/* margin-left: 30px; */
+			float: left;
+			height: auto;
+			background: #fff;
+			overflow-y: auto;
+			overflow-x: hidden;
+			/* margin-bottom: 25px; */
+		}
+
+		.scrollbar-x {
+			/* margin-left: 30px; */
+			float: left;
+			width: auto;
+			background: #fff;
+			overflow-y: hidden;
+			overflow-x: auto;
+			/* margin-bottom: 25px; */
+		}
+
+		.scrollbar {
+			margin-left: 30px;
+			float: left;
+			height: auto;
+			width: auto;
+			background: #fff;
+			overflow-y: scroll;
+			overflow-x: scroll;
+			margin-bottom: 25px;
+		}
+
+		.force-overflow {
+			min-height: 450px;
+		}
+
+		.scrollbar-pink::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+			background-color: #F5F5F5;
+			border-radius: 10px;
+		}
+
+		.scrollbar-pink::-webkit-scrollbar {
+			width: 12px;
+			background-color: #F5F5F5;
+		}
+
+		.scrollbar-pink::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+			background-color: #ec407a;
+		}
+
+		.scrollbar-indigo::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+			background-color: #F5F5F5;
+			border-radius: 10px;
+		}
+
+		.scrollbar-indigo::-webkit-scrollbar {
+			width: 12px;
+			background-color: #F5F5F5;
+		}
+
+		.scrollbar-indigo::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+			background-color: #3f51b5;
+		}
+
+		.scrollbar-black::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+			background-color: #F5F5F5;
+			border-radius: 10px;
+		}
+
+		.scrollbar-black::-webkit-scrollbar {
+			width: 12px;
+			background-color: #F5F5F5;
+		}
+
+		.scrollbar-black::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+			background-color: #000;
+		}
+
+		.scrollbar-lady-lips::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+			background-color: #F5F5F5;
+			border-radius: 10px;
+		}
+
+		.scrollbar-lady-lips::-webkit-scrollbar {
+			width: 12px;
+			background-color: #F5F5F5;
+		}
+
+		.scrollbar-lady-lips::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+			background-image: -webkit-gradient(linear, left bottom, left top, from(#ff9a9e), color-stop(99%, #fecfef), to(#fecfef));
+			background-image: -webkit-linear-gradient(bottom, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+			background-image: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+		}
+
+		.scrollbar-near-moon::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+			background-color: #F5F5F5;
+			border-radius: 10px;
+		}
+
+		.scrollbar-near-moon::-webkit-scrollbar {
+			width: 12px;
+			background-color: #F5F5F5;
+		}
+
+		.scrollbar-near-moon::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+			background-image: -webkit-gradient(linear, left bottom, left top, from(#5ee7df), to(#b490ca));
+			background-image: -webkit-linear-gradient(bottom, #5ee7df 0%, #b490ca 100%);
+			background-image: linear-gradient(to top, #5ee7df 0%, #b490ca 100%);
+		}
+
+		.bordered-pink::-webkit-scrollbar-track {
+			-webkit-box-shadow: none;
+			border: 1px solid #ec407a;
+		}
+
+		.bordered-pink::-webkit-scrollbar-thumb {
+			-webkit-box-shadow: none;
+		}
+
+		.bordered-indigo::-webkit-scrollbar-track {
+			-webkit-box-shadow: none;
+			border: 1px solid #3f51b5;
+		}
+
+		.bordered-indigo::-webkit-scrollbar-thumb {
+			-webkit-box-shadow: none;
+		}
+
+		.bordered-black::-webkit-scrollbar-track {
+			-webkit-box-shadow: none;
+			border: 1px solid #000;
+		}
+
+		.bordered-black::-webkit-scrollbar-thumb {
+			-webkit-box-shadow: none;
+		}
+
+		.square::-webkit-scrollbar-track {
+			border-radius: 0 !important;
+		}
+
+		.square::-webkit-scrollbar-thumb {
+			border-radius: 0 !important;
+		}
+
+		.thin::-webkit-scrollbar {
+			height: 6px;
+			width: 6px;
+		}
+	</style>
+
+		<style>
+			.ribbon {
+			position: absolute;
+			top: 10px;
+			right: -1px;
+			color: #fff;
+			background: #00a8ff;
+			padding: 5px 12px 5px 9px;
+			white-space: nowrap
+		}
+
+		.ribbon.right-top {
+			top: 10px;
+			bottom: auto;
+			right: -1px;
+			left: auto
+		}
+
+		.ribbon.right-top:after {
+			position: absolute;
+			left: -10px;
+			top: 0;
+			display: block;
+			content: '';
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 0 10px 17px 0;
+			border-top-color: transparent !important;
+			border-right-color: #00a8ff;
+			border-bottom-color: transparent !important;
+			border-left-color: transparent !important
+		}
+
+		.ribbon.right-top:before {
+			position: absolute;
+			left: -10px;
+			bottom: 0;
+			display: block;
+			content: '';
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 0 0 17px 10px;
+			border-top-color: transparent !important;
+			border-right-color: transparent !important;
+			border-bottom-color: #00a8ff;
+			border-left-color: transparent !important
+		}
+
+		.ribbon.right-bottom {
+			top: auto;
+			bottom: 10px;
+			right: -1px;
+			left: auto
+		}
+
+		.ribbon.right-bottom:after {
+			position: absolute;
+			left: -10px;
+			top: 0;
+			display: block;
+			content: '';
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 0 10px 17px 0;
+			border-top-color: transparent !important;
+			border-right-color: #00a8ff;
+			border-bottom-color: transparent !important;
+			border-left-color: transparent !important
+		}
+
+		.ribbon.right-bottom:before {
+			position: absolute;
+			left: -10px;
+			bottom: 0;
+			display: block;
+			content: '';
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 0 0 17px 10px;
+			border-top-color: transparent !important;
+			border-right-color: transparent !important;
+			border-bottom-color: #00a8ff;
+			border-left-color: transparent !important
+		}
+
+		.ribbon.left-top {
+			padding: 5px 9px 5px 12px;
+			top: 10px;
+			bottom: auto;
+			right: auto;
+			left: -1px
+		}
+
+		.ribbon.left-top:after {
+			position: absolute;
+			right: -10px;
+			left: auto;
+			top: 0;
+			display: block;
+			content: '';
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 17px 10px 0 0;
+			border-top-color: #00a8ff;
+			border-right-color: transparent !important;
+			border-bottom-color: transparent !important;
+			border-left-color: transparent !important
+		}
+
+		.ribbon.left-top:before {
+			position: absolute;
+			right: -10px;
+			left: auto;
+			bottom: 0;
+			display: block;
+			content: '';
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 17px 0 0 10px;
+			border-top-color: transparent !important;
+			border-right-color: transparent !important;
+			border-bottom-color: transparent !important;
+			border-left-color: #00a8ff
+		}
+
+		.ribbon.left-bottom {
+			padding: 5px 9px 5px 12px;
+			top: auto;
+			bottom: 10px;
+			right: auto;
+			left: -1px
+		}
+
+		.ribbon.left-bottom:after {
+			position: absolute;
+			right: -10px;
+			left: auto;
+			top: 0;
+			display: block;
+			content: '';
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 17px 10px 0 0;
+			border-top-color: #00a8ff;
+			border-right-color: transparent !important;
+			border-bottom-color: transparent !important;
+			border-left-color: transparent !important
+		}
+
+		.ribbon.left-bottom:before {
+			position: absolute;
+			right: -10px;
+			left: auto;
+			bottom: 0;
+			display: block;
+			content: '';
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 17px 0 0 10px;
+			border-top-color: transparent !important;
+			border-right-color: transparent !important;
+			border-bottom-color: transparent !important;
+			border-left-color: #00a8ff
+		}
+
+		.ribbon.green {
+			background-color: #4cc159
+		}
+
+		.ribbon.green:after,
+		.ribbon.green:before {
+			border-color: #4cc159
+		}
+
+		.ribbon.purple {
+			background-color: #00bbd4
+		}
+
+		.ribbon.purple:after,
+		.ribbon.purple:before {
+			border-color: #00bbd4
+		}
+
+		.ribbon.yellow {
+			background-color: #fdc006
+		}
+
+		.ribbon.yellow:after,
+		.ribbon.yellow:before {
+			border-color: #fdc006
+		}
+
+		.ribbon.red {
+			background-color: #f34135
+		}
+
+		.ribbon.red:after,
+		.ribbon.red:before {
+			border-color: #f34135
+		}
+
+		.ribbon.transparent {
+			background-color: rgba(255, 255, 255, .5)
+		}
+
+		.ribbon.transparent:after,
+		.ribbon.transparent:before {
+			border-color: rgba(255, 255, 255, .5)
+		}
+	</style>
+		<style>
+			/* small button group , button and input control*/
+
+		.input-xs {
+			height: 22px;
+			padding: 2px 5px;
+			font-size: 12px;
+			line-height: 1.5;
+			border-radius: 3px;
+		}
+
+		.font-underline {
+			text-decoration-line: underline;
+		}
+
+		.btn-group-xs>.btn,
+		.btn-xs {
+			padding: .25rem .4rem;
+			font-size: .875rem;
+			line-height: .5;
+			border-radius: .2rem;
+		}
+	</style>
+
+
+		<meta charset="utf-8">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no, user-scalable=no">
+		<title>Smart Facilities Cloud Platform</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/0.1.0/font-awesome-animation.min.css" crossorigin="anonymous">
+		<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+	 crossorigin="anonymous"> -->
+
+		<link rel="stylesheet" href="/app-modules/@fortawesome/fontawesome-pro/css/all.css">
+		<link rel="stylesheet" href="/app-modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css" />
+		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" /> -->
+		<!-- <link rel="stylesheet" href="/app-modules/angular-timezone-selector/dist/angular-timezone-selector.css"> -->
+		<link rel="stylesheet" href="/app-modules/angular-bootstrap-nav-tree/dist/abn_tree.css">
+		<!-- <link rel="stylesheet" href="/app-modules/bootstrap-popover-picker/dist/css/bootstrap-picker.min.css"> -->
+		<link rel="stylesheet" href="/app-modules/angular-bootstrap-nav-tree/dist/abn_tree.css">
+		<link rel="stylesheet" href="/app-modules/slick-carousel-latest/slick/slick.css">
+		<link rel="stylesheet" href="/app-modules/fontawesome-iconpicker/dist/css/fontawesome-iconpicker.css">
+		<link rel="stylesheet" href="/app-modules/angular-bootstrap-colorpicker/css/colorpicker.min.css">
+		<link rel="stylesheet" href="/app-modules/nvd3/build/nv.d3.min.css" />
+		<link rel="stylesheet" href="/app-modules/bootstrap-daterangepicker/daterangepicker.css" />
+
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-gridster/0.13.15/angular-gridster.min.css">
+		<link rel="stylesheet" href="app-content/css/separate/pages/widgets.min.css">
+		<link rel="stylesheet" href="app-content/css/separate/elements/cards.min.css">
+		<link rel="stylesheet" href="app-content/css/separate/pages/user.min.css">
+
+
+		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css"> -->
+		<link rel="stylesheet" href="app-content/css/main.css">
+		<link rel="stylesheet" href="app-content/css/lib/jquery-flex-label/jquery.flex.label.css">
+		<link rel="stylesheet" href="app-content/external/misc/center.css">
+		<link rel="stylesheet" href="app-content/external/misc/image.css">
+		<link rel="stylesheet" href="app-content/external/misc/hmi.css">
+
+		<!-- Flag Icons CDN -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.8.0/css/flag-icon.min.css" />
+		<!-- Ionicons CDN -->
+		<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+		<!-- Material Design CDN -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" />
+		<!-- Octicons CDN -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.min.css" />
+		<!-- Typicons CDN -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.min.css" />
+		<!-- Weather Icons -->
+		<!-- <link rel="stylesheet" href="icon-fonts/weather-icons-1.2.0/css/weather-icons.min.css"/> -->
+
+		<!-- Original -->
+		<style>
+
+
+			.btn-group {
+			display: flex;
+		}
+
+		.no-animate {
+			-webkit-transition: none !important;
+			transition: none !important;
+		}
+
+		
+
+		/* smart table styles  */
+		.st-sort-ascent:before {
+			content: '\25B2';
+		}
+
+		.st-sort-descent:before {
+			content: '\25BC';
+		}
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		tr:hover {
+			background-color: #f5f5f5;
+		}
+
+		/* th, td {
+					padding: 8px;
+					text-align: left;
+					border-bottom: 0px solid #ddd;
+				} */
+
+		.st-selected {
+			background: #f5f5f5 !important;
+			color: black !important;
+			font-weight: bold;
+		}
+	</style>
+	</head>
+	<!-- class="with-side-menu-compact dark-theme dark-theme-ultramarine"
+		-->
+	<!-- {{loggedInUser.theme}} -->
+	<!-- -->
+	<!-- <body class="with-side-menu-compact control-panel control-panel-compact"> -->
+
+	<body class="with-side-menu-compact">
+		<!-- header -->
+		<header class="site-header">
+			<div class="container-fluid">
+				<a href="#" class="site-logo">
+					<img class="hidden-mdd-block d-md-none d-lg-block-down" src="app-content/img/logo.png" alt="">
+					<!-- <img class="hidden-lgd-block d-lg-none d-xl-block-up" src="app-content/img/logo-mob.png" alt=""> -->
+				</a>
+				<button id="show-hide-sidebar-toggle" class="show-hide-sidebar">
+					<span>toggle menu</span>
+				</button>
+				<button class="hamburger hamburger--htla">
+					<span>toggle menu</span>
+				</button>
+				<div class="site-header-content">
+					<div class="site-header-content-in">
+						<div class="site-header-shown">
+							<div class="dropdown dropdown-notification notif">
+								<a href="#" class="header-alarm dropdown-toggle active" id="dd-notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="font-icon-alarm"></i>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right dropdown-menu-notif" aria-labelledby="dd-notification">
+									<div class="dropdown-menu-notif-header">Notifications
+										<span class="badge badge-pill label-danger">4</span>
+									</div>
+									<div class="dropdown-menu-notif-list">
+										<div class="dropdown-menu-notif-item">
+											<div class="photo">
+												<img src="app-content/img/photo-64-1.jpg" alt="">
+											</div>
+											<div class="dot"></div>
+											<a href="#">Morgan</a> was bothering about something
+											<div class="color-blue-grey-lighter">7 hours ago</div>
+										</div>
+										<div class="dropdown-menu-notif-item">
+											<div class="photo">
+												<img src="app-content/img/photo-64-2.jpg" alt="">
+											</div>
+											<div class="dot"></div>
+											<a href="#">Lioneli</a> had commented on this
+											<a href="#">Super Important Thing</a>
+											<div class="color-blue-grey-lighter">7 hours ago</div>
+										</div>
+										<div class="dropdown-menu-notif-item">
+											<div class="photo">
+												<img src="app-content/img/photo-64-3.jpg" alt="">
+											</div>
+											<div class="dot"></div>
+											<a href="#">Xavier</a> had commented on the
+											<a href="#">Movie title</a>
+											<div class="color-blue-grey-lighter">7 hours ago</div>
+										</div>
+										<div class="dropdown-menu-notif-item">
+											<div class="photo">
+												<img src="app-content/img/photo-64-4.jpg" alt="">
+											</div>
+											<a href="#">Lionely</a> wants to go to
+											<a href="#">Cinema</a> with you to see
+											<a href="#">This Movie</a>
+											<div class="color-blue-grey-lighter">7 hours ago</div>
+										</div>
+									</div>
+									<div class="dropdown-menu-notif-more">
+										<a href="#">See more</a>
+									</div>
+								</div>
+							</div>
+							<div class="dropdown dropdown-notification messages">
+								<a href="#" class="header-alarm dropdown-toggle active" id="dd-messages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="font-icon-mail"></i>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right dropdown-menu-messages" aria-labelledby="dd-messages">
+									<div class="dropdown-menu-messages-header">
+										<ul class="nav" role="tablist">
+											<li class="nav-item">
+												<a class="nav-link active" data-toggle="tab" href="#tab-incoming" role="tab">
+													Inbox
+													<span class="badge badge-pill label-danger">8</span>
+												</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" data-toggle="tab" href="#tab-outgoing" role="tab">Outbox</a>
+											</li>
+										</ul>
+									</div>
+									<div class="tab-content">
+										<div class="tab-pane active" id="tab-incoming" role="tabpanel">
+											<div class="dropdown-menu-messages-list">
+												<a href="#" class="mess-item">
+													<span class="avatar-preview avatar-preview-32">
+														<img src="app-content/img/photo-64-2.jpg" alt="">
+													</span>
+													<span class="mess-item-name">Tim Collins</span>
+													<span class="mess-item-txt">Morgan was bothering about something!</span>
+												</a>
+												<a href="#" class="mess-item">
+													<span class="avatar-preview avatar-preview-32">
+														<img src="app-content/img/avatar-2-64.png" alt="">
+													</span>
+													<span class="mess-item-name">Christian Burton</span>
+													<span class="mess-item-txt">Morgan was bothering about something! Morgan was bothering about something.</span>
+												</a>
+												<a href="#" class="mess-item">
+													<span class="avatar-preview avatar-preview-32">
+														<img src="app-content/img/photo-64-2.jpg" alt="">
+													</span>
+													<span class="mess-item-name">Tim Collins</span>
+													<span class="mess-item-txt">Morgan was bothering about something!</span>
+												</a>
+												<a href="#" class="mess-item">
+													<span class="avatar-preview avatar-preview-32">
+														<img src="app-content/img/avatar-2-64.png" alt="">
+													</span>
+													<span class="mess-item-name">Christian Burton</span>
+													<span class="mess-item-txt">Morgan was bothering about something...</span>
+												</a>
+											</div>
+										</div>
+										<div class="tab-pane" id="tab-outgoing" role="tabpanel">
+											<div class="dropdown-menu-messages-list">
+												<a href="#" class="mess-item">
+													<span class="avatar-preview avatar-preview-32">
+														<img src="app-content/img/avatar-2-64.png" alt="">
+													</span>
+													<span class="mess-item-name">Christian Burton</span>
+													<span class="mess-item-txt">Morgan was bothering about something! Morgan was bothering about something...</span>
+												</a>
+												<a href="#" class="mess-item">
+													<span class="avatar-preview avatar-preview-32">
+														<img src="app-content/img/photo-64-2.jpg" alt="">
+													</span>
+													<span class="mess-item-name">Tim Collins</span>
+													<span class="mess-item-txt">Morgan was bothering about something! Morgan was bothering about something.</span>
+												</a>
+												<a href="#" class="mess-item">
+													<span class="avatar-preview avatar-preview-32">
+														<img src="app-content/img/avatar-2-64.png" alt="">
+													</span>
+													<span class="mess-item-name">Christian Burtons</span>
+													<span class="mess-item-txt">Morgan was bothering about something!</span>
+												</a>
+												<a href="#" class="mess-item">
+													<span class="avatar-preview avatar-preview-32">
+														<img src="app-content/img/photo-64-2.jpg" alt="">
+													</span>
+													<span class="mess-item-name">Tim Collins</span>
+													<span class="mess-item-txt">Morgan was bothering about something!</span>
+												</a>
+											</div>
+										</div>
+									</div>
+									<div class="dropdown-menu-notif-more">
+										<a href="#">See more</a>
+									</div>
+								</div>
+							</div>
+							<div class="dropdown dropdown-lang">
+								<button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="flag-icon flag-icon-us"></span>
+								</button>
+								<div class="dropdown-menu dropdown-menu-right">
+									<div class="dropdown-menu-col">
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-ru"></span>&#x420;&#x443;&#x441;&#x441;&#x43A;&#x438;&#x439;
+										</a>
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-de"></span>Deutsch
+										</a>
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-it"></span>Italiano
+										</a>
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-es"></span>Espa&#xF1;ol</a>
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-pl"></span>Polski</a>
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-li"></span>Lietuviu</a>
+									</div>
+									<div class="dropdown-menu-col">
+										<a class="dropdown-item current" href="#">
+											<span class="flag-icon flag-icon-us"></span>English</a>
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-fr"></span>Fran&#xE7;ais</a>
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-by"></span>&#x411;&#x435;&#x43B;&#x430;&#x440;&#x443;&#x441;&#x43A;i</a>
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-ua"></span>&#x423;&#x43A;&#x440;&#x430;&#x457;&#x43D;&#x441;&#x44C;&#x43A;&#x430;</a>
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-cz"></span>&#x10C;esky</a>
+										<a class="dropdown-item" href="#">
+											<span class="flag-icon flag-icon-ch"></span>&#x4E2D;&#x570B;</a>
+									</div>
+								</div>
+							</div>
+							<div class="dropdown user-menu">
+								<button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<img src="app-content/img/avatar-2-64.png" alt="">
+								</button>
+								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
+									<a class="dropdown-item" ui-sref="account">
+										<span class="font-icon glyphicon glyphicon-user"></span>Profile</a>
+									<a class="dropdown-item" ui-sref="settings">
+										<span class="font-icon glyphicon glyphicon-cog"></span>Settings</a>
+									<a class="dropdown-item" ui-sref="support">
+										<span class="font-icon glyphicon glyphicon-question-sign"></span>Help</a>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="/login">
+										<span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--site-header-content-in-->
+				</div>
+				<!--.site-header-content-->
+			</div>
+			<!--.container-fluid-->
+		</header>
+		<!--.site-header-->
+		<!-- Left Menu -->
+		<nav class="side-menu side-menu-compact">
+			<div class="side-menu-avatar" title="{{loggedInUser.firstName + ' ' + loggedInUser.lastName}}">
+				<a ui-sref="account">
+					<div class="avatar-preview avatar-preview-64">
+						<img class="img-circle" ng-src="{{!loggedInUser.profileImage ? 'app-content/img/avatar-1-128.png' : loggedInUser.profileImage}}">
+					</div>
+				</a>
+			</div>
+			<ul class="side-menu-list">
+				<li class="blue {{activeTab === 'dashboards' ? 'opened' : ''}}">
+					<a ui-sref="dashboards_view" class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+						<i class="color-blue fab fa-cloudscale faa-burst faa-fast fa-3x"></i>
+						<span class="lbl">Dashboards</span>
+					</a>
+				</li>
+				<li class="blue {{activeTab === 'visualboards' ? 'opened' : ''}}">
+					<a ui-sref="visualboards" class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+						<i class="fa fa-project-diagram faa-burst faa-fast"></i>
+						<span class="lbl">Visualboards</span>
+					</a>
+				</li>
+				<li class="blue {{activeTab === 'reports' ? 'opened' : ''}}">
+					<a ui-sref="reports" class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+						<i class="fa fa-chart-pie faa-burst faa-fast"></i>
+						<span class="lbl">Reports</span>
+					</a>
+				</li>
+				<li class="blue {{activeTab === 'settings' ? 'opened' : ''}}">
+					<a ui-sref="settings" class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+						<i class="fa fa-cogs faa-burst faa-fast"></i>
+						<span class="lbl">Control Panel</span>
+					</a>
+				</li>
+				<li class="blue {{activeTab === 'support' ? 'opened' : ''}}">
+					<a ui-sref="support" class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+						<i class="font-icon fa fa-question-circle faa-burst faa-fast"></i>
+						<span class="lbl">Support</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
+		<!--.side-menu-->
+
+		<!-- main -->
+		<div class="page-content">
+			<div class="container-fluid h-100">
+				<main ng-cloak ui-view="" class="main flex-fill"></main>
+			</div>
+			<!--.container-fluid-->
+		</div>
+		<!--.page-content-->
+		<!-- <div class="control-panel-container">
+		<ul>
+			<li class="settings" title="Configuration">
+				<div class="control-item-header">
+					<a href="" class="icon-toggle">
+						<span class="caret-down fa fa-caret-down"></span>
+						<span class="icon fa fa-wrench"></span>
+					</a>
+					<span class="text">Configuration</span>
+				</div>
+				<div class="control-item-content" style="overflow: auto;">
+					<div class="control-item-content-text">No configurable item selected.</div>
+				</div>
+			</li>
+			<li class="emails">
+				<div class="control-item-header">
+					<a href="" class="icon-toggle">
+						<span class="caret-down fa fa-caret-down"></span>
+						<span class="icon fa fa-search"></span>
+					</a>
+					<span class="text" title="MQTT Message Viewer">MQTT Message Viewer</span>
+					<div class="actions">
+						<a href="#" title="Refresh">
+							<span class="fa fa-sync-alt"></span>
+						</a>
+						<a href="#" title="Settings">
+							<span class="fa fa-cog"></span>
+						</a>
+						<a href="#" title="Clear all messages">
+							<span class="fa fa-trash"></span>
+						</a>
+					</div>
+				</div>
+				<div class="control-item-content">
+					<section class="control-item-actions">
+						<a href="#" class="mark">Mark selected as read</a>
+					</section>
+					<ul class="control-item-lists">
+						<li>
+							<a href="#">
+								<h6>Welcome to the Community!</h6>
+								<div>Hi, welcome to the my app...</div>
+								<div>
+									Message text
+								</div>
+							</a>
+							<a href="#" class="reply-all">Reply all</a>
+						</li>
+						<li>
+							<a href="#">
+								<h6>Welcome to the Community!</h6>
+								<div>Hi, welcome to the my app...</div>
+								<div>
+									Message text
+								</div>
+							</a>
+							<a href="#" class="reply-all">Reply all</a>
+						</li>
+						<li>
+							<a href="#">
+								<h6>Welcome to the Community!</h6>
+								<div>Hi, welcome to the my app...</div>
+								<div>
+									Message text
+								</div>
+							</a>
+							<a href="#" class="reply-all">Reply all</a>
+						</li>
+					</ul>
+				</div>
+			</li>
+			<li class="tasks" title="Pending Tasks">
+				<div class="control-item-header">
+					<a href="" class="icon-toggle">
+						<span class="caret-down fa fa-caret-down"></span>
+						<span class="icon fa fa-tasks"></span>
+					</a>
+					<span class="text">Task List</span>
+					<div class="actions">
+						<a href="" title="Refresh">
+							<span class="fa fa-sync-alt"></span>
+						</a>
+						<a href="" title="Settings">
+							<span class="fa fa-cog"></span>
+						</a>
+						<a href="" title="Clear all tasks">
+							<span class="fa fa-trash"></span>
+						</a>
+					</div>
+				</div>
+				<div class="control-item-content">
+					<div class="control-item-content-text">You don't have pending tasks.</div>
+				</div>
+			</li>
+			<li class="emails">
+				<div class="control-item-header">
+					<a href="" class="icon-toggle">
+						<span class="caret-down fa fa-caret-down"></span>
+						<span class="icon fa fa-envelope"></span>
+					</a>
+					<span class="text" title="Unread Messages">Unread Messages</span>
+					<div class="actions">
+						<a href="#" title="Refresh">
+							<span class="fa fa-sync-alt"></span>
+						</a>
+						<a href="#" title="Settings">
+							<span class="fa fa-cog"></span>
+						</a>
+						<a href="#" title="Delete all messages">
+							<span class="fa fa-trash"></span>
+						</a>
+					</div>
+				</div>
+				<div class="control-item-content">
+					<section class="control-item-actions">
+						<a href="#" class="mark">Mark selected as read</a>
+					</section>
+					<ul class="control-item-lists">
+						<li>
+							<a href="#">
+								<h6>Welcome to the Community!</h6>
+								<div>Hi, welcome to the my app...</div>
+								<div>
+									Message text
+								</div>
+							</a>
+							<a href="#" class="reply-all">Reply all</a>
+						</li>
+						<li>
+							<a href="#">
+								<h6>Welcome to the Community!</h6>
+								<div>Hi, welcome to the my app...</div>
+								<div>
+									Message text
+								</div>
+							</a>
+							<a href="#" class="reply-all">Reply all</a>
+						</li>
+						<li>
+							<a href="#">
+								<h6>Welcome to the Community!</h6>
+								<div>Hi, welcome to the my app...</div>
+								<div>
+									Message text
+								</div>
+							</a>
+							<a href="#" class="reply-all">Reply all</a>
+						</li>
+					</ul>
+				</div>
+			</li>
+			<li class="add">
+				<div class="control-item-header">
+					<a href="" class="icon-toggle no-caret">
+						<span class="icon fa fa-plus"></span>
+					</a>
+				</div>
+			</li>
+		</ul>
+		<a class="control-panel-toggle">
+			<span class="fa fa-angle-double-left"></span>
+		</a>
+	</div> -->
+		<!-- footer -->
+		<footer></footer>
+
+		<!-- Modal : MQTT Client-->
+		<div class="modal right fade rounded-0" id="modalMqttClient" tabindex="-1" role="dialog" aria-labelledby="" style="z-index: 2000;">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">
+							<i class="far fa-envelope"></i>
+							</i>&nbsp;&nbsp;MQTT Client Toolkit : Messages Count [
+							<span id="messageCount"></span>]</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" id="mqttMesssageWindow">
+						<div class="alert alert-info alert-white rounded">
+							<button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+							<div class="icon">
+								<i class="fa fa-info-circle"></i>
+							</div>
+							<div class="pl-5 text-justify">
+								<strong>Introduction&nbsp;&nbsp;</strong>
+								<utility-date-now class="pull-right pr-4"></utility-date-now>
+								<br>Welcome! to MQTT client toolkit. This toolkit is intended for use by administrators to monitor communication and
+								messaging taking place between devices and Cloud IoT Broker via MQTT protocol. It can be used to diagnose potential
+								problems and bottlenecks in your IoT network.
+							</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<div class="row w-100">
+							<div class="col-4">
+								&nbsp;
+							</div>
+							<div class="col-4">
+								<button class="btn btn-sm btn-danger btn-block" onclick="javascript:clearMessageCards();">
+									<i class="fas fa-trash-alt"></i>&nbsp;&nbsp;Clear</button>
+							</div>
+							<!-- <div class="col-4">
+							<button class="btn btn-sm btn-primary btn-block" onclick="javascript:mqttDisconnect();">
+								<i class="fas fa-plug">&nbsp;&nbsp;</i>Disconnected</button>
+						</div> -->
+							<div class="col-4">
+								<button class="btn btn-sm btn-primary btn-block" id="btnConnectMqttClient" onclick="javascript:mqttConnection();">
+									<i class="fas fa-plug">&nbsp;&nbsp;</i>Connect</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- modal-content -->
+			</div>
+			<!-- modal-dialog -->
+		</div>
+		<!-- modal -->
+
+		<!-- Misc. library scripts -->
+		<script src="app-content/js/lib/tether/tether.min.js"></script>
+		<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+		<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+		<!-- Angular.js Libraries -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.7/angular-ui-router.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.7.0/angular-messages.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.js"></script>
+		<!-- Angular Material Library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+		<!-- external scripts -->
+		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/FitText.js/1.2.0/jquery.fittext.js"></script> -->
+		<script src="/app-modules/popper.js/dist/umd/popper.min.js"></script>
+		<script src="/app-modules/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="/app-modules/angular-smart-table/dist/smart-table.js"></script>
+		<script src="/app-modules/angular-bootstrap-nav-tree/dist/abn_tree_directive.js"></script>
+		<script src="/app-modules/angular-slick/dist/slick.min.js"></script>
+		<script src="/app-modules/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.min.js"></script>
+		<script src="/app-modules/fontawesome-iconpicker/dist/js/fontawesome-iconpicker.js"></script>
+		<script src="/app-modules/slick-carousel-latest/slick/slick.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+		<!-- <script src="/app-modules/d3/dist/d3.min.js"></script> -->
+		<script src="/app-modules/nvd3/build/nv.d3.min.js"></script>
+		<script src="/app-modules/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
+		<script src="/app-modules/chart.js/dist/Chart.min.js"></script>
+		<script src="/app-modules/angular-chart.js/dist/angular-chart.min.js"></script>
+		<script src="/app-modules/moment/min/moment.min.js"></script>
+		<script src="/app-modules/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
+		<script src="/app-modules/angular-momentjs/angular-momentjs.min.js"></script>
+		<!-- <script src="/app-modules/ng-fittext/dist/ng-fittext.min.js"></script> -->
+		<script src="/app-modules/ng-fittext/src/ng-fittext.js"></script>
+
+		<script src="/app-modules/jquery-sparkline/jquery.sparkline.js"></script>
+		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script> -->
+		<script src="/app-modules/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<script src="/app-modules/angular-daterangepicker/js/angular-daterangepicker.min.js"></script>
+		<script src="/app-modules/ng-elif/src/elif.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-pageslide-directive/2.2.0/angular-pageslide-directive.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/javascript-detect-element-resize/0.5.3/jquery.resize.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-gridster/0.13.15/angular-gridster.min.js"></script>
+		<script src='https://maps.google.com/maps/api/js?key=AIzaSyC5Jrp9PtHe0WapppUzxbIpMDWMAcV3qE4&libraries=places'></script>
+		<script src="https://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.min.js"></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mistic100-Bootstrap-Confirmation/2.4.1/bootstrap-confirmation.min.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/peity/3.3.0/jquery.peity.min.js'></script>
+		<script src="app-content/js/lib/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+
+
+		<script src="app-content/js/app.js"></script>
+		<script src="app-content/js/plugins.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/paho-mqtt@1.0.4/paho-mqtt.js"></script>
+		<script src="app-content/js/lib/jquery-flex-label/jquery.flex.label.js"></script>
+		<!-- 
+	<script type="application/javascript">
+		(function ($) {
+			//startup functions
+			$(document).ready(function () {
+				$('.fl-flex-label').flexLabel();
+				//$('.selectpicker').selectpicker();
+				$(document).ready(function () {
+
+				});
+			});
+		})(jQuery);
+
+	</script> -->
+		<!-- <script>
+		$(document).ready(function () {
+			$("input[name='demo_vertical']").TouchSpin({
+				verticalbuttons: true
+			});
+		});
+	</script> -->
+		<script type="text/javascript">
+			//sample HTML/JS script that will publish/subscribe to topics in the Google Chrome Console
+			//by Matthew Bordignon @bordignon on twitter.
+			var wsbroker = "test.mosquitto.org";  //mqtt websocket enabled broker
+			var wsport = 8080 // port for above
+			var client = new Paho.MQTT.Client(wsbroker, wsport, "myclientid_" + parseInt(Math.random() * 100, 10));
+			console.log(client);
+			var messageTypeEnum = Object.freeze({ "information": "alert-info", "message": "alert-info msg", "success": "alert-success", "warning": "alert-warn", "danger": "alert-danger", "error": "alert-danger err" });
+			var iconType = Object.freeze({ "information": "fa fa-info-circle", "success": "fas fa-check", "warning": "fas fa-exclamation-triangle", "danger": "fas fa-times-circle", "error": "fas fa-times-circle", "message": "fas fa-envelope", });
+
+			client.onConnected = function (isReconnect, brokerUri) {
+				//console.log("Connected to " + brokerUri);
+				//console.log('onConnected', isReconnect);
+				if (isReconnect) {
+					//console.log("It was a result of automatic reconnect.");
+					createMessageCard(messageTypeEnum.success, 'MQTT : Reconnection', iconType.success, 'A secure communication channel with Cloud IoT Broker is successfully established.')
+				}
+				else
+					createMessageCard(messageTypeEnum.success, 'MQTT : Connection', iconType.success, 'A secure communication channel with Cloud IoT Broker is successfully established.')
+
+				$('#btnConnectMqttClient').html('<i class="fas fa-plug">&nbsp;&nbsp;</i>Disconnect');
+				$('#btnConnectMqttClient').removeAttr("disabled");
+				$('#btnConnectMqttClient').attr("connected");
+
+
+			};
+
+			client.onConnectionLost = function (responseObject) {
+				if (responseObject.errorCode !== 0) {
+					createMessageCard(messageTypeEnum.error, 'MQTT : Message', iconType.error, 'Connection to Cloud IoT broker is lost.', responseObject.errorMessage)
+					//console.log("connection lost: " + responseObject.errorMessage);
+				}
+				else
+					createMessageCard(messageTypeEnum.success, 'MQTT : Connection', iconType.success, 'The communication channel with Cloud IoT Broker is successfully closed.')
+
+				$('#btnConnectMqttClient').removeAttr("connected");
+			};
+			client.onMessageArrived = function (message) {
+				createMessageCard(messageTypeEnum.information, 'MQTT : Message', iconType.message, message.destinationName, message.payloadString)
+				//console.log(message.destinationName, ' -- ', message.payloadString);
+			};
+			var options = {
+				timeout: 3,
+				reconnect: true,
+				keepAliveInterval: 30,
+				onSuccess: function () {
+					//console.log("mqtt connected");
+					//createMessageCard(messageTypeEnum.success, 'MQTT : Connection', iconType.success, 'A secure communication channel with Cloud IoT Broker is successfully established.')
+					// Connection succeeded; subscribe to our topic, you can add multile lines of these
+					client.subscribe('#', { qos: 1 });
+					//use the below if you want to publish to a topic on connect
+					//message = new Paho.MQTT.Message("Hello");
+					//message.destinationName = "/World";
+					//client.send(message);
+				},
+				onFailure: function (message) {
+					createMessageCard(messageTypeEnum.error, 'MQTT : Connection', iconType.error, 'Failed to establish a secure communication channel with Cloud IoT Broker.', message.errorMessage)
+					console.log("Connection failed: " + message.errorMessage);
+				}
+			};
+
+			jQuery.fn.insertAt = function (index, element) {
+				var lastIndex = $("#mqttMesssageWindow > div").length;
+				if (index < 0) {
+					index = Math.max(0, lastIndex + 1 + index);
+				}
+				this.append(element);
+				if (index < lastIndex) {
+					$("#mqttMesssageWindow").children().eq(index).before($("#mqttMesssageWindow").children().last());
+				}
+				return this;
+			}
+			function createMessageCard(messageType, title, icon, message, detail) {
+				console.log(messageTypeEnum.information);
+
+				if (messageType === messageTypeEnum.message) {
+					$("#mqttMesssageWindow").insertAt(0, `
+					<div class="alert ` + messageType + ` alert-white rounded">
+						<button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+						<div class="icon">
+							<i class="` + icon + `"></i>
+						</div>
+						<div class="pl-5">			
+							<strong>`+ title + `&nbsp;&nbsp;</strong><div class="pull-right pr-4">` + new Date().toLocaleString() + `</div>
+							<br><strong>Topic :&nbsp;</strong>` + message + (detail ? '<br><strong>Payload :&nbsp;</strong>' + detail : '') + `
+						</div>
+					</div>`);
+				}
+				else if (messageType === messageTypeEnum.error) {
+					$("#mqttMesssageWindow").insertAt(0, `
+					<div class="alert ` + messageType + ` alert-white rounded">
+						<button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+						<div class="icon">
+							<i class="` + icon + `"></i>
+						</div>
+						<div class="pl-5">			
+							<strong>`+ title + `&nbsp;&nbsp;</strong><div class="pull-right pr-4">` + new Date().toLocaleString() + `</div>
+							<br><strong>Message :&nbsp;</strong>` + message + (detail ? '<br><strong>Detail :&nbsp;</strong>' + detail : '') + `
+						</div>
+					</div>`);
+				}
+				else if (messageType === messageTypeEnum.success || messageType === messageTypeEnum.information) {
+					$("#mqttMesssageWindow").insertAt(0, `
+					<div class="alert ` + messageType + ` alert-white rounded">
+						<button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+						<div class="icon">
+							<i class="` + icon + `"></i>
+						</div>
+						<div class="pl-5">			
+							<strong>`+ title + `&nbsp;&nbsp;</strong><div class="pull-right pr-4">` + new Date().toLocaleString() + `</div>
+							<br><strong>Message :&nbsp;</strong>` + message + `
+						</div>
+					</div>`);
+				}
+				else {
+					$("#mqttMesssageWindow").insertAt(0, `
+					<div class="alert ` + messageType + ` alert-white rounded">
+						<button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+						<div class="icon">
+							<i class="` + icon + `"></i>
+						</div>
+						<div class="pl-5">			
+							<strong>`+ title + `&nbsp;&nbsp;</strong><div class="pull-right pr-4">` + new Date().toLocaleString() + `</div>
+							<br><strong>Message :&nbsp;</strong>` + message + `
+						</div>
+					</div>`);
+				}
+
+				$("#messageCount").text($("#mqttMesssageWindow > div").length);
+			}
+
+
+			function clearMessageCards() {
+				$("#mqttMesssageWindow").empty();
+			}
+
+			function mqttConnection() {
+				var myVals = [];
+				$('#btnConnectMqttClient').map(function () {
+					myVals.push($('#btnConnectMqttClient').attr('value'));
+				});
+				//console.log(myVals);
+
+				//alert($(this).text());
+
+				if ($(this).attr("connected"))
+					mqttDisconnect();
+				else
+					mqttConnect();
+			}
+
+			function mqttConnect() {
+				//alert('mqttConnect');
+
+				//$('#btnConnectMqttClient').attr("disabled");
+				$('#btnConnectMqttClient').attr("connected");
+
+				createMessageCard(messageTypeEnum.information, 'MQTT : Connection', iconType.information, 'Attempting to establish communications with Cloud IoT Broker.');
+				//connect mqtt cient
+				client.connect(options);
+			}
+
+			function mqttDisconnect() {
+				//alert('mqttDisconnect');
+				$('#btnConnectMqttClient').removeAttr("connected");
+
+				createMessageCard(messageTypeEnum.information, 'MQTT : Connection', iconType.information, 'System user requested to close connection.');
+				//connect mqtt cient
+				client.disconnect();
+			}
+		</script>
+
+		<!-- Application script -->
+		<script src="app.js"></script>
+
+		<!-- App Directive Scripts -->
+		<script src="app-directives/sample.directive.js"></script>
+		<script src="app-directives/utility.directives.js"></script>
+		<script src="app-directives/peity.directive.js"></script>
+		<script src="app-directives/sparkline.directive.js"></script>
+		<script src="app-directives/settingsGrid.directive.js"></script>
+		<script src="app-directives/widget.button.directives.js"></script>
+		<script src="app-directives/widget.information.directives.js"></script>
+		<script src="app-directives/widget.hmi.directives.js"></script>
+		<script src="app-directives/widget.chart.directives.js"></script>
+
+
+		<!-- App Module Scripts -->
+		<script src="app-modules/mqttClient.module.js"></script>
+
+		<!-- App Service Scripts -->
+		<script src="app-services/user.service.js"></script>
+		<script src="app-services/client.service.js"></script>
+		<script src="app-services/site.service.js"></script>
+		<script src="app-services/dashboard.service.js"></script>
+		<script src="app-services/visualboard.service.js"></script>
+		<script src="app-services/metrics.service.js"></script>
+		<script src="app-services/flash.service.js"></script>
+		<script src="app-services/widget.factory.service.js"></script>
+		<script src="app-services/hmi.factory.service.js"></script>
+
+		<!-- App Controller Scripts -->
+		<script src="home/index.controller.js"></script>
+		<script src="logic/index.controller.js"></script>
+		<script src="account/index.controller.js"></script>
+		<script src="dashboards/index.controller.js"></script>
+		<script src="visualboards/index.controller.js"></script>
+		<script src="settings/index.controller.js"></script>
+		<script src="users/index.controller.js"></script>
+		<script src="sites/index.controller.js"></script>
+		<script src="facilities/index.controller.js"></script>
+		<script src="clients/index.controller.js"></script>
+		<script src="support/index.controller.js"></script>
+		<script src="reports/index.controller.js"></script>
+		<script src="themes/index.controller.js"></script>
+
+		<!-- Prototype utility methods -->
+		<script>
+		// Array.prototype.findByValueOfObject = function (key, value) {
+		// 	return this.filter(function (item) {
+		// 		return (item[key] === value);
+		// 	});
+		// }
+		</script>
+		<script>
+			/*!	
+		* FitText.js 1.0 jQuery free version
+		*
+		* Copyright 2011, Dave Rupert http://daverupert.com 
+		* Released under the WTFPL license 
+		* http://sam.zoy.org/wtfpl/
+		* Modified by Slawomir Kolodziej http://slawekk.info
+		*
+		* Date: Tue Aug 09 2011 10:45:54 GMT+0200 (CEST)
+		*/
+			(function () {
+
+				var addEvent = function (el, type, fn) {
+					if (el.addEventListener)
+						el.addEventListener(type, fn, false);
+					else
+						el.attachEvent('on' + type, fn);
+				};
+
+				var extend = function (obj, ext) {
+					for (var key in ext)
+						if (ext.hasOwnProperty(key))
+							obj[key] = ext[key];
+					return obj;
+				};
+
+				window.fitText = function (el, kompressor, options) {
+
+					var settings = extend({
+						'minFontSize': -1 / 0,
+						'maxFontSize': 1 / 0
+					}, options);
+
+					var fit = function (el) {
+						var compressor = kompressor || 1;
+
+						var resizer = function () {
+							el.style.fontSize = Math.max(Math.min(el.clientWidth / (compressor * 10), parseFloat(settings.maxFontSize)), parseFloat(settings.minFontSize)) + 'px';
+						};
+
+						// Call once to set.
+						resizer();
+
+						// Bind events
+						// If you have any js library which support Events, replace this part
+						// and remove addEvent function (or use original jQuery version)
+						addEvent(window, 'resize', resizer);
+						addEvent(window, 'orientationchange', resizer);
+					};
+
+					if (el.length)
+						for (var i = 0; i < el.length; i++)
+							fit(el[i]);
+					else
+						fit(el);
+
+					// return set of elements
+					return el;
+				};
+			})();
+		</script>
+
+	</body>
+
+</html>

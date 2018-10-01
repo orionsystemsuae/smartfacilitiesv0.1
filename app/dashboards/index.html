@@ -1,0 +1,43 @@
+﻿<form id="form-user" name="form-user" method="post">
+    <h6 class="with-border semibold">Dashboards</h6>
+    <div class="row">
+        <div class="col-6 col-sm-4 col-md-3">
+                <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" ui-sref="dashboards_view">
+                    <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                        <i class="fa fa-th faa-ring faa-slow"></i>&nbsp;<sup><i class="fa fa-search fa-bounce animated"></i></sup>         
+                    </div>
+                    <div class="btn btn-primary btn-block" ui-sref="dashboards_view">
+                        View Dashboards
+                    </div>
+                </section>
+            <!--.widget-simple-sm-->
+        </div>
+        <div class="col-6 col-sm-4 col-md-3">
+                <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" ui-sref="dashboards_add">
+                    <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                            <i class="fa fa-th faa-ring faa-slow"></i>&nbsp;<sup><i class="fa fa-plus fa-bounce animated"></i></sup>         
+                    </div>
+                    <div class="btn btn-primary btn-block" ui-sref="dashboards_add">
+                        Add Dashboard
+                    </div>
+                </section>
+            <!--.widget-simple-sm-->
+        </div>
+        <div class="col-6 col-sm-4 col-md-3">
+                <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" onclick="window.history.back();" >
+                    <div class="widget-simple-sm-icon">
+                        <i class="fa fa-arrow-circle-left color-green faa-horizontal faa-fast animated"></i>      
+                    </div>
+                    <div class="btn btn-primary-success btn-block">
+                        Go Back
+                    </div>
+                </section>
+                <!--.widget-simple-sm-->
+        </div>
+    </div>
+    <!--.row-->        
+</form>
+
+<!-- stylesheets for the page -->
+<link rel="stylesheet" href="app-content/css/separate/pages/widgets.min.css">
+

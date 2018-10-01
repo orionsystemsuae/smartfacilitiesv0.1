@@ -1,0 +1,132 @@
+﻿<link rel="stylesheet" href="app-content/css/separate/pages/widgets.min.css">
+<form id="form-user" name="form-user" method="post">
+    <h6 class="with-border semibold">Control Panel</h6>
+    <div class="row">
+        <div class="col-6 col-sm-4 col-md-3">
+            <div class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" ui-sref="account">
+                <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                    <i class="fa fa-user faa-ring faa-slow"></i>
+                    <sup>
+                        <i class="fa fa-cog fa-spin"></i>
+                    </sup>
+                </div>
+                <div class="btn btn-primary btn-block" style="border-top-left-radius:0;border-top-right-radius:0;" ui-sref="account">
+                    My Profile
+                </div>
+            </div>
+            <!--.widget-simple-sm-->
+        </div>
+        <div class="col-6 col-sm-4 col-md-3">
+            <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" ui-sref="users">
+                <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                    <i class="fa fa-users faa-ring faa-slow"></i>
+                    <sup>
+                        <i class="fa fa-cog fa-spin"></i>
+                    </sup>
+                </div>
+                <div class="btn btn-primary btn-block" style="border-top-left-radius:0;border-top-right-radius:0;" ui-sref="users">
+                    User Accounts
+                </div>
+            </section>
+            <!--.widget-simple-sm-->
+        </div>
+        <div ng-if="vm.loggedInUser.role == 'Platform Admin.'" class="col-6 col-sm-4 col-md-3">
+            <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" ui-sref="clients">
+                <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                    <sup>
+                        <i class="fa fa-dollar-sign"></i>
+                    </sup>
+                    <i class="fa fa-home faa-ring faa-slow"></i>
+                    <i class="fa fa-user faa-ring faa-slow"></i>
+                    <sup>
+                        <i class="fa fa-cog fa-spin"></i>
+                    </sup>
+                </div>
+                <div class="btn btn-primary btn-block" style="border-top-left-radius:0;border-top-right-radius:0;" ui-sref="clients">
+                    Organisations / Clients
+                </div>
+            </section>
+            <!--.widget-simple-sm-->
+        </div>
+        <div class="col-6 col-sm-4 col-md-3">
+            <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" ui-sref="facilities_view">
+                <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                    <i class="fa fa-cubes faa-bounce faa-slow"></i>
+                    <!-- <i class="fa fa-building faa-shake faa-slow"></i> -->
+                    <sup>
+                        <i class="fa fa-cog fa-spin"></i>
+                    </sup>
+                </div>
+                <div class="btn btn-primary btn-block" style="border-top-left-radius:0;border-top-right-radius:0;" ui-sref="facilities_view">
+                    Device Database
+                </div>
+            </section>
+            <!--.widget-simple-sm-->
+        </div>
+        <div class="col-6 col-sm-4 col-md-3">
+            <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" ui-sref="notifications">
+                <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                    <i class="fa fa-bell faa-ring faa-slow"></i>
+                    <sup>
+                        <i class="fa fa-cog fa-spin"></i>
+                    </sup>
+                </div>
+                <div class="btn btn-primary btn-block" style="border-top-left-radius:0;border-top-right-radius:0;" ui-sref="notifications">
+                    Notifications
+                </div>
+            </section>
+            <!--.widget-simple-sm-->
+        </div>
+        <div class="col-6 col-sm-4 col-md-3">
+            <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" ui-sref="logic">
+                <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                    <i class="fa fa-code-branch faa-vertical faa-slow"></i>
+                    <sup>
+                        <i class="fa fa-cog fa-spin"></i>
+                    </sup>
+                </div>
+                <div class="btn btn-primary btn-block" style="border-top-left-radius:0;border-top-right-radius:0;" ui-sref="logic">
+                    Logic Engine
+                </div>
+            </section>
+            <!--.widget-simple-sm-->
+        </div>
+        <div class="col-6 col-sm-4 col-md-3">
+            <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" ui-sref="themes">
+                <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                    <i class="fa fa-paint-brush faa-wrench faa-slow"></i>
+                    <sup>
+                        <i class="fa fa-cog fa-spin"></i>
+                    </sup>
+                </div>
+                <div class="btn btn-primary btn-block" style="border-top-left-radius:0;border-top-right-radius:0;" ui-sref="themes">
+                    Themes&nbsp;&&nbsp;Styles
+                </div>
+            </section>
+            <!--.widget-simple-sm-->
+        </div>
+        <div class="col-6 col-sm-4 col-md-3">
+            <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" ui-sref="settings">
+                <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                    <i class="fa fa-wrench faa-wrench faa-slow"></i>
+                    <i class="fa fa-cogs faa-wrench faa-slow animated"></i>
+                </div>
+                <div class="btn btn-primary btn-block" style="border-top-left-radius:0;border-top-right-radius:0;" ui-sref="settings">
+                    Account&nbsp;Settings
+                </div>
+            </section>
+            <!--.widget-simple-sm-->
+        </div>
+        <!-- <div class="col-6 col-sm-4 col-md-3">
+                    <section class="widget widget-simple-sm" onmouseover="this.style.cursor='pointer';" onclick="window.history.back();" >
+                        <div class="widget-simple-sm-icon">
+                            <i class="fa fa-arrow-circle-left color-green"></i>
+                        </div>
+                        <div class="widget-simple-sm-bottom">
+                            <a href="window.history.back();">Go Back</a>
+                        </div>
+                    </section>
+            </div> -->
+    </div>
+    <!--.row-->
+</form>

@@ -1,0 +1,180 @@
+﻿<!--.page-content-->
+<form id="form-user" name="form-user" method="post">
+  <div class="card">
+      <div class="card-body">   
+          <h6 class="with-border semibold"><a href="#/settings">Control Panel</a> > <a href="#/settings/users">Users</a> > Edit</h6>
+
+              <div class="row">
+                  <div class="col-md-8">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <fieldset class="form-group">
+                                  <label class="form-label semibold" for="firstname">First Name<span class="color-red">&nbsp;*</span></label>
+                                  <div class="input-group">
+                                        <div class="input-group-prepend ">
+                                            <span class="input-group-text btn btn-primary">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                            </span>
+                                        </div>
+                                      <input id="firstName" name="firstName" class="form-control" type="text" placeholder="First Name" data-validation="[NOTEMPTY]" ng-model="vm.user.firstName" required> 
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="col-md-6">
+                              <fieldset class="form-group">
+                                  <label class="form-label semibold" for="lastname">Last Name<span class="color-red">&nbsp;*</span></label>
+                                  <div class="input-group">
+                                        <div class="input-group-prepend">
+                                                <span class="input-group-text btn btn-primary">
+                                                    <span class="glyphicon glyphicon-user"></span>
+                                                </span>
+                                        </div>
+                                      <input id="lastname" class="form-control" name="lastname" type="text" placeholder="Last Name" data-validation="[NOTEMPTY]" ng-model="vm.user.lastName" required> 
+                                  </div>
+                              </fieldset>
+                          </div>
+                              
+                          <div class="col-md-6">
+                              <fieldset class="form-group">
+                                  <label class="form-label semibold" for="mobileno">Mobile No.<span class="color-red">&nbsp;*</span></label>
+                                  <div class="input-group">
+                                        <div class="input-group-prepend">
+                                                <span class="input-group-text btn btn-primary">
+                                                    <span class="glyphicon glyphicon-earphone"></span>
+                                                </span>
+                                            </div>
+                                      <input type="text" class="form-control" id="mobileno" name="mobileno" placeholder="Mobile No" data-validation="[NOTEMPTY]" ng-model="vm.user.mobileNo" required>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          
+                          <div class="col-md-6">
+                                  <fieldset class="form-group">
+                                      <label class="form-label semibold" for="organisation">Organisation</label>
+                                      <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                    <span class="input-group-text btn btn-primary">
+                                                        <span class="glyphicon glyphicon-home"></span>
+                                                    </span>
+                                                </div>
+                                          <input type="text" class="form-control" id="organisation" name="organisation" placeholder="Organisation" data-validation="[NOTEMPTY]" ng-model="vm.user.organisation">             
+                                      </div>
+                                  </fieldset>
+                          </div>
+                      </div>
+                      <!--.row--> 
+                      <div class="row">
+                            <div class="col-md-6">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="username">Email Address<span class="color-red">&nbsp;*</span></label>
+                                            <div class="input-group">
+                                                  <div class="input-group-prepend">
+                                                          <span class="input-group-text btn btn-primary">
+                                                              <span class="glyphicon glyphicon-envelope"></span>
+                                                          </span>
+                                                      </div>
+                                                <input id="email" class="form-control" name="email" type="text" placeholder="example@mail.com" data-validation="[EMAIL]" ng-model="vm.user.email" required>
+                                            </div>
+                                        </fieldset>
+                    
+                            </div>
+                            <div class="col-md-3">
+                                <fieldset class="form-group">
+                                    <label class="form-label semibold" for="role">Role</label>
+                                    <div class="input-group">
+                                          <div class="input-group-prepend">
+                                                  <span class="input-group-text btn btn-primary">
+                                                      <span class="glyphicon glyphicon-star"></span>
+                                                  </span>
+                                              </div>
+                                        <!-- <input type="text" class="form-control" id="role" name="role" placeholder="Role" data-validation="[NOTEMPTY]" required readonly> -->
+                                        <select id="role" name="role" class="form-control" placeholder="Role" ng-model="vm.user.role" required>
+                                                <option value="Administrator" >Administrator</option>   
+                                                <option value="Manager" >Manager</option>   
+                                                <option value="Standard User">Standard User</option>               
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>         
+                            <div class="col-md-3">
+                                <fieldset class="form-group">
+                                    <label class="form-label semibold" for="status">Status</label>
+                                    <div class="input-group">
+                                          <div class="input-group-prepend">
+                                                  <span class="input-group-text btn btn-primary">
+                                                      <span class="glyphicon glyphicon-flag"></span>
+                                                  </span>
+                                          </div>
+                                        <!-- <input type="text" class="form-control" id="role" name="role" placeholder="Role" data-validation="[NOTEMPTY]" required readonly> -->
+                                        <select id="status" name="status" class="form-control" placeholder="Status" ng-model="vm.user.status" required>                             
+                                                <option value="true" {{vm.user.status? 'selected' : ''}}>Active</option>   
+                                                <option value="false" {{vm.user.status? '' : 'selected'}}>Suspended</option>   
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>
+                    </div>
+                    <!--.row-->
+                  </div>
+                  <div class="col-md-4">
+                      <section class="box-typical profile-side-user">
+                          <div class="row">
+                              <div class="col-12">
+                                  <button type="button" class="avatar-preview avatar-preview-128">
+                                              <img id="profileImage" class="profileImage" ng-src="{{vm.user.profileImage}}" alt=""/>
+                                              <span class="update">
+                                                  <i class="font-icon font-icon-picture-double"></i>
+                                                  Upload Photo
+                                              </span>
+                                              <input id="profileImage" name="profileImage" class="form-control" accept="image/*" type="file" photo-file="vm.user.profileImage" onchange="angular.element(this).scope().vm.updatePhoto(event)">
+                                  </button>
+                              </div>
+                          </div>
+                          <div class="row text-right">
+                          &nbsp;
+                          </div>
+                      </section>
+                  </div>
+              </div>
+              <!-- <div class="row">
+                  <div class="col-md-12 text-right">
+                      <div class="form-group">
+                          <label class="form-label semibold" for="exampleInput">&nbsp;</label>  
+                          <a class="swal-btn-reset btn btn-success" onclick="window.history.back();"><i class=" fa fa-arrow-circle-left"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go Back&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>  
+                          <a class="swal-btn-reset btn btn-danger" href="#/settings/account/reset"><i class=" fa fa-lock"></i>&nbsp;&nbsp;Change Password</a>
+                          <button type="submit" formaction="#" class="swal-btn-update btn btn-primary" ng-click="vm.saveUser()"><i class=" fa fa-save"></i>&nbsp;&nbsp;&nbsp;Update Profile&nbsp;&nbsp;</button>
+                      </div>       
+                  </div>
+              </div> -->
+              <div class="row">
+                    <div class="col-md-6 text-right">
+                        &nbsp;
+                    </div>  
+                  <div class="col-md-2 text-right">
+                      <div class="form-group">
+                          <a class="btn btn-primary-success btn-block" href="#" onclick="window.history.back();"><i class=" fa fa-arrow-circle-left"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go Back&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>  
+                      </div>       
+                  </div>
+                  <div class="col-md-2 text-right">
+                        <div class="form-group">
+                            <a class="btn btn-primary-danger btn-block" href="#/settings/account/reset"><i class="fa fa-lock"></i>&nbsp;&nbsp;Reset Password&nbsp;&nbsp;</a>
+                        </div>       
+                    </div>
+                    <div class="col-md-2 text-right">
+                            <div class="form-group">
+                                <a class="btn btn-primary btn-block" formaction="#" href="#" ng-click="vm.updateUser()"><i class=" fa fa-save"></i>&nbsp;&nbsp;&nbsp;&nbsp;Update User&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            </div>       
+                    </div>
+          </div>
+          <!--.row--> 
+      </div>
+  </div>
+</form>
+
+
+  <!-- stylesheets for the page -->
+  <link rel="stylesheet" href="app-content/css/separate/pages/profile-2.min.css">
+  <link rel="stylesheet" href="app-content/css/lib/bootstrap-sweetalert/sweetalert.css">
+  <link rel="stylesheet" href="app-content/css/separate/vendor/sweet-alert-animations.min.css">
+  <link rel="stylesheet" href="app-content/css/separate/pages/login.min.css">
+  <link rel="stylesheet" type="text/css" href="app-content/css/lib/jquery-flex-label/jquery.flex.label.css"> <!-- Original -->

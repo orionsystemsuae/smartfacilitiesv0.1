@@ -1,0 +1,167 @@
+﻿<!--.page-content-->
+<form id="facilityForm" name="facilityForm" ng-submit="submitForm(facilityForm.$valid)" novalidate>
+    <div class="card">
+        <div class="card-body">   
+            <h6 class="with-border semibold"><a href="#/settings">Control Panel</a> > <a href="#/settings/facilities">Facilities</a> > Add</h6>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <fieldset class="form-group">
+                                    <label class="form-label semibold" for="firstname">Name<span class="color-red">&nbsp;*</span></label>
+                                    <div class="input-group">
+                                          <div class="input-group-prepend ">
+                                              <span class="input-group-text btn btn-primary">
+                                                  <span class="glyphicon glyphicon-user"></span>
+                                              </span>
+                                          </div>
+                                        <input id="firstName" name="firstName" class="form-control" type="text" placeholder="Facility Name" ng-model="vm.user.firstName" required> 
+                                        <!-- <div ng-show="facilityForm.firstName.$error.required && !facilityForm.firstName.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>First name must not be empty.</li></ul></div> -->
+                                  </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-4">
+                                <fieldset class="form-group">
+                                    <label class="form-label semibold" for="lastName">Abbrv. / Facility Code<span class="color-red">&nbsp;*</span></label>
+                                    <div class="input-group">
+                                          <div class="input-group-prepend">
+                                                  <span class="input-group-text btn btn-primary">
+                                                      <span class="glyphicon glyphicon-user"></span>
+                                                  </span>
+                                          </div>
+                                        <input id="lastName" class="form-control" name="lastName" type="text" placeholder="Abbrv." ng-model="vm.user.lastName" required> 
+                                        <!-- <div ng-show="facilityForm.lastName.$error.required && !facilityForm.lastName.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Last name must not be empty.</li></ul></div> -->
+                                      </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-4">
+                                    <fieldset class="form-group">
+                                        <label class="form-label semibold" for="status">Status</label>
+                                        <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                      <span class="input-group-text btn btn-primary">
+                                                          <span class="glyphicon glyphicon-flag"></span>
+                                                      </span>
+                                              </div>
+                                            <!-- <input type="text" class="form-control" id="role" name="role" placeholder="Role" data-validation="[NOTEMPTY]" required readonly> -->
+                                            <select id="status" name="status" class="form-control" placeholder="Status" ng-model="vm.user.status" required>                             
+                                                    <option value="true">Active</option>   
+                                                    <option value="false">Suspended</option>   
+                                            </select>
+                                            <!-- <div ng-show="facilityForm.status.$error.required && !facilityForm.status.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Please select account status.</li></ul></div> -->
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                
+                            <div class="col-md-12">
+                                <fieldset class="form-group">
+                                    <label class="form-label semibold" for="mobileNo">Description</label>
+                                    <div class="input-group">
+                                          <div class="input-group-prepend">
+                                                  <span class="input-group-text btn btn-primary">
+                                                      <span class="glyphicon glyphicon-earphone"></span>
+                                                  </span>
+                                              </div>
+                                        <input type="text" class="form-control" id="mobileNo" name="mobileNo" placeholder="Description" ng-model="vm.user.mobileNo" required>
+                                        <!-- <div ng-show="facilityForm.mobileNo.$error.required && !facilityForm.mobileNo.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Mobile No. must not be empty.</li></ul></div> -->
+                                        <!-- <p ng-show="facilityForm.mobileNo.$invalid && !facilityForm.mobileNo.$pristine" class="help-block">Field is required.</p> -->
+                                      </div>
+                                </fieldset>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                    <fieldset class="form-group">
+                                        <label class="form-label semibold" for="organisation">Organisation / Client</label>
+                                        <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                      <span class="input-group-text btn btn-primary">
+                                                          <span class="glyphicon glyphicon-home"></span>
+                                                      </span>
+                                                  </div>
+                                            <input type="text" class="form-control" id="organisation" name="organisation" placeholder="Organisation" data-validation="[NOTEMPTY]" ng-model="vm.user.organisation">             
+                                        </div>
+                                    </fieldset>
+                            </div>
+                            <div class="col-md-6">
+                                    <fieldset class="form-group">
+                                        <label class="form-label semibold" for="organisation">Site</label>
+                                        <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                      <span class="input-group-text btn btn-primary">
+                                                          <span class="glyphicon glyphicon-home"></span>
+                                                      </span>
+                                                  </div>
+                                            <input type="text" class="form-control" id="organisation" name="organisation" placeholder="Organisation / Client" data-validation="[NOTEMPTY]" ng-model="vm.user.organisation">             
+                                        </div>
+                                    </fieldset>
+                            </div>
+                        </div>
+                        <!--.row-->          
+                    </div>
+                    <div class="col-md-4">
+                        <section class="box-typical profile-side-user">
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="button" class="avatar-preview avatar-preview-128">
+                                                <img id="profileImage" class="profileImage" ng-src="{{vm.user.profileImage}}" alt=""/>
+                                                <span class="update">
+                                                    <i class="font-icon font-icon-picture-double"></i>
+                                                    Upload Photo
+                                                </span>
+                                                <input id="profileImage" name="profileImage" class="form-control" accept="image/*" type="file" photo-file="vm.user.profileImage" onchange="angular.element(this).scope().vm.updatePhoto(event)">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row text-right">
+                            &nbsp;
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="row">  
+                        <div class="col-md-8">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="role">Facility Type</label>
+                                <div class="input-group">
+                                      <div class="input-group-prepend">
+                                              <span class="input-group-text btn btn-primary">
+                                                  <span class="glyphicon glyphicon-star"></span>
+                                              </span>
+                                          </div>
+                                    <!-- <input type="text" class="form-control" id="role" name="role" placeholder="Role" data-validation="[NOTEMPTY]" required readonly> -->
+                                    <select id="role" name="role" class="form-control" placeholder="Role" ng-model="vm.user.role" required>
+                                            <option value="Administrator" >Administrator</option>   
+                                            <option value="Manager" >Manager</option>   
+                                            <option value="Standard User">Standard User</option>               
+                                    </select>
+                                    <!-- <div ng-show="facilityForm.role.$error.required && !facilityForm.role.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Please select a role.</li></ul></div> -->
+                                </div>
+                            </fieldset>
+                        </div>   
+                        <div class="col-md-2 text-right">
+                                <label class="form-label semibold">&nbsp</label>
+                                <div class="form-group">
+                                    <a class="btn btn-primary-success btn-block" href="#" onclick="window.history.back();"><i class=" fa fa-arrow-circle-left"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go Back&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>  
+                                </div>       
+                            </div>
+                              <div class="col-md-2 text-right">
+                                    <label class="form-label semibold">&nbsp</label>
+                                      <div class="form-group">
+                                              <button type="submit" ng-disabled="facilityForm.$invalid" class="btn btn-primary btn-block"  ng-click="vm.createUser()"><i class=" fa fa-save"></i>&nbsp;&nbsp;&nbsp;&nbsp;Save Facility&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                              <!-- ng-click="vm.createUser()" -->
+                                              <!-- ng-disabled="facilityForm.$invalid"  -->
+                                      </div>       
+                              </div>      
+                </div>
+        </div>
+    </div>
+  </form>
+  
+  
+    <!-- stylesheets for the page -->
+    <link rel="stylesheet" href="app-content/css/separate/pages/profile-2.min.css">
+    <link rel="stylesheet" href="app-content/css/lib/bootstrap-sweetalert/sweetalert.css">
+    <link rel="stylesheet" href="app-content/css/separate/vendor/sweet-alert-animations.min.css">
+    <link rel="stylesheet" href="app-content/css/separate/pages/login.min.css">
+    <link rel="stylesheet" type="text/css" href="app-content/css/lib/jquery-flex-label/jquery.flex.label.css"> <!-- Original -->
+  

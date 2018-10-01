@@ -1,0 +1,54 @@
+<li class="card clickable border-0 rounded d-flex align-items-stretch justify-content-between block" style="align-items: center; "
+    gridster-item="widget" ng-click="vm.selectWidget($index)" ondblclick="javascript:$('#widgetSingleValueModal').modal('show');">
+    <!-- header -->
+    <div ng-if="widget.GetSetting('headerVisible')" class="rounded-top {{widget.GetSetting('headerAlignment')}}
+    {{widget.GetSetting('headerFontStyle').bold?' font-weight-bold':''}} {{widget.GetSetting('headerFontStyle').underline?' font-underline':''}} {{widget.GetSetting('headerFontStyle').italic?' font-italic':''}}"
+        style="background-color: {{widget.GetSetting('headerBgColour')}}; border:{{widget.GetSetting('borderWidth')}}px {{widget.GetSetting('borderStyle')}} {{widget.GetSetting('borderColour')}};; color:{{widget.GetSetting('headerFontColour')}}; 
+    font-size: {{widget.GetSetting('headerFontSize')}}px; line-height: {{widget.GetSetting('headerFontSize') + 5}}px;">
+        {{widget.GetSetting('headerText')}}
+    </div>
+
+    <!-- body -->
+    <div class="card-body {{widget.GetSetting('headerVisible')? ' border-top-0' : ' rounded-top'}} {{widget.GetSetting('footerVisible')? ' border-bottom-0' : ' rounded-bottom'}} "
+        style="border:{{widget.GetSetting('borderWidth')}}px {{widget.GetSetting('borderStyle')}} {{widget.GetSetting('borderColour')}}; background-color: {{widget.GetSetting('bodyBgColour')}};">
+
+        <!-- tag value + icon -->
+        <div ng-if="widget.GetSetting('bodyValueVisible')" class="center text-center {{widget.GetSetting('bodyValueStyle').bold?' font-weight-bold':''}} {{widget.GetSetting('bodyValueStyle').underline?' font-underline':''}} {{widget.GetSetting('bodyValueStyle').italic?' font-italic':''}}"
+            title="" style="font-size: {{widget.GetSetting('bodyValueSize')}}px; color: {{widget.body.topic.fontColour}};">
+            {{ mqtt.subscribedTopics[widget.topic[0].address] == null ? "0000" : mqtt.subscribedTopics[widget.topic[0].address][0]}}
+            <sup ng-if="widget.GetSetting('bodyIconVisible')">
+                <i class="{{mqtt.subscribedTopics[widget.topic[0].address] == null ? 'fas fa-asterisk' : widget.topic[0].stateTable.findByValueOfObject('value', mqtt.subscribedTopics[widget.topic[0].address][0])[0].icon + ' ' + widget.topic[0].stateTable.findByValueOfObject('value', mqtt.subscribedTopics[widget.topic[0].address][0])[0].animation}} {{widget.GetSetting('bodyIconStyle').bold?' font-weight-bold':''}} {{widget.GetSetting('bodyIconStyle').underline?' font-underline':''}} {{widget.GetSetting('bodyIconStyle').italic?' font-italic':''}}"
+                    style="font-size: {{widget.GetSetting('bodyIconSize')}}px; color:{{mqtt.subscribedTopics[widget.topic[0].address] == null ? widget.topic[0].stateTable.findByValueOfObject('value', 'default')[0].iconColour : widget.topic[0].stateTable.findByValueOfObject('value', mqtt.subscribedTopics[widget.topic[0].address][0])[0].iconColour}};"></i>
+            </sup>
+        </div>
+
+        <!-- only icon -->
+        <div ng-if="!widget.GetSetting('bodyValueVisible') && widget.GetSetting('bodyIconVisible')" class="center text-center" title="">
+            <i class="{{mqtt.subscribedTopics[widget.topic[0].address] == null ? 'fas fa-asterisk' : widget.topic[0].stateTable.findByValueOfObject('value', mqtt.subscribedTopics[widget.topic[0].address][0])[0].icon + ' ' + widget.topic[0].stateTable.findByValueOfObject('value', mqtt.subscribedTopics[widget.topic[0].address][0])[0].animation}} {{widget.GetSetting('bodyIconStyle').bold?' font-weight-bold':''}} {{widget.GetSetting('bodyIconStyle').underline?' font-underline':''}} {{widget.GetSetting('bodyIconStyle').italic?' font-italic':''}}"
+                style="font-size:{{widget.GetSetting('bodyIconSize')}}px; color:{{mqtt.subscribedTopics[widget.topic[0].address] == null ? widget.topic[0].stateTable.findByValueOfObject('value', 'default')[0].iconColour : widget.topic[0].stateTable.findByValueOfObject('value', mqtt.subscribedTopics[widget.topic[0].address][0])[0].iconColour}};"></i>
+        </div>
+
+        <!-- body text -->
+        <p ng-if="widget.GetSetting('bodyTextVisible')" class="title card-text text-center {{widget.GetSetting('bodyTextStyle').bold?' font-weight-bold':''}} {{widget.GetSetting('bodyTextStyle').underline?' font-underline':''}} {{widget.GetSetting('bodyTextStyle').italic?' font-italic':''}}"
+            title="{{widget.GetSetting('bodyText')}}" style="font-size: {{widget.GetSetting('bodyTextSize')}}px; color:{{mqtt.subscribedTopics[widget.topic[0].address] == null ? widget.topic[0].stateTable.findByValueOfObject('value', 'default')[0].textColour : widget.topic[0].stateTable.findByValueOfObject('value', mqtt.subscribedTopics[widget.topic[0].address][0])[0].textColour}}">
+            <span>{{mqtt.subscribedTopics[widget.topic[0].address] == null ? 'WIDGET TEXT' : widget.topic[0].stateTable.findByValueOfObject('value',
+                mqtt.subscribedTopics[widget.topic[0].address][0])[0].text}}
+            </span>
+        </p>
+
+    </div>
+    <!-- footer -->
+    <div ng-if="widget.GetSetting('footerVisible')" class="rounded-bottom {{widget.GetSetting('footerAlignment')}}
+    {{widget.GetSetting('footerFontStyle').bold?' font-weight-bold':''}} {{widget.GetSetting('footerFontStyle').underline?' font-underline':''}} {{widget.GetSetting('footerFontStyle').italic?' font-italic':''}}"
+        style="background-color: {{widget.GetSetting('footerBgColour')}}; border:{{widget.GetSetting('borderWidth')}}px {{widget.GetSetting('borderStyle')}} {{widget.GetSetting('borderColour')}};; color:{{widget.GetSetting('footerFontColour')}}; 
+    font-size: {{widget.GetSetting('footerFontSize')}}px; line-height: {{widget.GetSetting('footerFontSize') + 5}}px;">
+        {{widget.GetSetting('footerText')}}
+    </div>
+
+    <!-- <div class="{{widget.GetSetting('footerAlignment')}} rounded-bottom  {{widget.GetSetting('footerFontStyle').bold?' font-weight-bold':''}} {{widget.GetSetting('footerFontStyle').underline?' font-underline':''}} {{widget.GetSetting('footerFontStyle').italic?' font-italic':''}}"
+        style="background-color: {{widget.GetSetting('footerBgColour')}};  border: {{widget.GetSetting('borderWidth')}}px {{widget.GetSetting('borderStyle')}} {{widget.GetSetting('borderColour')}}; color: {{widget.GetSetting('footerFontColour')}}; font-size: {{widget.GetSetting('footerFontSize')}}px; line-height: {{widget.GetSetting('footerFontSize') + 3}}px;"
+        ng-if="widget.GetSetting('footerVisible')" title='Last Updated: {{mqtt.subscribedTopics[widget.topic[0].address][1] | date:"MM/dd/yyyy @ h:mma"}}'>
+        <span>{{widget.topic[0].address == "Topic/Address" || widget.topic[0].address == "" ? "MM/dd/yyyy @ h:mma" : mqtt.subscribedTopics[widget.topic[0].address][1]
+            | date:"MM/dd/yyyy @ h:mma"}}</span>
+    </div> -->
+</li>

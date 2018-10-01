@@ -1,0 +1,67 @@
+<li class="card clickable border-0 rounded d-flex align-items-stretch justify-content-between block" style="align-items: center; overflow: hidden;"
+    gridster-item="widget" ng-click="vm.selectWidget($index)" ng-dblclick="vm.editWidget($index)">
+    <!-- header -->
+    <div ng-if="GetWidgetSetting(widget, 'headerVisible')" class="card-header p-0 rounded-top {{GetWidgetSetting(widget, 'headerAlignment')}}
+    {{GetWidgetSetting(widget, 'headerFontStyle').bold?' font-weight-bold':''}} {{GetWidgetSetting(widget, 'headerFontStyle').underline?' font-underline':''}} {{GetWidgetSetting(widget, 'headerFontStyle').italic?' font-italic':''}}"
+        style="background-color: {{GetWidgetSetting(widget, 'headerBgColour')}}; border:{{GetWidgetSetting(widget, 'borderWidth')}}px {{GetWidgetSetting(widget, 'borderStyle')}} {{GetWidgetSetting(widget, 'borderColour')}};; color:{{GetWidgetSetting(widget, 'headerFontColour')}}; 
+    font-size: {{GetWidgetSetting(widget, 'headerFontSize')}}px; line-height: {{GetWidgetSetting(widget, 'headerFontSize') + 5}}px;">
+        {{GetWidgetSetting(widget, 'headerText')}}
+    </div>
+    <div ng-if="vm.selectedWidgetIndex == $index" class="ribbon-block round relative text-center">
+        <div class="ribbon red left-top">
+            <i class="fa fa-check"></i>
+        </div>
+    </div>
+    <!-- body -->
+    <div class="card-body {{GetWidgetSetting(widget, 'headerVisible')? ' border-top-0' : ' rounded-top'}} {{GetWidgetSetting(widget, 'footerVisible')? ' border-bottom-0' : ' rounded-bottom'}} "
+        style="overflow-x: hidden; overflow-y: hidden;border:{{GetWidgetSetting(widget, 'borderWidth')}}px {{GetWidgetSetting(widget, 'borderStyle')}} {{GetWidgetSetting(widget, 'borderColour')}}; background-color: {{GetWidgetSetting(widget, 'bodyBgColour')}};">
+        <div class="row" ng-repeat="topic in widget.config.topics">
+            <!-- text column -->
+            <div ng-if="GetWidgetSetting(widget, 'bodyTextVisible')" class="col-md-{{12 / (GetWidgetSetting(widget, 'bodyTextVisible') + GetWidgetSetting(widget, 'bodyValueVisible') + GetWidgetSetting(widget, 'bodyIconVisible'))}} {{GetStateTextStyle(widget, $index)}}" style="{{GetStateTextColorSize(widget, $index)}}">
+                {{IsTopicValid(widget.config.topics[$index].address)? GetStateText(widget, $index) : GetStateText(widget, $index, 'default')}}
+            </div>
+            <!-- value column -->
+            <div ng-if="GetWidgetSetting(widget, 'bodyValueVisible')" class="col-md-{{12 / (GetWidgetSetting(widget, 'bodyTextVisible') + GetWidgetSetting(widget, 'bodyValueVisible') + GetWidgetSetting(widget, 'bodyIconVisible'))}} {{GetStateValueStyle(widget)}}" style="{{GetStateValueColorSize(widget, $index)}}">
+                {{GetTopicValue(topic.address)}}
+            </div>
+            <!-- icon column -->
+            <div class="col-md-{{12 / (GetWidgetSetting(widget, 'bodyTextVisible') + GetWidgetSetting(widget, 'bodyValueVisible') + GetWidgetSetting(widget, 'bodyIconVisible'))}}">
+                <i ng-if="GetWidgetSetting(widget, 'bodyIconVisible')" class="{{GetStateIconStyle(widget, $index)}}" style="{{GetStateIconColorSize(widget, $index)}}"></i>
+            </div>
+        </div>
+        <!-- tag value + icon -->
+        <!-- <div ng-switch="GetWidgetSetting(widget, 'iconVerticalAlignment')" ng-if="GetWidgetSetting(widget, 'bodyValueVisible')" class="center text-center {{GetStateValueStyle(widget)}}"
+            style="{{GetStateValueColorSize(widget, 0)}}">
+            {{GetTopicValue(widget.config.topics[selectedTopicIndex].address)}}
+            <sup ng-switch-when="1" ng-if="GetWidgetSetting(widget, 'bodyIconVisible')">
+                <i class="{{GetStateIcon(widget, 0);GetStateIconStyle(widget, 0);}}" style="{{GetStateIconColorSize(widget, 0)}}"></i>
+            </sup>
+            <sub ng-switch-when="2" ng-if="GetWidgetSetting(widget, 'bodyIconVisible')">
+                <i class="{{GetStateIcon(widget, 0);GetStateIconStyle(widget, 0);}}" style="{{GetStateIconColorSize(widget, 0)}}"></i>
+            </sub>
+            <i ng-switch-when="3" ng-if="GetWidgetSetting(widget, 'bodyIconVisible')" class="{{GetStateIconStyle(widget, 0)}}" style="{{GetStateIconColorSize(widget, 0)}}"></i>
+        </div> -->
+
+        <!-- only icon -->
+        <!-- <div ng-if="!GetWidgetSetting(widget, 'bodyValueVisible') && GetWidgetSetting(widget, 'bodyIconVisible')" class="center text-center">
+            <i class="{{GetStateIcon(widget, 0);GetStateIconStyle(widget, 0);}}" style="{{GetStateIconColorSize(widget, 0)}}"></i>
+        </div> -->
+
+        <!-- body text -->
+        <!-- <p ng-if="GetWidgetSetting(widget, 'bodyTextVisible')" class="title card-text text-center {{GetStateTextStyle(widget, 0)}}"
+            style="{{GetStateTextColorSize(widget, 0)}}">
+            {{IsTopicValid(widget.config.topics[selectedTopicIndex].address) ? GetStateText(widget, 0) : GetStateText(widget, 0, 'default')}}
+        </p> -->
+
+    </div>
+    <!-- footer -->
+    <div ng-switch="GetWidgetSetting(widget, 'footerContentType')" ng-if="GetWidgetSetting(widget, 'footerVisible')" class="card-footer p-0 rounded-bottom {{GetWidgetSetting(widget, 'footerAlignment')}}
+    {{GetWidgetSetting(widget, 'footerFontStyle').bold?' font-weight-bold':''}} {{GetWidgetSetting(widget, 'footerFontStyle').underline?' font-underline':''}} {{GetWidgetSetting(widget, 'footerFontStyle').italic?' font-italic':''}}"
+        style="background-color: {{GetWidgetSetting(widget, 'footerBgColour')}}; border:{{GetWidgetSetting(widget, 'borderWidth')}}px {{GetWidgetSetting(widget, 'borderStyle')}} {{GetWidgetSetting(widget, 'borderColour')}};; color:{{GetWidgetSetting(widget, 'footerFontColour')}}; 
+    font-size: {{GetWidgetSetting(widget, 'footerFontSize')}}px; line-height: {{GetWidgetSetting(widget, 'footerFontSize') + 5}}px;">
+        <span ng-switch-when="1">{{GetTopicTime(widget.config.topics[selectedTopicIndex].address) | date : 'MM/dd/yyyy @
+            HH:mm:ss'}}
+        </span>
+        <span ng-switch-when="2">{{GetWidgetSetting(widget, 'footerText')}}</span>
+    </div>
+</li>

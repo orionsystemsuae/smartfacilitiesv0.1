@@ -1,0 +1,53 @@
+﻿<%- include('partials/header') %>
+<link rel="stylesheet" href="./css/separate/pages/login.min.css">
+<script src="./js/lib/jquery/jquery.min.js"></script>
+<script src="./js/lib/hide-show-password/bootstrap-show-password.min.js"></script>   
+<script src="./js/lib/html5-form-validation/jquery.validation.min.js"></script>
+<script>
+		$(function() {
+			/* ==========================================================================
+			 Validation
+			 ========================================================================== */	
+
+			$('#form-reset').validate({
+				submit: {
+					settings: {
+						inputContainer: '.form-group',
+						errorListClass: 'form-error-text-block',
+						display: 'block',
+						insertion: 'postpend'
+					}
+				}
+			});
+
+			$('#form-signup_v2').validate({
+				submit: {
+					settings: {
+						inputContainer: '.form-group',
+						errorListClass: 'form-tooltip-error'
+					}
+				}
+			});
+		
+		});
+	</script>
+    <% if(locals.error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <div class="page-center">
+        <div class="page-center-in">
+            <div class="container-fluid sign-box">
+                <form id="form-reset" name="form-reset" method="POST" >
+                    <div class="sign-avatar no-photo"><span class="glyphicon glyphicon-lock"></span></div>
+                    <header class="sign-title">Reset Password</header>
+                    <div class="form-group">
+                            <input id="email" type="email" class="form-control" name="email" data-validation="[EMAIL]" placeholder="E-Mail"/>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Reset</button>
+                    <br/>
+                    <p class="sign-note">Already have an account? <a href="/login"><span class="label label-pill label-primary">Login</span></a></p>                  
+                </form>   
+            </div>
+        </div>
+    </div>
+<%- include('partials/footer') %>

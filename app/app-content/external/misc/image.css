@@ -1,0 +1,17 @@
+.img-circle {
+  width: 130px;
+  height: 130px;
+  border: 1px solid #ddd;
+  /* Gray border */
+  border-radius: 4px;
+  /* Rounded border */
+  padding: 3px;
+  /* Some padding */
+  border-radius: 50%;
+  object-fit: scale-down;
+  
+}
+
+.img-circle:hover {
+  box-shadow: 0 0 5px 5px #005cb8;
+}

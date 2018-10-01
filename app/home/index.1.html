@@ -1,0 +1,65 @@
+﻿<div class="btn-group btn-group-xs action-create pull-right w-100">
+    <button type="button" class="icp icp-dd btn btn-primary-outline rounded-0 dropdown-toggle" data-selected="fa-car" data-toggle="dropdown">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <button type="button" class="btn btn-primary rounded-0 iconpicker-component w-100">
+        <i class="fa fa-fw fa-heart"></i>
+    </button>
+    <div class="dropdown-menu"></div>
+</div>
+
+<script>
+    $(function () {
+        // Live binding of buttons
+        $(document).on('click', '.action-placement', function (e) {
+            $('.action-placement').removeClass('active');
+            $(this).addClass('active');
+            $('.icp-dd').data('iconpicker').updatePlacement($(this).text());
+            e.preventDefault();
+            return false;
+        });
+
+        $('.action-create').on('click', function () {
+            $('.icp-dd').iconpicker({
+                //title: 'Dropdown with picker',
+                //component:'.btn > i'
+                placement: 'auto', // WIP (has some issues with auto and CSS). auto, top, bottom, left, right
+                collision: true, // If true, the popover will be repositioned to another position when collapses with the window borders
+                animation: true,
+                icons: [{
+                    title: "fab fa-500px",
+                    searchTerms: []
+                }],
+                // selectedCustomClass: 'label label-success',
+                mustAccept: true,
+                placement: 'auto',
+                showFooter: false,
+                // note that this is ignored cause we have an accept button:
+                hideOnSelect: true,
+                templates: {
+                    footer: '<div class="popover-footer">' +
+                        '<div style="text-align:left; font-size:12px;">Placements: \n\
+                            <a href="#" class=" action-placement">inline</a>\n\
+                            <a href="#" class=" action-placement">topLeftCorner</a>\n\
+                            <a href="#" class=" action-placement">topLeft</a>\n\
+                            <a href="#" class=" action-placement">top</a>\n\
+                            <a href="#" class=" action-placement">topRight</a>\n\
+                            <a href="#" class=" action-placement">topRightCorner</a>\n\
+                            <a href="#" class=" action-placement">rightTop</a>\n\
+                            <a href="#" class=" action-placement">right</a>\n\
+                            <a href="#" class=" action-placement">rightBottom</a>\n\
+                            <a href="#" class=" action-placement">bottomRightCorner</a>\n\
+                            <a href="#" class=" active action-placement">bottomRight</a>\n\
+                            <a href="#" class=" action-placement">bottom</a>\n\
+                            <a href="#" class=" action-placement">bottomLeft</a>\n\
+                            <a href="#" class=" action-placement">bottomLeftCorner</a>\n\
+                            <a href="#" class=" action-placement">leftBottom</a>\n\
+                            <a href="#" class=" action-placement">left</a>\n\
+                            <a href="#" class=" action-placement">leftTop</a>\n\
+                            </div><hr></div>'
+                }
+            });
+        });
+    });
+</script>

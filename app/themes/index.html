@@ -1,0 +1,43 @@
+﻿<link rel="stylesheet" href="app-content/css/separate/pages/widgets.min.css">
+<div class="card">
+        <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+        <div class="card-body">
+            <h6 class="with-border semibold">Control Panel > Themes  : {{vm.loggedInUser.theme}}</h6> 
+        </div>  
+        <div class="row">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="col-6 col-sm-4 col-md-3">
+                    <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';">
+                        <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                            <i class="fa fa-paint-brush faa-tada faa-slow"></i><i class="fas fa-plus-square faa-burst animated"></i>                        
+                        </div>
+                        <button class="btn btn-primary btn-block" ng-click="vm.updateUserTheme('theme-side-litmus-blue')">
+                            Orion Blue - Dark Theme
+                        </button>
+                    </section>
+                    <!--.widget-simple-sm-->
+            </div>
+            <div class="col-6 col-sm-4 col-md-3">
+                    <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';">
+                        <div class="widget-simple-sm-icon faa-parent animated-hover faa-slow">
+                            <i class="fa fa-paint-brush faa-tada faa-slow"></i><i class="far fa-plus-square faa-burst animated"></i>                        
+                        </div>
+                        <button class="btn btn-primary btn-block" ng-click="vm.updateUserTheme('theme-picton-blue')">
+                            Orion Blue - Light Theme
+                        </button>
+                    </section>
+                    <!--.widget-simple-sm-->
+            </div>
+            
+            <div class="col-6 col-sm-4 col-md-3">
+                <section class="widget widget-simple-sm color-blue" onmouseover="this.style.cursor='pointer';" onclick="window.history.back();" >
+                    <div class="widget-simple-sm-icon">
+                        <i class="fa fa-arrow-circle-left color-green faa-horizontal faa-fast animated"></i>      
+                    </div>
+                    <div class="btn btn-primary-success btn-block">
+                        Go Back
+                    </div>
+                </section>
+                    <!--.widget-simple-sm-->
+            </div>
+        </div>
+</div>

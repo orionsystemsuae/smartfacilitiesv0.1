@@ -1,0 +1,28 @@
+﻿  <!-- stylesheets for the page -->
+  <link rel="stylesheet" href="app-content/css/separate/pages/profile-2.min.css">
+  <link rel="stylesheet" href="app-content/css/lib/bootstrap-sweetalert/sweetalert.css">
+  <link rel="stylesheet" href="app-content/css/separate/vendor/sweet-alert-animations.min.css">
+  <link rel="stylesheet" href="app-content/css/separate/pages/login.min.css">
+
+ <!--.page-content-->
+ <div class="card">
+    <div class="card-body">
+                <h6 class="with-border semibold">Control Panel > {{vm.loggedInUser.firstName}}'s Profile > Reset Password</h6>
+                <form name="resetForm" class="card-body sign-box reset-password-box">
+                    <div class="sign-avatar">
+                            <div class="sign-avatar no-photo"><span class="glyphicon glyphicon-lock"></span></div>
+                    </div>
+                    <header class="sign-title">Change Password</header>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="New Password" ng-required="true"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Confirm New Password" ng-required="true"/>
+                    </div>                 
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-default" onclick="window.history.back();">Cancel</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="!resetForm.$valid">Submit</button>
+                    </div>
+                </form>
+            </div>  
+        </div>  

@@ -1,0 +1,185 @@
+﻿<!-- <style>
+    .st-sort-ascent:before {
+        content: '\25B2';
+    }
+
+    .st-sort-descent:before {
+        content: '\25BC';
+    }
+
+    .btn-group {
+        display: flex;
+    }
+</style> -->
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    /* th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 0px solid #ddd;
+    } */
+
+    .st-selected {
+        background: #f5f5f5 !important;
+        color: black !important;
+        font-weight: bold;
+    }
+</style>
+<form id="form-user" name="form-user" method="post">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <h6 class="with-border semibold d-flex p-2">
+                    <a ui-sref="dashboards_view">Dashboards</a>&nbsp;> View (Shared)
+                </h6>
+
+                <div class="card-body">
+                    <div class="text-center semibold color-blue" ng-if="vm.loadingSharedDashboards">
+                        <br>
+                        <br> Loading data...
+                        <br>
+                        <br>
+                        <i class="fa fa-spinner fa-spin fa-4x"></i>
+                        <br>
+                    </div>
+                    <table ng-if="!vm.loadingSharedDashboards" st-table="sharedDashboards" st-safe-src="vm.dashboardsShared" class="table table-sm">
+                        <thead>
+                            <tr style="background-color: #f5f5f5;">
+                                <td colspan="3" class="align-top">
+                                    <div class="float-left align-top semibold" st-template="pagination.html" st-pagination="" st-items-by-page="vm.itemsSharedPerPage"></div>
+                                    <div class="float-right">
+                                        <select ng-model="vm.itemsSharedPerPage" class="form-control form-control-sm" title="Items Per Page">
+                                            <option ng-value=5>5</option>
+                                            <option ng-value=7>7</option>
+                                            <option ng-value=10>10</option>
+                                            <option ng-value=9999999>All</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th st-sort="name">Name</th>
+                                <th st-sort="description">Description</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="vm.dashboardsShared.length == 0">
+                                <td colspan="3" class="semibold text-center">No shared dashboards found.</td>
+                            </tr>
+                            <tr ng-repeat="row in sharedDashboards" ng-click="vm.setClickedRow($index)">
+                                <td ng-attr-title="{{row.name.replace(' ', '&nbsp;')}}">{{row.name.replace(' ', '&nbsp;')}}</td>
+                                <td><div style="width: 10em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" ng-attr-title="{{row.description.replace(' ', '&nbsp;')}}">{{row.description.replace(' ', '&nbsp;')}}</div></td>
+                                <td>
+                                    <a href="javascript:void(0);" ng-if="row.homepage" ng-confirm-click="Are you sure to unpin this from homepage  ?" confirmed-click="vm.pinDashboard({{row}}, false);"
+                                        title="Unpin Dashboard" class="btn btn-sm btn-primary-success no-animate">
+                                        &nbsp;
+                                        <i class="fa fa-paperclip"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" ng-if="!row.homepage" ng-confirm-click="Are you sure to pin this to homepage ?" confirmed-click="vm.pinDashboard({{row}}, true);"
+                                        title="Pin Dashboard" class="btn btn-sm btn-primary-success no-animate">
+                                        <i class="fa fa-paperclip"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <h6 class="with-border semibold d-flex p-2">
+                    <a ui-sref="dashboards_view">Dashboards</a>&nbsp;> View (Private)
+                </h6>
+                <div class="card-body">
+                    <div class="text-center semibold color-blue" ng-if="vm.loadingPrivateDashboards">
+                        <br>
+                        <br> Loading data...
+                        <br>
+                        <br>
+                       <i class="fa fa-spinner fa-spin fa-4x"></i>
+                        <br>
+                    </div>
+                    <table ng-if="!vm.loadingPrivateDashboards" st-table="privateDashboards" st-safe-src="vm.dashboardsPrivate" class="table table-sm">
+                        <thead>
+                            <tr style="background-color: #f5f5f5;">
+                                <td colspan="3" class="align-top">
+                                    <div class="float-left align-top semibold" st-template="pagination.html" st-pagination="" st-items-by-page="vm.itemsPrivatePerPage"></div>
+                                    <div class="float-right d-flex">
+                                        <a class="float-right btn btn-sm btn-primary" ui-sref="dashboards_add({_id:null})">
+                                            <i class="fa fa-th"></i>&nbsp;
+                                            <sup>
+                                                <i class="fa fa-plus"></i>
+                                            </sup>&nbsp;&nbsp;Add&nbsp;</a>
+                                        &nbsp;
+                                        <select ng-model="vm.itemsPrivatePerPage" class="form-control form-control-sm" title="Items Per Page">
+                                            <option ng-value=5>5</option>
+                                            <option ng-value=7>7</option>
+                                            <option ng-value=10>10</option>
+                                            <option ng-value=9999999>All</option>
+                                        </select>
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th st-sort="name">Name</th>
+                                <th st-sort="description">Description</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="vm.dashboardsPrivate.length == 0">
+                                <td colspan="3" class="semibold text-center">No private dashboards found.</td>
+                            </tr>
+                            <tr ng-repeat="row in privateDashboards" ng-click="vm.setClickedRow($index)">
+                                <td ng-attr-title="{{row.name.replace(' ', '&nbsp;')}}">{{row.name.replace(' ', '&nbsp;')}}</td>
+                                <td><div style="width: 10em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" ng-attr-title="{{row.description.replace(' ', '&nbsp;')}}">{{row.description.replace(' ', '&nbsp;')}}</div></td>
+                                <td>
+                                    <div class="btn-group float-right" role="group" aria-label="...">
+                                        <a ui-sref="dashboards_edit({_id:row._id})" title="Edit" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-pencil-alt"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" ng-if="row.homepage" ng-confirm-click="Are you sure to unpin this from homepage  ?" confirmed-click="vm.pinDashboard({{row}}, false);"
+                                            title="Unpin To Homepage" class="btn btn-sm btn-primary-success no-animate">
+                                            <i class="fas fa-clipboard-check"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" ng-if="!row.homepage" ng-confirm-click="Are you sure to pin this to homepage ?" confirmed-click="vm.pinDashboard({{row}}, true);"
+                                            title="Pin To Homepage" class="btn btn-sm btn-primary-success no-animate">
+                                            <i class="fas fa-clipboard"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" ng-confirm-click="Are you sure to delete this record ?" confirmed-click="vm.deleteDashboard({{row}});"
+                                            title="Delete" class="btn btn-sm btn-primary-danger">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--.row-->
+    </div>
+
+    <!--.row-->
+</form>
+
+<!-- stylesheets for the page -->
+
+<!-- scripts for the page -->
+<script>
+
+</script>

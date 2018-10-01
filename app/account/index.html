@@ -1,0 +1,198 @@
+﻿<form id="form-user" name="form-user" method="post">
+    <div class="card">
+        <div class="card-body">
+            <h6 class="with-border semibold">Control Panel > {{vm.loggedInUser.firstName}}'s Profile</h6>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label semibold" for="name">Avatar</label>
+                    <section class="box-typical with-border">
+                        <div class="row">
+                            <div class="col-md-12 center-parent" style="width:100%; height:162px;">
+                                <img ng-if="vm.loggedInUser.profileImage" class="img-circle center-child img-fluid img-thumbnail" height="120" ng-src="{{vm.loggedInUser.profileImage}}" />
+                                <div ng-if="!vm.loggedInUser.profileImage">
+                                    <span class="fa-stack fa-4x center-child" title="Avatar not set.">
+                                        <i class="fa fa-image fa-stack-1x color-blue"></i>
+                                        <i class="fa fa-ban fa-stack-2x color-red"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="btn btn-primary btn-block" style="border-top-left-radius:0;border-top-right-radius:0;">
+                                    <input style="display: none;" id="html" accept="image/*" type="file" onchange="angular.element(this).scope().vm.updatePhoto(event)"> Update
+                                    Avatar
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="firstname">First Name<span class="color-red">&nbsp;*</span></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend ">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </span>
+                                    </div>
+                                    <input id="firstName" name="firstName" class="form-control" type="text" placeholder="First Name" data-validation="[NOTEMPTY]" ng-model="vm.loggedInUser.firstName" required>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="lastname">Last Name<span class="color-red">&nbsp;*</span></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </span>
+                                    </div>
+                                    <input id="lastname" class="form-control" name="lastname" type="text" placeholder="Last Name" data-validation="[NOTEMPTY]" ng-model="vm.loggedInUser.lastName" required>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="mobileno">Mobile No.<span class="color-red">&nbsp;*</span></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="glyphicon glyphicon-earphone"></span>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control" id="mobileno" name="mobileno" placeholder="Mobile No" data-validation="[NOTEMPTY]" ng-model="vm.loggedInUser.mobileNo" required>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="organisation">Organisation</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="glyphicon glyphicon-home"></span>
+                                        </span>
+                                    </div>
+                                    <!-- <input type="text" class="form-control" id="organisation" name="organisation" placeholder="Organisation" data-validation="[NOTEMPTY]" ng-model="vm.loggedInUser.organisation" readonly>              -->
+                                    <select disabled id="organisation" name="organisation" class="form-control" placeholder="Organisation" data-validation="[NOTEMPTY]">
+                                        <option ng-repeat="x in vm.clients" value="{{ x._id }}" ng-selected="x._id == vm.loggedInUser.organisationId">{{x.name}}</option>
+                                    </select>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!--.row-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="role">Role</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="glyphicon glyphicon-star"></span>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control" id="role" name="role" placeholder="Role" data-validation="[NOTEMPTY]" ng-model="vm.loggedInUser.role" required readonly>
+                                    <!-- <select id="role" name="role" class="form-control" readonly>
+                                                <option value="Administrator" >Administrator</option>   
+                                                <option value="Manager" >Manager</option>   
+                                                <option value="Standard User" >Standard User</option>               
+                                        </select> -->
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="status">Status</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="glyphicon glyphicon-flag"></span>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control" id="status" name="status" placeholder="Status" data-validation="[NOTEMPTY]" value="{{vm.loggedInUser.status == true ? 'Active' : 'Suspended'}}" required readonly>
+                                    <!-- <select id="status" name="status" class="form-control" placeholder="Status" readonly>                             
+                                                <option value="1" selected>Active</option>   
+                                                <option value="2" selected>Suspended</option>   
+                                                <option value="3" selected>Deleted</option>   
+                                                <option value="4" selected>Pending</option>   
+                                        </select> -->
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!--.row-->
+                </div>
+            </div>
+            <div>
+                <!-- <div class="hidden-lg-down">col-lg</div>  -->
+                <!-- <div class="visible-md hidden-xs hidden-sm hidden-lg">col-md</div> 
+                    <div class="visible-sm hidden-xs hidden-md hidden-lg">col-sm</div>  -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <fieldset class="form-group">
+                        <label class="form-label semibold" for="username">Email Address<span class="color-red">&nbsp;*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text btn btn-primary">
+                                    <span class="glyphicon glyphicon-envelope"></span>
+                                </span>
+                            </div>
+                            <input id="email" class="form-control" name="email" type="text" placeholder="example@mail.com" data-validation="[EMAIL]" ng-model="vm.loggedInUser.email" required readonly>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <!--.row-->
+
+            <div class="row">
+                <div class="col-md-3">
+                    &nbsp;
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group">
+                        <a class="btn btn-primary-success btn-block text-center" href="#/settings/account/reset"><i class="fas fa-lock float-left p-1"></i>
+                            <div style='text-align:center;'>Reset Password</div>
+                        </a>
+                    </div>
+                    <!-- <div class="form-group">
+                        <a class="btn btn-primary-danger btn-block" href="#/settings/account/reset"><i class="fa fa-lock"></i>&nbsp;&nbsp;Reset
+                            Password&nbsp;&nbsp;
+                        </a>
+                    </div> -->
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group">
+                        <a class="btn btn-primary btn-block" formaction="#" href="#" ng-click="vm.updateUser()"><i class="fas fa-save float-left p-1"></i>
+                            <div style='text-align:center;'>Update Profile</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <a class="btn btn-primary-success btn-block text-center" href="#" onclick="window.history.back();"><i class=" fa fa-arrow-circle-left float-left p-1"></i>
+                            <div style='text-align:center;'>Go Back</div>
+                        </a>
+                    </div>
+                    <!-- <div class="btn btn-primary-success btn-block float-right" onclick="window.history.back();">
+                                Go Back
+                            <i class="fas fa-arrow-circle-left float-left p-1"></i>                 
+                        </div> -->
+
+                </div>
+            </div>
+            <!--.row-->
+        </div>
+    </div>
+</form>
+
+
+<!-- stylesheets for the page -->
+<link rel="stylesheet" href="app-content/css/separate/pages/profile-2.min.css">

@@ -1,0 +1,41 @@
+<!-- <div element-draggable class="card center-parrent" style="overflow:auto;">
+	<img class="card-body center-child" src="https://i.pinimg.com/originals/e2/1c/b2/e21cb25fdd5bb26e5a1fef18c72cdab3.jpg" >
+</div> -->
+
+<!-- <div class="card w-100" style="height:80vh;">
+	<div class="card-header">Header</div>
+	<div class="card-body">
+		<img class="border" style="position:relative;"  src="https://i.pinimg.com/originals/e2/1c/b2/e21cb25fdd5bb26e5a1fef18c72cdab3.jpg">
+		<span class="fas fa-lightbulb fa-2x" style="position:absolute;" element-draggable style="z-index:10000; color:red;"></span>
+	</div> -->
+<!-- <div class="card-footer p-1">Footer</div> -->
+<!-- </div> -->
+
+
+<!-- <div class="card-body center-parrent">
+		<div class="center-child">
+			<div class="grandparent">
+				<br><br>
+				<div class="parent" style="overflow-x:hidden;overflow-y:hidden">
+					<img ng-src="{{ngModel.backgroundImage}}">
+
+					<div ng-repeat="object in ngModel.objects" class="child" x="{{object.posX}}" y="{{object.posY}}" element-draggable>
+						<i class="fas fa-lightbulb fa-2x border p-1"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+
+
+<div class="no-animate" style="background-repeat:no-repeat;background-image: url({{ngModel.backgroundImage.resized.dataURL}});  height: 480px; width: 640px">
+	<div ng-repeat="object in ngModel.objects" class="child no-animate" x="object.posX" y="object.posY" ondblclick="$('#modalSettings').modal('show')"
+	 ng-click="ngModel.selectedObjectIndex = $index" element-draggable>
+		<i style="box-shadow: 0 0 3px 3px {{object.topic.stateTable[1].fillColor}}; color:{{object.topic.stateTable[1].color}}; {{object.topic.stateTable[1].fill? 'box-shadow: 0 0 6px 6px ' + ngModel.selectedObjectIndex == $index ? 'red' : object.topic.stateTable[1].fillColor + ';' : ''}}; background-color:{{object.topic.stateTable[1].fill? object.topic.stateTable[1].fillColor : ''}}; border-radius: 50%; font-size:{{(object.settings | filter : {'key':'size'})[0].value }}px;" title="Position:{{object.posX + ':' + object.posY}}" ng-if="object.topic.stateTable.length > 1 && subscribedTopics[object.topic.address][0] == object.topic.stateTable[1].value" ng-class="ngModel.selectedObjectIndex == $index? object.topic.stateTable[1].icon + (object.topic.stateTable[1].animationRepeat? ' animated infinite ' : ' animated ') + object.topic.stateTable[1].animation + ' hmiIconSelected hmiIcon no-animate p-1' : object.topic.stateTable[1].icon + (object.topic.stateTable[1].animationRepeat? ' animated infinite ' : ' animated ') + object.topic.stateTable[1].animation + ' hmiIcon no-animate p-1'"></i>
+		<i style="box-shadow: 0 0 3px 3px {{object.topic.stateTable[2].fillColor}}; color:{{object.topic.stateTable[2].color}}; {{object.topic.stateTable[2].fill? 'box-shadow: 0 0 6px 6px ' + ngModel.selectedObjectIndex == $index ? 'red' : object.topic.stateTable[2].fillColor + ';' : ''}}; background-color:{{object.topic.stateTable[2].fill? object.topic.stateTable[2].fillColor : ''}}; border-radius: 50%; font-size:{{(object.settings | filter : {'key':'size'})[0].value }}px;" title="Position:{{object.posX + ':' + object.posY}}" ng-else-if="object.topic.stateTable.length > 2 && subscribedTopics[object.topic.address][0] == object.topic.stateTable[2].value" ng-class="ngModel.selectedObjectIndex == $index? object.topic.stateTable[2].icon + (object.topic.stateTable[2].animationRepeat? ' animated infinite ' : ' animated ') + object.topic.stateTable[2].animation + ' hmiIconSelected hmiIcon no-animate p-1' : object.topic.stateTable[2].icon + (object.topic.stateTable[2].animationRepeat? ' animated infinite ' : ' animated ') + object.topic.stateTable[2].animation + ' hmiIcon no-animate p-1'"></i>
+		<i style="box-shadow: 0 0 3px 3px {{object.topic.stateTable[3].fillColor}}; color:{{object.topic.stateTable[3].color}}; {{object.topic.stateTable[3].fill? 'box-shadow: 0 0 6px 6px ' + ngModel.selectedObjectIndex == $index ? 'red' : object.topic.stateTable[3].fillColor + ';' : ''}}; background-color:{{object.topic.stateTable[3].fill? object.topic.stateTable[3].fillColor : ''}}; border-radius: 50%; font-size:{{(object.settings | filter : {'key':'size'})[0].value }}px;" title="Position:{{object.posX + ':' + object.posY}}" ng-else-if="object.topic.stateTable.length > 3 && subscribedTopics[object.topic.address][0] == object.topic.stateTable[3].value" ng-class="ngModel.selectedObjectIndex == $index? object.topic.stateTable[3].icon + (object.topic.stateTable[3].animationRepeat? ' animated infinite ' : ' animated ') + object.topic.stateTable[3].animation + ' hmiIconSelected hmiIcon no-animate p-1' : object.topic.stateTable[3].icon + (object.topic.stateTable[3].animationRepeat? ' animated infinite ' : ' animated ') + object.topic.stateTable[3].animation + ' hmiIcon no-animate p-1'"></i>
+		<i style="box-shadow: 0 0 3px 3px {{object.topic.stateTable[4].fillColor}}; color:{{object.topic.stateTable[4].color}}; {{object.topic.stateTable[4].fill? 'box-shadow: 0 0 6px 6px ' + ngModel.selectedObjectIndex == $index ? 'red' : object.topic.stateTable[4].fillColor + ';' : ''}}; background-color:{{object.topic.stateTable[4].fill? object.topic.stateTable[4].fillColor : ''}}; border-radius: 50%; font-size:{{(object.settings | filter : {'key':'size'})[0].value }}px;" title="Position:{{object.posX + ':' + object.posY}}" ng-else-if="object.topic.stateTable.length > 4 && subscribedTopics[object.topic.address][0] == object.topic.stateTable[4].value" ng-class="ngModel.selectedObjectIndex == $index? object.topic.stateTable[4].icon + (object.topic.stateTable[4].animationRepeat? ' animated infinite ' : ' animated ') + object.topic.stateTable[4].animation + ' hmiIconSelected hmiIcon no-animate p-1' : object.topic.stateTable[4].icon + (object.topic.stateTable[4].animationRepeat? ' animated infinite ' : ' animated ') + object.topic.stateTable[4].animation + ' hmiIcon no-animate p-1'"></i>
+		<i style="box-shadow: 0 0 3px 3px {{object.topic.stateTable[0].fillColor}}; color:{{object.topic.stateTable[0].color}}; {{object.topic.stateTable[0].fill? 'box-shadow: 0 0 6px 6px ' + ngModel.selectedObjectIndex == $index ? 'red' : object.topic.stateTable[0].fillColor + ';' : ''}}; background-color:{{object.topic.stateTable[0].fill? object.topic.stateTable[0].fillColor : ''}}; border-radius: 50%; font-size:{{(object.settings | filter : {'key':'size'})[0].value }}px;" title="Position:{{object.posX + ':' + object.posY}}" ng-else="object.topic.stateTable.length > 0" ng-class="ngModel.selectedObjectIndex == $index? object.topic.stateTable[0].icon + (object.topic.stateTable[0].animationRepeat? ' animated infinite ' : ' animated ') + object.topic.stateTable[0].animation + ' hmiIconSelected no-animate hmiIcon p-1' : object.topic.stateTable[0].icon + (object.topic.stateTable[0].animationRepeat? ' animated infinite ' : ' animated ') + object.topic.stateTable[0].animation + ' hmiIcon no-animate p-1'"></i>
+	</div>
+</div>

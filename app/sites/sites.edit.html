@@ -1,0 +1,203 @@
+﻿<!--.page-content-->
+<form id="siteForm" name="siteForm" ng-submit="submitForm(siteForm.$valid)" novalidate>
+        <div class="card">
+            <div class="card-body">   
+                <h6 ng-if="vm.loggedInUser.role != 'Platform Admin.' && vm.loggedInUser.role != 'Site Admin.'" class="with-border semibold"><a href="#/settings">Control Panel</a> > <a href="#/settings/sites">Sites</a> > View</h6>
+                <h6 ng-if="vm.loggedInUser.role == 'Platform Admin.' || vm.loggedInUser.role == 'Site Admin.'" class="with-border semibold"><a href="#/settings">Control Panel</a> > <a href="#/settings/sites">Sites</a> > Edit</h6>  
+                <div class="row">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <fieldset class="form-group">
+                                        <label class="form-label semibold" for="name">Name<span class="color-red">&nbsp;*</span></label>
+                                        <div class="input-group">
+                                              <div class="input-group-prepend ">
+                                                  <span class="input-group-text btn btn-primary">
+                                                      <span class="fa fa-map-pin"></span>
+                                                  </span>
+                                              </div>
+                                            <input ng-readonly="vm.loggedInUser.role != 'Platform Admin.' && vm.loggedInUser.role != 'Site Admin.'" id="name" name="name" class="form-control" type="text" placeholder="Site Name" ng-model="vm.site.name" required> 
+                                            <!-- <div ng-show="siteForm.firstName.$error.required && !siteForm.firstName.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>First name must not be empty.</li></ul></div> -->
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-4">
+                                    <fieldset class="form-group">
+                                        <label class="form-label semibold" for="abbrv">Abbrv. / Site Code<span class="color-red">&nbsp;*</span></label>
+                                        <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                      <span class="input-group-text btn btn-primary">
+                                                          <span class="fa fa-window-minimize"></span>
+                                                      </span>
+                                              </div>
+                                            <input ng-readonly="vm.loggedInUser.role != 'Platform Admin.' && vm.loggedInUser.role != 'Site Admin.'" id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.site.abbrv" required> 
+                                            <!-- <div ng-show="siteForm.lastName.$error.required && !siteForm.lastName.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Last name must not be empty.</li></ul></div> -->
+                                          </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="status">Status</label>
+                                            <div class="input-group">
+                                                  <div class="input-group-prepend">
+                                                          <span class="input-group-text btn btn-primary">
+                                                              <span class="glyphicon glyphicon-flag"></span>
+                                                          </span>
+                                                  </div>
+                                                <!-- <input type="text" class="form-control" id="role" name="role" placeholder="Role" data-validation="[NOTEMPTY]" required readonly> -->
+                                                <select id="status" ng-disabled="vm.loggedInUser.role != 'Platform Admin.' && vm.loggedInUser.role != 'Site Admin.'" name="status" class="form-control" placeholder="Status" ng-model="vm.site.status" required>                             
+                                                        <option value="true">Active</option>   
+                                                        <option value="false">Suspended</option>   
+                                                </select>
+                                                <!-- <div ng-show="siteForm.status.$error.required && !siteForm.status.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Please select account status.</li></ul></div> -->
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    
+                                <div class="col-md-12">
+                                    <fieldset class="form-group">
+                                        <label class="form-label semibold" for="description">Description</label>
+                                        <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                      <span class="input-group-text btn btn-primary">
+                                                          <span class="fa fa-book"></span>
+                                                      </span>
+                                                  </div>
+                                            <input ng-readonly="vm.loggedInUser.role != 'Platform Admin.' && vm.loggedInUser.role != 'Site Admin.'" type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.site.description">
+                                            <!-- <div ng-show="siteForm.mobileNo.$error.required && !siteForm.mobileNo.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Mobile No. must not be empty.</li></ul></div> -->
+                                            <!-- <p ng-show="siteForm.mobileNo.$invalid && !siteForm.mobileNo.$pristine" class="help-block">Field is required.</p> -->
+                                          </div>
+                                    </fieldset>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="organisation">Organisation / Client</label>
+                                            <div class="input-group">
+                                                  <div class="input-group-prepend">
+                                                          <span class="input-group-text btn btn-primary">
+                                                              <span class="glyphicon glyphicon-home"></span>
+                                                          </span>
+                                                      </div>
+                                                <!-- <input type="text" class="form-control" id="organisation" name="organisation" placeholder="Organisation" data-validation="[NOTEMPTY]" ng-model="vm.site.organisation.name" readonly required>              -->
+                                                <select ng-if="vm.loggedInUser.role != 'Platform Admin.'" disabled  id="organisation" name="organisation" class="form-control" placeholder="Organisation" data-validation="[NOTEMPTY]" required>                             
+                                                    <option ng-repeat="x in vm.clients" value="{{ x._id }}" ng-selected="x._id == vm.loggedInUser.organisationId">{{x.name}}</option>  
+                                                  </select> 
+    
+                                                  <select ng-if="vm.loggedInUser.role == 'Platform Admin.'" id="organisation" name="organisation" class="form-control" placeholder="Organisation" data-validation="[NOTEMPTY]" ng-model="vm.site.organisationId" required>                             
+                                                    <option ng-repeat="x in vm.clients" value="{{ x._id }}">{{x.name}}</option>  
+                                                  </select>
+                                            </div>
+                                        </fieldset>
+                                </div>
+                                <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="latitude">GPS Cordinates - Latitude</label>
+                                            <div class="input-group">
+                                                  <div class="input-group-prepend">
+                                                          <span class="input-group-text btn btn-primary">
+                                                              <span class="fa fa-map-marker-alt"></span>
+                                                          </span>
+                                                      </div>
+                                                <input ng-readonly="vm.loggedInUser.role != 'Platform Admin.' && vm.loggedInUser.role != 'Site Admin.'" type="text" class="form-control" id="latitude" name="latitude" placeholder="Latitude" ng-model="vm.site.latitude">             
+                                            </div>
+                                        </fieldset>
+                                </div>
+                                <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <label class="form-label semibold" for="longitude">GPS Cordinates - Longitude</label>
+                                            <div class="input-group">
+                                                  <div class="input-group-prepend">
+                                                          <span class="input-group-text btn btn-primary">
+                                                              <span class="fa fa-map-marker-alt"></span>
+                                                          </span>
+                                                      </div>
+                                                <input ng-readonly="vm.loggedInUser.role != 'Platform Admin.' && vm.loggedInUser.role != 'Site Admin.'" type="text" class="form-control" id="longitude" name="longitude" placeholder="Longitude" ng-model="vm.site.longitude">             
+                                            </div>
+                                        </fieldset>
+                                </div>
+                            </div>
+                            <!--.row-->          
+                        </div>
+                        <div class="col-md-4">
+                            <!-- <section class="box-typical profile-side-user">
+                                <div class="row">
+                                    <div class="col-12">
+                                            <locationpicker style="width: 100%; height: 150px; display: block;" options="vm.locationpickerOptions"></locationpicker>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-12 col-12">
+                                            <button type="submit" class="btn btn-primary"><i class=" fa fa-save"></i>&nbsp;&nbsp;&nbsp;&nbsp;Update Location&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                        </div>
+                                </div>
+                            </section> -->
+                            <div class="col-12 col-sm-12 col-md-12">
+                                    <section class="box-typical with-border" onmouseover="this.style.cursor='pointer';">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <locationpicker style="width:100%; height:160px;" options="vm.locationpickerOptions"></locationpicker>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <input type="text" id="us3-address" class="w-100"/>
+                                            </div>
+                                        </div>                          
+                                        <div class="row">
+                                                <div class="col-12">
+                                                    <div class="btn btn-primary btn-block">
+                                                        Update Location
+                                                    </div>
+                                                </div>
+                                            
+                                        </div>
+                                    </section>
+                                    <!--.widget-simple-sm-->
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="vm.loggedInUser.role == 'Platform Admin.' || vm.loggedInUser.role == 'Site Admin.'" class="row">  
+                            <div class="col-md-8">
+                            </div>   
+                            <div class="col-md-2 text-right">
+                                    <label class="form-label semibold">&nbsp;</label>
+                                    <div class="form-group">
+                                        <a class="btn btn-primary-success btn-block" href="#" onclick="window.history.back();"><i class=" fa fa-arrow-circle-left"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go Back&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>  
+                                    </div>       
+                                </div>
+                                  <div class="col-md-2 text-right">
+                                        <label class="form-label semibold">&nbsp;</label>
+                                          <div class="form-group">
+                                                  <button type="submit" ng-disabled="siteForm.$invalid" class="btn btn-primary btn-block"  ng-click="vm.updateSite()"><i class=" fa fa-save"></i>&nbsp;&nbsp;&nbsp;&nbsp;Save Site&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                                  <!-- ng-disabled="siteForm.$invalid"  -->
+                                          </div>       
+                                  </div>      
+                    </div>
+                    <div ng-if="vm.loggedInUser.role != 'Platform Admin.' && vm.loggedInUser.role != 'Site Admin.'" class="row">  
+                        <div class="col-md-10">
+                        </div>   
+                        <div class="col-md-2 text-right">
+                                <label class="form-label semibold">&nbsp;</label>
+                                <div class="form-group">
+                                    <a class="btn btn-primary-success btn-block" href="#" onclick="window.history.back();"><i class=" fa fa-arrow-circle-left"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go Back&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>  
+                                </div>       
+                            </div>           
+                </div>
+            </div>
+        </div>
+      </form>
+      
+      
+        <!-- stylesheets for the page -->
+        <link rel="stylesheet" href="app-content/css/separate/pages/profile-2.min.css">
+        <link rel="stylesheet" href="app-content/css/lib/bootstrap-sweetalert/sweetalert.css">
+        <link rel="stylesheet" href="app-content/css/separate/vendor/sweet-alert-animations.min.css">
+        <link rel="stylesheet" href="app-content/css/separate/pages/login.min.css">
+        <link rel="stylesheet" type="text/css" href="app-content/css/lib/jquery-flex-label/jquery.flex.label.css"> 
+        <link rel="stylesheet" href="app-content/css/separate/pages/widgets.min.css">
+    
+        <!-- scripts for the page -->
+    
+    
+    

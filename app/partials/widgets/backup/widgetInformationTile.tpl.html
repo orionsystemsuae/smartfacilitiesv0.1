@@ -1,0 +1,64 @@
+<li class="card clickable border-0 rounded d-flex align-items-stretch justify-content-between block" style="align-items: center; "
+    gridster-item="widget" ng-click="vm.selectWidget($index)" ng-dblclick="vm.editWidget($index)">
+    <!-- header -->
+    <div ng-if="GetWidgetSetting(widget, 'headerVisible')" class="card-header p-0 rounded-top {{GetWidgetSetting(widget, 'headerAlignment')}}
+    {{GetWidgetSetting(widget, 'headerFontStyle').bold?' font-weight-bold':''}} {{GetWidgetSetting(widget, 'headerFontStyle').underline?' font-underline':''}} {{GetWidgetSetting(widget, 'headerFontStyle').italic?' font-italic':''}}"
+        style="background-color: {{GetWidgetSetting(widget, 'headerBgColour')}}; border:{{GetWidgetSetting(widget, 'borderWidth')}}px {{GetWidgetSetting(widget, 'borderStyle')}} {{GetWidgetSetting(widget, 'borderColour')}};; color:{{GetWidgetSetting(widget, 'headerFontColour')}}; 
+    font-size: {{GetWidgetSetting(widget, 'headerFontSize')}}px; line-height: {{GetWidgetSetting(widget, 'headerFontSize') + 5}}px;">
+        {{GetWidgetSetting(widget, 'headerText')}}
+    </div>
+    <div ng-if="vm.selectedWidgetIndex == $index" class="ribbon-block round relative text-center">
+        <div class="ribbon red left-top">
+            <i class="fa fa-check"></i>
+        </div>
+    </div>
+    <!-- body -->
+    <div class="card-body {{GetWidgetSetting(widget, 'headerVisible')? ' border-top-0' : ' rounded-top'}} {{GetWidgetSetting(widget, 'footerVisible')? ' border-bottom-0' : ' rounded-bottom'}} "
+        style="overflow-x: hidden; overflow-y: auto;border:{{GetWidgetSetting(widget, 'borderWidth')}}px {{GetWidgetSetting(widget, 'borderStyle')}} {{GetWidgetSetting(widget, 'borderColour')}}; background-color: {{GetWidgetSetting(widget, 'bodyBgColour')}};">
+        <!-- tag value + icon -->
+        <div ng-switch="GetWidgetSetting(widget, 'iconVerticalAlignment')" ng-if="GetWidgetSetting(widget, 'bodyValueVisible')" class="center text-center {{GetStateValueStyle(widget)}}"
+            style="{{GetStateValueColorSize(widget, 0)}}">
+            <span ng-if="widget.config.topics[0].type == 1">{{GetTopicValue(widget.config.topics[0].address)}}</span>
+            <span ng-if="widget.config.topics[0].type == 2">{{widget.config.topics[0].value}}</span>
+            <sup ng-switch-when="1" ng-if="GetWidgetSetting(widget, 'bodyIconVisible')">
+                <i class="{{GetStateIcon(widget, 0);GetStateIconStyle(widget, 0);}}" style="{{GetStateIconColorSize(widget, 0)}}"></i>
+            </sup>
+            <sub ng-switch-when="2" ng-if="GetWidgetSetting(widget, 'bodyIconVisible')">
+                <i class="{{GetStateIcon(widget, 0);GetStateIconStyle(widget, 0);}}" style="{{GetStateIconColorSize(widget, 0)}}"></i>
+            </sub>
+            <i ng-switch-when="3" ng-if="GetWidgetSetting(widget, 'bodyIconVisible')" class="{{GetStateIconStyle(widget, 0)}}" style="{{GetStateIconColorSize(widget, 0)}}"></i>
+        </div>
+
+        <!-- only icon -->
+        <div ng-if="!GetWidgetSetting(widget, 'bodyValueVisible') && GetWidgetSetting(widget, 'bodyIconVisible')" class="center text-center">
+            <i class="{{GetStateIcon(widget, 0);GetStateIconStyle(widget, 0);}}" style="{{GetStateIconColorSize(widget, 0)}}"></i>
+        </div>
+
+        <!-- body text -->
+        <div ng-if="GetWidgetSetting(widget, 'bodyTextVisible')" class="title card-text text-center {{GetStateTextStyle(widget, 0)}}"
+            style="{{GetStateTextColorSize(widget, 0)}}">
+            {{IsTopicValid(widget.config.topics[0].address) ? GetStateText(widget, 0) : GetStateText(widget, 0, 'default')}}
+        </div>
+
+    </div>
+    <!-- footer -->
+    <div ng-switch="GetWidgetSetting(widget, 'footerContentType')" ng-if="GetWidgetSetting(widget, 'footerVisible')" class="card-footer p-0 rounded-bottom {{GetWidgetSetting(widget, 'footerAlignment')}}
+    {{GetWidgetSetting(widget, 'footerFontStyle').bold?' font-weight-bold':''}} {{GetWidgetSetting(widget, 'footerFontStyle').underline?' font-underline':''}} {{GetWidgetSetting(widget, 'footerFontStyle').italic?' font-italic':''}}"
+        style="background-color: {{GetWidgetSetting(widget, 'footerBgColour')}}; border:{{GetWidgetSetting(widget, 'borderWidth')}}px {{GetWidgetSetting(widget, 'borderStyle')}} {{GetWidgetSetting(widget, 'borderColour')}};; color:{{GetWidgetSetting(widget, 'footerFontColour')}}; 
+    font-size: {{GetWidgetSetting(widget, 'footerFontSize')}}px; line-height: {{GetWidgetSetting(widget, 'footerFontSize') + 5}}px;">
+        <!-- <span ng-switch-when="1">
+            {{GetTopicTime(widget.config.topics[0].address) | date : 'MM/dd/yyyy @ HH:mm:ss'}}
+            {{GetWidgetSetting(widget, 'footerText')}}
+        </span> -->
+        <span ng-switch-when="2">
+            <jq-sparkline ng-if="widget.config.topics[0].graph.show" style="right:0;" ng-model="widget.config.topics[0].graph.values" opts="{{ {type:'bar',  barColor: 'white', height:'20px'} }}"></jq-sparkline>
+            <br ng-if="widget.config.topics[0].graph.show">     
+            <span ng-bind-html="GetWidgetSetting(widget, 'footerText')"></span>
+        </span>
+        <span ng-switch-when="1" style="overflow:hidden;">
+            <jq-sparkline ng-if="widget.config.topics[0].graph.show" style="right:0;" ng-model="widget.config.topics[0].graph.values" opts="{{ {type:'bar',  barColor: 'white', height:'20px'} }}"></jq-sparkline>
+            <br ng-if="widget.config.topics[0].graph.show"> 
+            {{widget.config.topics[0].type == 2 ? ( lib.Timer.Date | date : 'MM/dd/yyyy @ HH:mm:ss') : (GetTopicTime(widget.config.topics[0].address) | date : 'MM/dd/yyyy @ HH:mm:ss')}}
+        </span>
+    </div>
+</li>

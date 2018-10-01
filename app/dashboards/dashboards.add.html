@@ -1,0 +1,1296 @@
+﻿<style>
+    .stitched {
+        height: 10em;
+        position: relative;
+        padding: 0px;
+        margin: 0px;
+        /* background: url(app-content/img/statistic-box-grid.png) 50% 0; */
+        /* background-color:whitesmoke; */
+        /* background-color: #269;
+        background-image: linear-gradient(white 3px, transparent 3px),
+        linear-gradient(90deg, white 3px, transparent 3px),
+        linear-gradient(rgba(255, 255, 255, .6) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .6) 1px, transparent 1px);
+        background-size: 100px 218px, 218px 100px, 20px 25px, 25px 20px;
+        background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px; */
+        line-height: 1.3em;
+        /* border: 3px dashed #ffffff; */
+        border-radius: 0px;
+        /* box-shadow: 0 0 0 4px #005cb8, 2px 1px 6px 4px rgba(10, 10, 0, 0.5); */
+    }
+
+    .background-solid-primary {
+        background-color: #005cb8;
+        border: 3px solid #005cb8;
+        border-radius: 0px;
+        /* box-shadow: 0 0 0 4px #005cb8, 2px 1px 6px 4px rgba(10, 10, 0, 0.5); */
+    }
+
+    .center {
+        margin: 0;
+        background: transparent;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+
+    .title {
+        margin: 0;
+        background: transparent;
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+    .crosshair {
+        cursor: crosshair;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdown:active .dropdown-content {
+        display: block;
+    }
+</style>
+<!--.page-content-->
+<div class="card text-center">
+    <div class="card-header">
+        <h6 class="semibold d-flex float-left">
+            <a ui-sref="dashboards_view">Dashboards</a>&nbsp;>&nbsp;{{vm.dashboard.name}}&nbsp;:&nbsp;{{currentState.name == "dashboards_edit" ? "Edit" :
+            "Add"}}
+        </h6>
+        <div class="btn-group btn-group-sm float-right">
+            <button type="button" class="btn btn-sm btn-primary-outline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bars"></i>&nbsp;&nbsp;Options
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="" onclick="javascript:$('#modalAddWidgets').modal('show');">
+                    <i class="far fa-plus-square"></i>
+                    &nbsp;Add Widget
+                </a>
+                <a class="dropdown-item" href="" ng-disabled="vm.selectedWidgetIndex < 1" ng-click="vm.removeWidget()">
+                    <i class="far fa-minus-square"></i>
+                    &nbsp;Remove Widget
+                </a>
+                <a class="dropdown-item" href="" ng-disabled="vm.selectedWidgetIndex < 1" ng-click="vm.duplicateWidget()">
+                    <i class="far fa-copy"></i>
+                    &nbsp;Duplicate Widget
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="" onclick="javascript:$('#modalDashboardSettings').modal('show');">
+                    <i class="fas fa-cog"></i>
+                    &nbsp;Settings Dashboard
+                </a>
+                <a class="dropdown-item" href="" ng-disabled="vm.dashboard.widgets.length == 0" onclick="javascript:$('#modalDashboardSave').modal('show');">
+                    <i class="fas fa-save"></i>
+                    &nbsp;Save Dashboard
+                </a>
+                <a class="dropdown-item" href="" ng-click="vm.clearAllWidgets()">
+                    <i class="far fa-trash-alt"></i>
+                    &nbsp;Clear Dashboard
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="" onclick="javascript:$('#modalMqttClient').modal('show');">
+                    <i class="far fa-envelope"></i>
+                    &nbsp;MQTT Client
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="" onclick="javascript:alert('Function not implemented yet.');">
+                    <i class="fa fa-search"></i>
+                    &nbsp;Preview Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border-0 rounded-0">
+        <div class="stitched crosshair" gridster="vm.dashboard.options" style="background-color:{{vm.dashboard.backgroundColor}};">
+            <div ng-if="vm.dashboard.widgets.length == 0" class="center label">
+                <h4 class="bg-dark rounded">&nbsp;&nbsp;This dashboard is empty.
+                    <br> &nbsp;Please use the add widget button on the top to begin.&nbsp;&nbsp;</h5>
+            </div>
+            <ul>
+                <!-- style="position: absolute; top: 0px; bottom: 0; width: 100%; display: flex; align-items: center; justify-content: center;  word-wrap: break-word;overflow-wrap: break-word;" -->
+                <li class="container-fluid" ng-repeat="widget in vm.dashboard.widgets" style="overflow: hidden;">
+                    <!-- Information Tiles -->
+                    <widget-information-tile ng-if="widget.typeId == 1 || widget.typeId == 'infoTile'"></widget-information-tile>
+                    <widget-information-board ng-if="widget.typeId == 2 || widget.typeId == 'infoBoard'"></widget-information-board>
+
+                    <!-- Chart Tiles -->
+                    <widget-chart-tile ng-if="widget.typeId == 'chartTile'"></widget-chart-tile>
+
+                    <!-- Utility Tiles -->
+                    <widget-utility-weather-tile ng-if="widget.typeId == 3 || widget.typeId == 'weatherTile'"></widget-utility-weather-tile>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<!-- Popups -->
+
+<!-- Modal : Save Dashboard-->
+<div class="modal fade" id="modalDashboardSave" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <span class="fa fa-save"></span>&nbsp;Save As</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tab-content" style="border:none;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="name">Name
+                                                    <span class="color-red">&nbsp;*</span>
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-align-justify"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input id="name" class="form-control" name="name" type="text" placeholder="Name" ng-model="vm.dashboard.name" required>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="description">Background
+                                                </label>
+                                                <!-- <div class="btn-group btn-group-xs w-100">
+                                                    <button class="btn btn-secondary-outline border-top-0 border-bottom-0 border-left-0 rounded-0 w-5" colorpicker="hex" ng-model="vm.dashboard.backgroundColor">
+                                                        <i class="fa-fw fas fa-hexagon" style="color:{{color}};"></i>
+                                                    </button>
+                                                    <button class="btn btn-secondary-outline border-right-0 border-top-0 border-bottom-0 w-100 rounded-0" colorpicker="hex" ng-model="vm.dashboard.backgroundColor">
+                                                        <i class="fas fa-paint-brush"></i>{{color|uppercase}}
+                                                    </button>
+                                                </div> -->
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fas fa-paint-brush"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input id="backgroundColor" class="form-control" name="backgroundColor" type="text" placeholder="Colour" style="text-transform: uppercase;" colorpicker="hex" ng-model="vm.dashboard.backgroundColor">
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="name">Spacing
+                                                    <span class="color-red">&nbsp;*</span>
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-align-justify"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input id="name" class="form-control" name="name" type="number" min="0" max="10" placeholder="" ng-model="vm.dashboard.widgetSpacing" required>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="name">Rounded Corners
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <button class="input-group-text btn btn-success" ng-click="vm.dashboard.widgetRoundCorner = true">
+                                                            <span class="fas fa-fw fa-power-off"></span>
+                                                        </button>
+                                                    </div>
+                                                    <label id="name" class="text-center form-control" name="name" type="number" min="0" max="10" placeholder="">{{vm.dashboard.widgetRoundCorner? 'ON' : 'OFF'}}</label>
+                                                    <div class="input-group-append">
+                                                        <button class="input-group-text btn btn-danger" ng-click="vm.dashboard.widgetRoundCorner = false">
+                                                            <span class="fas fa-fw fa-power-off"></span>
+                                                        </button>
+                                                    </div>
+                                                    <!-- <input id="name" class="form-control" name="name" type="number"
+                                                           min="0" max="10" placeholder="Name" ng-model="vm.dashboard.widgetSpacing" required> -->
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <!-- <div class="col-md-4">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="name">Homepage
+                                                    <span class="color-red">&nbsp;*</span>
+                                                </label>
+                                                <md-switch id="footerTextBold" name="footerTextBold" class="md-primary" ng-model="vm.dashboard.homepage" aria-label="Switch 1">
+                                                </md-switch>
+                                            </fieldset>
+                                        </div> -->
+                                        <div class="col-md-12">
+                                            <fieldset class="form-group">
+                                                <label class="form-label semibold" for="description">Description
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text btn btn-primary">
+                                                            <span class="fa fa-align-justify"></span>
+                                                        </span>
+                                                    </div>
+                                                    <input id="description" class="form-control" name="description" type="text" placeholder="Description" ng-model="vm.dashboard.description">
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-primary-success btn-block" ng-click="vm.saveDashboard()" ng-disabled="siteForm.$invalid" data-dismiss="modal">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal -->
+
+
+<!-- Modal : Add Widgets-->
+<div class="modal right fade rounded-0" id="modalAddWidgets" tabindex="-1" role="dialog" aria-labelledby="" style="z-index: 1900;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <i class="far fa-window-maximize"></i>&nbsp;&nbsp;Widgets</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row toggle" id="dropdown-detail-1" data-toggle="detail-1">
+                            <div class="col-xs-10">
+                                Item 1
+                            </div>
+                            <div class="col-xs-2">
+                                <i class="fa fa-chevron-down float-right"></i>
+                            </div>
+                        </div>
+                        <div id="detail-1">
+                            <hr></hr>
+                            <div class="container">
+                                <div class="fluid-row">
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row toggle" id="dropdown-detail-2" data-toggle="detail-2">
+                            <div class="col-xs-10">
+                                Item 2
+                            </div>
+                            <div class="col-xs-2">
+                                <i class="fa fa-chevron-down float-right"></i>
+                            </div>
+                        </div>
+                        <div id="detail-2">
+                            <hr></hr>
+                            <div class="container">
+                                <div class="fluid-row">
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row toggle" id="dropdown-detail-3" data-toggle="detail-3">
+                            <div class="col-xs-10">
+                                Item 3
+                            </div>
+                            <div class="col-xs-2">
+                                <i class="fa fa-chevron-down float-right"></i>
+                            </div>
+                        </div>
+                        <div id="detail-3">
+                            <hr></hr>
+                            <div class="container">
+                                <div class="fluid-row">
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                    <div class="col-xs-1">
+                                        Detail:
+                                    </div>
+                                    <div class="col-xs-5">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul> -->
+                <ul class="list-group">
+                    <span class="dropdown-header">Information Widgets</span>
+                    <a class="dropdown-item" href="" ng-click="vm.addWidget('infoTile')">Information Tile</a>
+                    <a class="dropdown-item" href="" ng-click="vm.addWidget('infoBoard')">Information Board</a>
+                    <div class="dropdown-divider"></div>
+                    <span class="dropdown-header">Control Widgets</span>
+                    <a class="dropdown-item" href="">Slider Switch</a>
+                    <a class="dropdown-item" href="">Switch Board</a>
+                    <div class="dropdown-divider"></div>
+                    <span class="dropdown-header">Chart Widgets</span>
+                    <a class="dropdown-item" href="" ng-click="vm.addWidget('lineChartTile')">Line Chart</a>
+                    <a class="dropdown-item" href="" ng-click="vm.addWidget('barChartTile')">Bar Chart</a>
+                    <a class="dropdown-item" href="" ng-click="vm.addWidget('horizantalBarChartTile')">Horizantal Bar
+                        Chart</a>
+                    <a class="dropdown-item" href="" ng-click="vm.addWidget('pieChartTile')">Pie Chart</a>
+                    <a class="dropdown-item" href="" ng-click="vm.addWidget('doughnutChartTile')">Donout Chart</a>
+                    <a class="dropdown-item" href="" ng-click="vm.addWidget('polarChartTile')">Polar Chart</a>
+                    <a class="dropdown-item" href="" ng-click="vm.addWidget('radarChartTile')">Radar Chart</a>
+                    <div class="dropdown-divider"></div>
+                    <span class="dropdown-header">GPS Widgets</span>
+                    <a class="dropdown-item" href="">Single Coordinates</a>
+                    <a class="dropdown-item" href="">List Coordinates</a>
+                    <a class="dropdown-item" href="">Map</a>
+                    <div class="dropdown-divider"></div>
+                    <span class="dropdown-header">Utility Widgets</span>
+                    <a class="dropdown-item" href="">News</a>
+                    <a class="dropdown-item" href="" ng-click="vm.addWidget(3)">Weather</a>
+                    <!-- <a class="dropdown-item" href="">Currency</a> -->
+                    <a class="dropdown-item" href="">Stocks</a>
+                    <div class="dropdown-divider"></div>
+                    <span class="dropdown-header">Communication Widgets</span>
+                    <a class="dropdown-item" href="">Chat Room</a>
+                </ul>
+            </div>
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+</div>
+<!-- modal -->
+
+<!-- Modal : Settings-->
+<div class="modal right fade rounded-0" id="modalSettings" role="dialog" aria-labelledby="" style="z-index: 2000;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <i class="fas fa-cog"></i>&nbsp;&nbsp;Settings</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <settings-grid datePickerOptions="vm.dashboard.widgets[vm.selectedWidgetIndex].datePickerOptions" settings="vm.dashboard.widgets[vm.selectedWidgetIndex].config.settings"></settings-grid>
+            </div>
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+</div>
+<!-- modal -->
+
+<!-- Modal Info Tile : Settings > Topic Settings-->
+<div class="modal right fade rounded-0" id="modalInfoTileTopicSettings" tabindex="-1" role="dialog" aria-labelledby="" style="z-index: 2100;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <i class="fas fa-cog"></i>&nbsp;&nbsp;Settings > Topic(s)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="pgTable">
+                        <tbody>
+                            <tr class="pgGroupRow">
+                                <td class="pgGroupCell" colspan="7">
+                                    &nbsp;Topic
+                                    <span class="float-right">
+                                        <a href="" title="Remove Topic" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length > 0 ? vm.removeTopic(vm.selectedTopicIndex) :false" class="fas fa-times-circle fa-fw p-1" style="color:white;">
+                                        </a>
+                                        <a href="" title="Duplicate Topic" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length <20 ? vm.duplicateTopic() :false" class="fas fa-dot-circle fa-fw p-1" style="color:white;">
+                                        </a>
+                                        <a href="" title="Add Topic" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length <20 ? vm.addTopic() :false" class="fas fa-plus-circle fa-fw p-1" style="color:white;">
+                                        </a>&nbsp;
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pgCell" colspan="2">
+                                    <select class="form-control input-xs border-0 rounded-0 w-100" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].type">
+                                        <option value="1" ng-selected="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].type == 1">Address</option>
+                                        <option value="2" ng-selected="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].type == 2">Formula</option>
+                                    </select>
+
+                                </td>
+                                <td class="pgCell" colspan="5">
+                                    <textarea class="pgTextBox" rows="2" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].address"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pgCell pl-3" colspan="2">
+                                    Graph : Visible
+                                </td>
+                                <td class="pgCell" colspan="5">
+                                    <div class="btn-group btn-group-toggle btn-group-xs d-flex rounded-0">
+                                        <button class="btn btn-secondary-outline border-left-0 border-top-0 border-bottom-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].graph.show = true">
+                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].graph.show? 'fas fa-check ' : ''"></i>&nbsp;
+                                            <b class="align-center">ON</b>
+                                        </button>
+                                        <button class="btn btn-secondary-outline border-top-0 border-bottom-0 border-right-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].graph.show = false">
+                                            <i ng-class="!vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].graph.show? 'fas fa-check' : ''"></i>&nbsp;
+                                            <b class="align-center">OFF</b>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pgCell pl-3" colspan="2">
+                                    Graph : Buffer Size
+                                </td>
+                                <td class="pgCell" colspan="5">
+                                    <input ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].graph.buffer" type="number" class="pgTextBox" min="1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="7">
+                                    <md-tabs md-dynamic-height md-border-bottom flex>
+                                        <md-tab label="Value" layout-fill>
+                                            <md-content>
+                                                <table class="pgTable table-bordered" st-safe-src="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].stateTable">
+                                                    <tbody>
+                                                        <tr class="pgGroupRow">
+                                                            <td class="pgGroupCell" colspan="5">
+                                                                &nbsp;State Table : Value&nbsp;
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="table-icon-cell text-center" rowspan="2" colspan="1">
+                                                                &nbsp;</td>
+                                                            <td class="table-icon-cell text-center" colspan="3">
+                                                                &nbsp;Value Field&nbsp;
+                                                            </td>
+                                                            <td class="table-icon-cell text-center" rowspan="2" colspan="1">
+                                                                <a href="" title="Add State" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].stateTable.length <5 ? vm.addState(vm.selectedTopicIndex) :false" class="align-center fas fa-plus-circle fa-fw text-primary">
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="table-icon-cell text-center">
+                                                                &nbsp;Value&nbsp;
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                Colour
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                &nbsp;Animation&nbsp;</td>
+                                                        </tr>
+                                                        <tr ng-repeat="state in displayedCollection">
+                                                            <td class="table-icon-cell text-center">
+                                                                <span><i class="fas fa-hexagon color-blue"></i></span>
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <input ng-disabled="((state.value =='default') && ($index == 0))" class="pgTextBox" type="text" ng-model="state.value">
+                                                                <!-- <span ng-if="$index == 0 && state.value =='default'" class="pgTextBox" ng-bind="state.value"></span> -->
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <div class="btn-group btn-group-xs w-100">
+                                                                    <input ng-model="state.valueColor" class="btn btn-secondary-outline input-xs pgTextBox border-0 rounded-0 w-100" type="text" colorpicker="hex" style="text-transform: uppercase;" />
+                                                                    <span class="btn input-group-text border-0 rounded-0 w-5" style="background-color:{{state.valueColor}};">&nbsp;&nbsp;
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <div class="btn-group btn-group-xs">
+                                                                    <select class="input-xs border-0 rounded-0 w-100" ng-model="state.valueAnimation">
+                                                                        <option ng-repeat="animation in vm.animations" value="{{animation.value}}">{{animation.name}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <a href="" title="Remove State" ng-if="$index > 0" ng-click="vm.removeState(vm.selectedTopicIndex, $index)" class="align-center fas fa-times-circle fa-fw text-danger"></a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </md-content>
+                                        </md-tab>
+                                        <md-tab label="Icon">
+                                            <md-content>
+                                                <table st-table="displayedCollection" st-safe-src="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].stateTable" class="pgTable  table-bordered">
+                                                    <tbody>
+                                                        <tr class="pgGroupRow">
+                                                            <td class="pgGroupCell" colspan="5">
+                                                                &nbsp;State Table : Icon&nbsp;
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="table-icon-cell text-center" rowspan="2" colspan="1">
+                                                                &nbsp;</td>
+                                                            <td class="table-icon-cell text-center" rowspan="2" colspan="1">
+                                                                &nbsp;Value&nbsp;</td>
+                                                            <td class="table-icon-cell text-center" colspan="3">
+                                                                &nbsp;Icon Field&nbsp;
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="table-icon-cell text-center">
+                                                                &nbsp;Icon&nbsp;
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                Colour
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                &nbsp;Animation&nbsp;</td>
+                                                        </tr>
+                                                        <tr ng-repeat="state in displayedCollection">
+                                                            <td class="table-icon-cell text-center">
+                                                                <i class="fas fa-hexagon color-blue"></i>
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <span class="pgTextBox" ng-bind="state.value"></span>
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <a data-toggle="modal" href="" data-target="#modalSettingsIconList" ng-click="vm.selectedTopicStateIndex = $index" class="{{state.icon + ' faa-fast ' + state.iconAnimation}}" style="color:{{state.iconColor}};"></a>
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <div class="btn-group btn-group-xs w-100">
+                                                                    <input ng-model="state.iconColor" class="btn btn-secondary-outline input-xs pgTextBox border-0 rounded-0 w-100" type="text" colorpicker="hex" style="text-transform: uppercase;" />
+                                                                    <span class="btn input-group-text border-0 rounded-0 w-5" style="background-color:{{state.iconColor}};">&nbsp;&nbsp;
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <div class="btn-group btn-group-xs">
+                                                                    <select class="input-xs border-0 rounded-0 w-100" ng-model="state.iconAnimation">
+                                                                        <option ng-repeat="animation in vm.animations" value="{{animation.value}}">{{animation.name}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </md-content>
+                                        </md-tab>
+                                        <md-tab label="Text">
+                                            <md-content class="">
+                                                <table st-table="displayedCollection" st-safe-src="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].stateTable" class="pgTable  table-bordered">
+                                                    <tbody>
+                                                        <tr class="pgGroupRow">
+                                                            <td class="pgGroupCell" colspan="5">
+                                                                &nbsp;State Table : Text&nbsp;
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="table-icon-cell text-center" rowspan="2" colspan="1">
+                                                                &nbsp;</td>
+                                                            <td class="table-icon-cell text-center" rowspan="2" colspan="1">
+                                                                &nbsp;Value&nbsp;</td>
+                                                            <td class="table-icon-cell text-center" colspan="2">
+                                                                &nbsp;Text Field&nbsp;
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="table-icon-cell text-center">
+                                                                &nbsp;Text&nbsp;
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                Colour
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                &nbsp;Animation&nbsp;</td>
+                                                        </tr>
+                                                        <tr ng-repeat="state in displayedCollection">
+                                                            <td class="table-icon-cell text-center">
+
+                                                                <i class="fas fa-hexagon color-blue"></i>
+
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <span class="pgTextBox" ng-bind="state.value"></span>
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <input class="w-100 pgTextBox" type="text" ng-model="state.text">
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <div class="btn-group btn-group-xs w-100">
+                                                                    <input ng-model="state.textColor" class="btn btn-secondary-outline input-xs pgTextBox border-0 rounded-0 w-100" type="text" colorpicker="hex" style="text-transform: uppercase;" />
+                                                                    <span class="btn input-group-text border-0 rounded-0 w-5" style="background-color:{{state.textColor}};">&nbsp;&nbsp;
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="table-icon-cell text-center">
+                                                                <div class="btn-group btn-group-xs">
+                                                                    <select class="input-xs border-0 rounded-0 w-100" ng-model="state.textAnimation">
+                                                                        <option ng-repeat="animation in vm.animations" value="{{animation.value}}">{{animation.name}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                    </tbody>
+                                                </table>
+                                            </md-content>
+                                        </md-tab>
+                                        <md-tab label="Widget">
+                                            <md-content class="">
+                                                <p>Not yet implemented.</p>
+                                            </md-content>
+                                        </md-tab>
+                                        <md-tab label="Sound">
+                                            <md-content class="">
+                                                <p>Not yet implemented.</p>
+                                            </md-content>
+                                        </md-tab>
+                                    </md-tabs>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer p-0 d-flex">
+                <nav>
+                    <ul class="pagination pagination-sm justify-content-end">
+                        <li ng-class="vm.selectedTopicIndex == 0 ? 'page-item disabled' :'page-item'">
+                            <a class="page-link" href="" tabindex="-1" ng-click="vm.selectedTopicIndex = vm.selectedTopicIndex - 1">Previous</a>
+                        </li>
+                        <li ng-repeat="topic in vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics" ng-class="vm.selectedTopicIndex == $index ? 'page-item active' :'page-item'"><a class="page-link" href="" ng-click="vm.selectedTopicIndex = $index">{{$index+1}}</a></li>
+                        <li ng-class="vm.selectedTopicIndex == (vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length - 1) ? 'page-item disabled' :'page-item'">
+                            <a class="page-link" href="" ng-click="vm.selectedTopicIndex = vm.selectedTopicIndex + 1">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+</div>
+
+<!-- Modal Chart Tile : Settings > Topic Settings-->
+<div class="modal right fade rounded-0" id="modalChartTileTopicSettings" tabindex="-1" role="dialog" aria-labelledby="" style="z-index: 2100;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <i class="fas fa-cog"></i>&nbsp;&nbsp;Settings > Series Topic(s)
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="pgTable">
+                        <tbody>
+                            <tr class="pgGroupRow">
+                                <td class="pgGroupCell" colspan="7">
+                                    &nbsp;Topic
+                                    <span class="float-right">
+                                        <a href="" title="Remove Topic" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length > 0 ? vm.removeTopic(vm.selectedTopicIndex) :false" class="fas fa-times-circle fa-fw p-1" style="color:white;">
+                                        </a>
+                                        <a href="" title="Add Topic" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length <20 ? vm.addTopic() :false" class="fas fa-plus-circle fa-fw p-1" style="color:white;">
+                                        </a>&nbsp;
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="pgRow" ng-if="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length == 0">
+                                <td class="pgCell" colspan="7">
+                                    No topics found. Please use the add button to add new topic.
+                                </td>
+                            </tr>
+                            <tr class="pgRow" ng-if="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length > 0">
+                                <td class="pgCell" colspan="2">
+                                    <select class="form-control input-xs border-0 rounded-0 w-100" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].type">
+                                        <option value="1" ng-selected="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].type == 1">Address</option>
+                                        <option value="2" ng-selected="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].type == 2">Formula</option>
+                                    </select>
+
+                                </td>
+                                <td class="pgCell" colspan="5">
+                                    <textarea class="pgTextBox" rows="2" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].address"></textarea>
+                                </td>
+                            </tr>
+                            <tr class="pgRow" ng-if="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length > 0">
+                                <td class="pgCell pl-2" colspan="2">
+                                    Label
+                                </td>
+                                <td class="pgCell" colspan="5">
+                                    <input type="text" class="pgTextBox" ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].label" />
+                                </td>
+                            </tr>
+                            <tr class="pgRow" ng-if="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length > 0 && GetWidgetSetting(vm.dashboard.widgets[vm.selectedWidgetIndex], 'bodyChartDataSource') == 2">
+                                <td colspan="7">
+                                    <table class="pgTable">
+                                        <tbody>
+                                            <tr class="pgGroupRow">
+                                                <td class="pgGroupCell" colspan="3">
+                                                    &nbsp;Metrics&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr class="pgRow">
+                                                <td class="pgCell align-center">
+                                                    <div class="btn-group btn-group-toggle d-flex rounded-0">
+                                                        <button class="btn btn-sm btn-secondary-outline border-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.sum = !vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.sum">
+                                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.sum? 'fa-xs fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                                            <b class="align-center">Sum</b>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="pgCell align-center">
+                                                    <div class="btn-group btn-group-toggle d-flex rounded-0">
+                                                        <button class="btn btn-sm btn-secondary-outline border-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.count = !vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.count">
+                                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.count? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                                            <b class="align-center">Count</b>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="pgCell align-center">
+                                                    <div class="btn-group btn-group-toggle d-flex rounded-0">
+                                                        <button class="btn btn-sm btn-secondary-outline border-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.spread = !vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.spread">
+                                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.spread? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                                            <b class="align-center">Spread</b>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="pgRow">
+                                                <td class="pgCell align-center">
+                                                    <div class="btn-group btn-group-toggle d-flex rounded-0">
+                                                        <button class="btn btn-sm btn-secondary-outline border-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.min = !vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.min">
+                                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.min? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                                            <b class="align-center">Minimum</b>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="pgCell align-center">
+                                                    <div class="btn-group btn-group-toggle d-flex rounded-0">
+                                                        <button class="btn btn-sm btn-secondary-outline border-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.max = !vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.max">
+                                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.max? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                                            <b class="align-center">Maximum</b>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="pgCell align-center">
+                                                    <div class="btn-group btn-group-toggle d-flex rounded-0">
+                                                        <button class="btn btn-sm btn-secondary-outline border-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.mean = !vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.mean">
+                                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.mean? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                                            <b class="align-center">Mean</b>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="pgRow">
+                                                <td class="pgCell align-center">
+                                                    <div class="btn-group btn-group-toggle d-flex rounded-0">
+                                                        <button class="btn btn-sm btn-secondary-outline border-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.first = !vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.first">
+                                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.first? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                                            <b class="align-center">First</b>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="pgCell align-center">
+                                                    <div class="btn-group btn-group-toggle d-flex rounded-0">
+                                                        <button class="btn btn-sm btn-secondary-outline border-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.last = !vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.last">
+                                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.last? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                                            <b class="align-center">Last</b>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="pgCell align-center">
+                                                    <div class="btn-group btn-group-toggle d-flex rounded-0">
+                                                        <button class="btn btn-sm btn-secondary-outline border-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.stddev = !vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.stddev">
+                                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].metrics.stddev? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                                            <b class="align-center">Std. Deviation</b>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer p-0 d-flex">
+                <nav>
+                    <ul class="pagination pagination-sm justify-content-end">
+                        <li ng-class="vm.selectedTopicIndex == 0 ? 'page-item disabled' :'page-item'">
+                            <a class="page-link" href="" tabindex="-1" ng-click="vm.selectedTopicIndex = vm.selectedTopicIndex - 1">Previous</a>
+                        </li>
+                        <li ng-repeat="topic in vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics" ng-class="vm.selectedTopicIndex == $index ? 'page-item active' :'page-item'"><a class="page-link" href="" ng-click="vm.selectedTopicIndex = $index">{{$index+1}}</a></li>
+                        <li ng-class="vm.selectedTopicIndex == (vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length - 1) ? 'page-item disabled' :'page-item'">
+                            <a class="page-link" href="" ng-click="vm.selectedTopicIndex = vm.selectedTopicIndex + 1">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+</div>
+<!-- modal -->
+
+<!-- Modal Chart Tile : Settings > Series Colors-->
+<div class="modal right fade rounded-0" id="modalChartSeriesColorSettings" tabindex="-1" role="dialog" aria-labelledby="" style="z-index: 2100;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <i class="fas fa-cog"></i>&nbsp;&nbsp;Settings > Series Labels & Colours</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="pgTable">
+                        <tbody>
+                            <tr class="pgGroupRow">
+                                <td class="pgGroupCell" colspan="4">
+                                    &nbsp;Series Labels & Colours
+                                    <span class="float-right">
+                                        <a href="" title="Default Colours" ng-click="vm.defaultSeriesColor()" class="fas fa-sync fa-fw p-1" style="color:white;">
+                                        </a>
+                                        <!-- <a href="" title="Remove Topic" ng-click="vm.removeSeriesColor($index)"
+                                            class="fas fa-times-circle fa-fw p-1" style="color:white;">
+                                        </a> -->
+                                        <a href="" title="Add Colour" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.series.colors.length <9 ? vm.addSeriesColor() :false" class="fas fa-plus-circle fa-fw p-1" style="color:white;">
+                                        </a>&nbsp;
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="pgRow" ng-if="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.series.colors.length == 0">
+                                <td class="pgCell" colspan="4">
+                                    No series colours found so default colours will be used. Please use the add button
+                                    to add new colours.
+                                </td>
+                            </tr>
+                            <tr class="pgRow" ng-repeat="color in vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.series.colors" ng-if="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.series.colors.length > 0">
+                                <td class="pgCell pl-2">
+                                    #{{$index + 1}}
+                                </td>
+                                <td class="pgCell pl-2">
+                                    <input ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.series.names[$index]" type="text" class="pgTextBox">
+                                </td>
+                                <td class="pgCell">
+                                    <div class="btn-group btn-group-toggle btn-group-xs d-flex rounded-0">
+                                        <div class="btn-group btn-group-xs w-100">
+                                            <button class="btn btn-secondary-outline border-top-0 border-bottom-0 border-left-0 rounded-0 w-5" colorpicker="hex" ng-model="color">
+                                                <i class="fa-fw fas fa-hexagon" style="color:{{color}};"></i>
+                                            </button>
+                                            <button class="btn btn-secondary-outline border-right-0 border-top-0 border-bottom-0 w-100 rounded-0" colorpicker="hex" ng-model="color">
+                                                <i class="fas fa-paint-brush"></i>{{color|uppercase}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="pgCell text-center">
+                                    <a href="" title="Remove Colour" ng-click="vm.removeSeriesColor($index)" class="fas fa-times-circle fa-fw p-1" style="color:red;">
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer p-0 d-flex">
+
+            </div>
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+</div>
+<!-- modal -->
+
+<!-- Modal Chart Tile : Settings > Legend -->
+<div class="modal right fade rounded-0" id="modalChartLegendSettings" tabindex="-1" role="dialog" aria-labelledby="" style="z-index: 2100;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <i class="fas fa-cog"></i>&nbsp;&nbsp;Settings > Legend</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="pgTable">
+                        <tbody>
+                            <tr class="pgGroupRow">
+                                <td class="pgGroupCell" colspan="2">
+                                    &nbsp;Legend
+                                </td>
+                            </tr>
+                            <tr class="pgRow">
+                                <td class="pgCell pl-2">
+                                    Legned : Visible
+                                </td>
+                                <td class="pgCell text-center">
+                                    <div class="btn-group btn-group-toggle btn-group-xs d-flex rounded-0">
+                                        <button class="btn btn-secondary-outline border-left-0 border-top-0 border-bottom-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.display = true">
+                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.display? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                            <b class="align-center">ON</b>
+                                        </button>
+                                        <button class="btn btn-secondary-outline border-top-0 border-bottom-0 border-right-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.display = false">
+                                            <i ng-class="!vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.display? 'fa-fw fas fa-check' : ''"></i>&nbsp;
+                                            <b class="align-center">OFF</b>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="pgRow">
+                                <td class="pgCell pl-2">
+                                    Legned : Position
+                                </td>
+                                <td class="pgCell text-center">
+                                    <div class="btn-group btn-group-toggle btn-group-xs d-flex rounded-0">
+                                        <button class="btn btn-secondary-outline border-left-0 border-top-0 border-bottom-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.position = 'top'">
+                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.position == 'top'? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                            <b class="align-center">Top</b>
+                                        </button>
+                                        <button class="btn btn-secondary-outline border-top-0 border-bottom-0 border-right-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.position = 'left'">
+                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.position == 'left'? 'fa-fw fas fa-check' : ''"></i>&nbsp;
+                                            <b class="align-center">Left</b>
+                                        </button>
+                                        <button class="btn btn-secondary-outline border-top-0 border-bottom-0 border-right-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.position = 'right'">
+                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.position == 'right'? 'fa-fw fas fa-check' : ''"></i>&nbsp;
+                                            <b class="align-center">Right</b>
+                                        </button>
+                                        <button class="btn btn-secondary-outline border-top-0 border-bottom-0 border-right-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.position = 'bottom'">
+                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.position == 'bottom'? 'fa-fw fas fa-check' : ''"></i>&nbsp;
+                                            <b class="align-center">Bottom</b>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="pgRow">
+                                <td class="pgCell pl-2">
+                                    Legned : Box Size
+                                </td>
+                                <td class="pgCell text-center">
+                                    <input ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.labels.boxWidth" type="number" class="pgTextBox" min="1" max="100">
+                                </td>
+                            </tr>
+                            <tr class="pgRow">
+                                <td class="pgCell pl-2">
+                                    Legned : Font Size
+                                </td>
+                                <td class="pgCell text-center">
+                                    <input ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.labels.fontSize" type="number" class="pgTextBox" min="1" max="100">
+                                </td>
+                            </tr>
+                            <tr class="pgRow">
+                                <td class="pgCell pl-2">
+                                    Legned : Padding
+                                </td>
+                                <td class="pgCell text-center">
+                                    <input ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.legend.labels.padding" type="number" class="pgTextBox" min="1" max="100">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer p-0 d-flex">
+
+            </div>
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+</div>
+<!-- modal -->
+
+<!-- Modal Chart Tile : Settings > Title -->
+<div class="modal right fade rounded-0" id="modalChartTitleSettings" tabindex="-1" role="dialog" aria-labelledby="" style="z-index: 2100;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <i class="fas fa-cog"></i>&nbsp;&nbsp;Settings > Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="pgTable">
+                        <tbody>
+                            <tr class="pgGroupRow">
+                                <td class="pgGroupCell" colspan="2">
+                                    &nbsp;Title
+                                </td>
+                            </tr>
+                            <tr class="pgRow">
+                                <td class="pgCell pl-2">
+                                    Title : Visible
+                                </td>
+                                <td class="pgCell text-center">
+                                    <div class="btn-group btn-group-toggle btn-group-xs d-flex rounded-0">
+                                        <button class="btn btn-secondary-outline border-left-0 border-top-0 border-bottom-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.title.display = true">
+                                            <i ng-class="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.title.display? 'fa-fw fas fa-check ' : ''"></i>&nbsp;
+                                            <b class="align-center">ON</b>
+                                        </button>
+                                        <button class="btn btn-secondary-outline border-top-0 border-bottom-0 border-right-0 w-100 rounded-0" ng-click="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.title.display = false">
+                                            <i ng-class="!vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.title.display? 'fa-fw fas fa-check' : ''"></i>&nbsp;
+                                            <b class="align-center">OFF</b>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="pgRow">
+                                <td class="pgCell pl-2">
+                                    Title : Font Size
+                                </td>
+                                <td class="pgCell text-center">
+                                    <input ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.title.fontSize" type="number" class="pgTextBox" min="1" max="100">
+                                </td>
+                            </tr>
+                            <tr class="pgRow">
+                                <td class="pgCell pl-2">
+                                    Legned : Title
+                                </td>
+                                <td class="pgCell text-center">
+                                    <input ng-model="vm.dashboard.widgets[vm.selectedWidgetIndex].config.chart.options.title.text" type="text" class="pgTextBox"> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer p-0 d-flex">
+
+            </div>
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+</div>
+<!-- modal -->
+
+<!-- Modal : Settings > Icons-->
+<div class="modal right fade rounded-0" id="modalSettingsIconList" tabindex="-1" role="dialog" aria-labelledby="" style="z-index: 2100;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <i class="fas fa-cog"></i>&nbsp;&nbsp;Settings > Topic(s) > Icon(s)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <div class="form-group w-100">
+                    <label data-placement="inline" class="icp icp-auto action-create" data-selected="fa-align-justify">
+                    </label>
+                </div> -->
+                <label data-placement="inline" class="icp icp-fontawesome-icon action-create">
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default-outline" data-dismiss="modal">Cancel</button>
+                <!-- vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics[vm.selectedTopicIndex].stateTable[selectedTopicStateIndex].icon = $window.selectedIcon -->
+                <button class="btn btn-primary-outline" data-dismiss="modal" ng-click="vm.editStateIcon(vm.vm.selectedTopicIndex, vm.selectedTopicStateIndex)">Apply</button>
+            </div>
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+</div>
+<!-- modal -->
+<style>
+    html {
+        overflow-x: hidden;
+    }
+</style>
+
+<!-- <piety-test></piety-test>
+<line-chart data="" options=""></line-chart>
+<bar-chart data="" options=""></bar-chart> -->
+
+<!-- stylesheets for the page -->
+
+
+<!-- scripts for the page -->
+
+
+
+<script>
+    $(function () {
+        $('.action-destroy').on('click', function () {
+            $.iconpicker.batch('.icp.iconpicker-element', 'destroy');
+        });
+        // Live binding of buttons
+
+        $('.action-create').on('click', function () {
+
+            $('.icp-fontawesome-icon').iconpicker({
+                title: false, // Popover title (optional) only if specified in the template
+                selected: false, // use this value as the current item and ignore the original
+                defaultValue: false, // use this value as the current item if input or element value is empty
+                // placement: 'bottom', // (has some issues with auto and CSS). auto, top, bottom, left, right
+                collision: 'none', // If true, the popover will be repositioned to another position when collapses with the window borders
+                animation: true, // fade in/out on show/hide ?
+                //hide iconpicker automatically when a value is picked. it is ignored if mustAccept is not false and the accept button is visible
+                hideOnSelect: false,
+                showFooter: false,
+                searchInFooter: false, // If true, the search will be added to the footer instead of the title
+                mustAccept: false, // only applicable when there's an iconpicker-btn-accept button in the popover footer
+                selectedCustomClass: 'bg-primary', // Appends this class when to the selected item
+                // icons: [], // list of icon objects [{title:String, searchTerms:String}]. By default, all Font Awesome icons are included.
+                // fullClassFormatter: function (val) {
+                //     return 'fa ' + val;
+                // },
+                input: 'input,.iconpicker-input', // children input selector
+                inputSearch: false, // use the input as a search box too?
+                container: false, //  Appends the popover to a specific element. If not set, the selected element or element parent is used
+                component: '.input-group-addon,.iconpicker-component', // children component jQuery selector or object, relative to the container element
+                // Plugin templates:
+                templates: {
+                    popover: '<div class="iconpicker-popover popover w-100 h-100 flex-fill rounded-0"><div class="arrow"></div>' + '<div class="popover-title d-flex"></div><div class="popover-content"></div></div>',
+                    footer: '<div class="popover-footer"></div>',
+                    buttons: '<button class="iconpicker-btn iconpicker-btn-cancel btn btn-default btn-sm">Cancel</button>' + ' <button class="iconpicker-btn iconpicker-btn-accept btn btn-primary btn-sm">Accept</button>',
+                    search: '<input type="search" class="form-control iconpicker-search" placeholder="Search Icon" />',
+                    iconpicker: '<div class="iconpicker"><div class="iconpicker-items"></div></div>',
+                    iconpickerItem: '<label role="button" class="iconpicker-item"><i></i></label>',
+                }
+            });
+
+
+        }).trigger('click');
+
+
+        // Events sample:
+        // This event is only triggered when the actual input value is changed
+        // by user interaction
+        $('.icp').on('iconpickerSelected', function (e) {
+            // alert(e);
+            // $('.lead .picker-target').get(0).className = 'picker-target fa-3x ' +
+            //     e.iconpickerInstance.options.iconBaseClass + ' ' +
+            //     e.iconpickerInstance.options.fullClassFormatter(e.iconpickerValue);
+            window.selectedIcon = e.iconpickerInstance.options.fullClassFormatter(e.iconpickerValue);
+            // alert(window.selectedIcon);
+        });
+    });
+
+
+</script>

@@ -1,0 +1,246 @@
+﻿<!--.page-content-->
+<form id="clientForm" name="clientForm" ng-submit="submitForm(clientForm.$valid)" novalidate>
+    <div class="card">
+        <div class="card-body">
+            <h6 class="with-border semibold">
+                <a href="#/settings">Control Panel</a> >
+                <a ui-sref="clients_view">Clients</a> > Edit</h6>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="name">Name
+                                    <span class="color-red">&nbsp;*</span>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend ">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </span>
+                                    </div>
+                                    <input id="name" name="name" class="form-control" type="text" placeholder="Client Name" ng-model="vm.client.name" required>
+                                    <!-- <div ng-show="clientForm.firstName.$error.required && !clientForm.firstName.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>First name must not be empty.</li></ul></div> -->
+                                </div>
+                            </fieldset>
+                        </div>
+                   
+                        <div class="col-md-4">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="status">Status</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="glyphicon glyphicon-flag"></span>
+                                        </span>
+                                    </div>
+                                    <!-- <input type="text" class="form-control" id="role" name="role" placeholder="Role" data-validation="[NOTEMPTY]" required readonly> -->
+                                    <select id="status" name="status" class="form-control" placeholder="Status" ng-model="vm.client.status" required>
+                                        <option value="true">Active</option>
+                                        <option value="false">Suspended</option>
+                                    </select>
+                                    <!-- <div ng-show="clientForm.status.$error.required && !clientForm.status.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Please select account status.</li></ul></div> -->
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-4">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="abbrv">Abbrivation
+                                    <span class="color-red">&nbsp;*</span>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="fa fa-window-minimize"></span>
+                                        </span>
+                                    </div>
+                                    <input id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.client.abbrv" required>
+                                    <!-- <div ng-show="clientForm.lastName.$error.required && !clientForm.lastName.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Last name must not be empty.</li></ul></div> -->
+                                </div>
+                            </fieldset>
+                        </div>
+                       
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="abbrv">MQTT Client Id
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="fa fa-window-minimize"></span>
+                                        </span>
+                                    </div>
+                                    <input id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.client.mqttClientId" readonly>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="abbrv">MQTT Server URL
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="fa fa-server"></span>
+                                        </span>
+                                    </div>
+                                    <input id="abbrv" class="form-control" name="abbrv" type="text" placeholder="Abbrv." ng-model="vm.client.mqttServerUrl" readonly>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-12">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="status">Service Package</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="glyphicon glyphicon-flag"></span>
+                                        </span>
+                                    </div>
+                                    <!-- <input type="text" class="form-control" id="role" name="role" placeholder="Role" data-validation="[NOTEMPTY]" required readonly> -->
+                                    <select id="status" name="status" class="form-control" placeholder="Status" ng-model="vm.client.servicePackage" required>
+                                        <option value="1">Demo (Limited Time) - Free</option>
+                                        <option value="2">Hobby / Student (10$/month)</option>
+                                        <option value="3">Entry Tier (35$/month)</option>
+                                        <option value="4">Middel Tier (115$/month)</option>
+                                        <option value="5">Profissional Tier (345$/month)</option>
+                                    </select>
+                                    <!-- <div ng-show="clientForm.status.$error.required && !clientForm.status.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Please select account status.</li></ul></div> -->
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-12">
+                            <fieldset class="form-group">
+                                <label class="form-label semibold" for="description">Description</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text btn btn-primary">
+                                            <span class="fa fa-book"></span>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="vm.client.description">
+                                    <!-- <div ng-show="clientForm.mobileNo.$error.required && !clientForm.mobileNo.$pristine" class="form-tooltip-error" data-error-list=""><ul><li>Mobile No. must not be empty.</li></ul></div> -->
+                                    <!-- <p ng-show="clientForm.mobileNo.$invalid && !clientForm.mobileNo.$pristine" class="help-block">Field is required.</p> -->
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!--.row-->
+                </div>
+                <div class="col-md-4">
+                    <div class="col-12 col-sm-12 col-md-12">
+                        <!--.widget-simple-sm-->
+                        <label class="form-label semibold" for="name">Logo</label>
+                        <section class="box-typical with-border">
+                            <div class="row">
+                                <div class="col-md-12 centered" style="width:100%; height:162px;">
+                                    <img ng-if="vm.client.logo" id="imgLogo" class="img-circle" height="120" src="{{vm.client.logo}}" />
+                                    <div ng-if="!vm.client.logo">
+                                        <span class="fa-stack fa-4x" title="Logo not set.">
+                                            <i class="fa fa-image fa-stack-1x color-blue"></i>
+                                            <i class="fa fa-ban fa-stack-2x color-red"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="btn btn-primary btn-block">
+                                        <input style="display: none;" id="html" accept="image/*" type="file" onchange="angular.element(this).scope().vm.updateLogo(event)"> Update Logo
+                                    </label>
+                                </div>
+                            </div>
+                        </section>
+                        <!--.widget-simple-sm-->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                </div>
+                <div class="col-md-2 text-right">
+                    <label class="form-label semibold">&nbsp;</label>
+                    <div class="form-group">
+                        <a class="btn btn-primary-success btn-block" href="#" onclick="window.history.back();">
+                            <i class="fa fa-arrow-circle-left"></i>&nbsp;Go Back</a>
+                    </div>
+                </div>
+                <div class="col-md-2 text-right">
+                    <label class="form-label semibold">&nbsp;</label>
+                    <div class="form-group">
+                        <button type="submit" ng-disabled="clientForm.$invalid" class="btn btn-primary btn-block" ng-click="vm.updateClient()">
+                            <i class="fa fa-save"></i>&nbsp;Save Client</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- stylesheets for the page -->
+<link rel="stylesheet" href="app-content/css/separate/pages/profile-2.min.css">
+<link rel="stylesheet" href="app-content/css/lib/bootstrap-sweetalert/sweetalert.css">
+<link rel="stylesheet" href="app-content/css/separate/vendor/sweet-alert-animations.min.css">
+<link rel="stylesheet" href="app-content/css/separate/pages/login.min.css">
+<link rel="stylesheet" type="text/css" href="app-content/css/lib/jquery-flex-label/jquery.flex.label.css">
+<link rel="stylesheet" href="app-content/css/separate/pages/widgets.min.css">
+
+<style>
+    .img-circle {
+        width: 130px;
+        height: 130px;
+        border: 1px solid #ddd;
+        /* Gray border */
+        border-radius: 4px;
+        /* Rounded border */
+        padding: 5px;
+        /* Some padding */
+        border-radius: 50%;
+        object-fit: scale-down;
+    }
+
+    /**
+     * Ranking component
+     */
+
+    div.centered {
+        height: 10em;
+        position: relative
+    }
+
+    div.centered img {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+
+    div.centered span {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+
+    /* Add a hover effect (blue shadow) */
+
+    div.centered img:hover {
+        box-shadow: 0 0 5px 5px #005cb8;
+    }
+
+    /* button group full width*/
+
+    .btn-group.special {
+        display: flex;
+    }
+
+    .special .btn {
+        flex: 1
+    }
+</style>
+<!-- scripts for the page -->

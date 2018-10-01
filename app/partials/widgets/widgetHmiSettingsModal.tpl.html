@@ -1,0 +1,97 @@
+<!-- Modal : Save Dashboard-->
+<div class="modal fade" id="modalHmiSettings" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <span class="fa fa-save"></span>&nbsp;Save As</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="overflow:hidden;">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <fieldset class="form-group">
+                                    <label class="form-label semibold" for="name">Name
+                                        <span class="color-red">&nbsp;*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text btn btn-primary">
+                                                <span class="fas fa-align-justify"></span>
+                                            </span>
+                                        </div>
+                                        <input id="name" class="form-control" name="name" type="text" placeholder="Name" ng-model="vm.hmi.name" required>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset class="form-group">
+                                    <label class="form-label semibold" for="description">Description
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text btn btn-primary">
+                                                <span class="fas fa-align-justify"></span>
+                                            </span>
+                                        </div>
+                                        <input id="description" class="form-control" name="description" type="text" placeholder="Description" ng-model="vm.hmi.description">
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset class="form-group">
+                                    <label class="form-label semibold" for="description">Upload Background Image
+                                        <span class="color-red">&nbsp;*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text btn btn-primary">
+                                                <span class="fas fa-file-image"></span>
+                                            </span>
+                                        </div>
+                                        <label id="filename" class="form-control" name="filename" type="text" placeholder="File Name">{{vm.hmi.backgroundImage.file.name}}</label>
+                                        <div class="input-group-append">
+                                            <label class="input-group-text btn btn-primary" for="inputImage2" title="Browse for background image">
+                                                <span class="fas fa-upload"></span>&nbsp;Upload
+                                                <input id="inputImage2" type="file" style="display: none;" accept="image/*" image="vm.hmi.backgroundImage" resize-max-height="640"
+                                                    resize-max-width="480" resize-quality="1" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 center">
+                        <label class="form-label semibold" for="name">Background Image
+                        </label>
+                        <div class="text-center">
+                            <img style="max-height:200px;" class="img-fluid img-thumbnail" ng-show="vm.hmi.backgroundImage" ng-src="{{vm.hmi.backgroundImage.resized.dataURL}}"/>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-primary-success btn-block" ng-click="vm.saveHmi()" ng-disabled="siteForm.$invalid"
+                                data-dismiss="modal">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal -->
