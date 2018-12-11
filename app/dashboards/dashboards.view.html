@@ -150,14 +150,14 @@
                                         <a ui-sref="dashboards_edit({_id:row._id})" title="Edit" class="btn btn-sm btn-primary">
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
-                                        <a href="javascript:void(0);" ng-if="row.homepage" ng-confirm-click="Are you sure to unpin this from homepage  ?" confirmed-click="vm.pinDashboard({{row}}, false);"
+                                        <!-- <a href="javascript:void(0);" ng-if="row.homepage" ng-confirm-click="Are you sure to unpin this from homepage  ?" confirmed-click="vm.pinDashboard({{row}}, false);"
                                             title="Unpin To Homepage" class="btn btn-sm btn-primary-success no-animate">
                                             <i class="fas fa-clipboard-check"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" ng-if="!row.homepage" ng-confirm-click="Are you sure to pin this to homepage ?" confirmed-click="vm.pinDashboard({{row}}, true);"
+                                        </a> -->
+                                        <!-- <a href="javascript:void(0);" ng-if="!row.homepage" ng-confirm-click="Are you sure to pin this to homepage ?" confirmed-click="vm.pinDashboard({{row}}, true);"
                                             title="Pin To Homepage" class="btn btn-sm btn-primary-success no-animate">
                                             <i class="fas fa-clipboard"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="javascript:void(0);" ng-confirm-click="Are you sure to delete this record ?" confirmed-click="vm.deleteDashboard({{row}});"
                                             title="Delete" class="btn btn-sm btn-primary-danger">
                                             <i class="fa fa-trash-alt"></i>

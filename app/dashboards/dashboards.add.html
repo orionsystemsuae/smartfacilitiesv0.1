@@ -147,7 +147,7 @@
                     <widget-information-board ng-if="widget.typeId == 2 || widget.typeId == 'infoBoard'"></widget-information-board>
 
                     <!-- Chart Tiles -->
-                    <widget-chart-tile ng-if="widget.typeId == 'chartTile'"></widget-chart-tile>
+                    <widget-chart-tile areauuid="{{GetWidgetSetting(widget, 'description').split('::')[0]}}" type="{{GetWidgetSetting(widget, 'description').split('::')[1]}}" ng-if="widget.typeId == 'chartTile'"></widget-chart-tile>
 
                     <!-- Utility Tiles -->
                     <widget-utility-weather-tile ng-if="widget.typeId == 3 || widget.typeId == 'weatherTile'"></widget-utility-weather-tile>

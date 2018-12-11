@@ -5,7 +5,7 @@
     {{GetWidgetSetting(widget, 'headerFontStyle').bold?' font-weight-bold':''}} {{GetWidgetSetting(widget, 'headerFontStyle').underline?' font-underline':''}} {{GetWidgetSetting(widget, 'headerFontStyle').italic?' font-italic':''}}"
         style="background-color: {{GetWidgetSetting(widget, 'headerBgColour')}}; border:{{GetWidgetSetting(widget, 'borderWidth')}}px {{GetWidgetSetting(widget, 'borderStyle')}} {{GetWidgetSetting(widget, 'borderColour')}};; color:{{GetWidgetSetting(widget, 'headerFontColour')}}; 
     font-size: {{GetWidgetSetting(widget, 'headerFontSize')}}px; line-height: {{GetWidgetSetting(widget, 'headerFontSize') + 5}}px;">
-        {{GetWidgetSetting(widget, 'headerText')}}
+        {{GetWidgetSetting(widget, 'headerText')}}hello
         <i class="fa-xs fas far fa-window-maximize pull-right pr-2 pt-1 clickable" ng-click="UpdateChartData(widget)"></i>
     </div>
     <div ng-if="vm.selectedWidgetIndex == $index" class="ribbon-block round relative text-center">
@@ -19,15 +19,27 @@
     <div ng-switch="widget.type" class="p-2 card-body {{GetWidgetSetting(widget, 'headerVisible')? ' border-top-0' : ' rounded-top'}} {{GetWidgetSetting(widget, 'footerVisible')? ' border-bottom-0' : ' rounded-bottom'}} "
         style="overflow-x: hidden; overflow-y: hidden;border:{{GetWidgetSetting(widget, 'borderWidth')}}px {{GetWidgetSetting(widget, 'borderStyle')}} {{GetWidgetSetting(widget, 'borderColour')}}; background-color: {{GetWidgetSetting(widget, 'bodyBgColour')}};">
         <!-- chart -->
-        
-        <c3chart bindto-id="chart-timeseries{{GetWidgetSetting(widget, 'description').split('::')[1]}}" chart-data="GetDataArray(GetWidgetSetting(widget, 'description').split('::')[1])" chart-columns="datacolumns"
-                     chart-x="datax">
-                <chart-axis>
-                    <chart-axis-x axis-id="x" axis-type="category">
-                        <chart-axis-x-tick />
-                    </chart-axis-x>
-                </chart-axis>
-            </c3chart>
+        <canvas ng-switch-when="line" class="chart chart-line" chart-options="widget.config.chart.options" chart-data="widget.config.chart.series.yValues"
+            chart-labels="widget.config.chart.series.xValues" chart-colors="widget.config.chart.series.colors" chart-series="widget.config.chart.series.names">
+        </canvas>
+        <canvas ng-switch-when="bar" class="chart chart-bar" chart-options="widget.config.chart.options" chart-data="widget.config.chart.series.yValues"
+            chart-labels="widget.config.chart.series.xValues" chart-colors="widget.config.chart.series.colors" chart-series="widget.config.chart.series.names">
+        </canvas>
+        <canvas ng-switch-when="horizantalBar" class="chart chart-horizontal-bar" chart-options="widget.config.chart.options" chart-data="widget.config.chart.series.yValues"
+            chart-colors="widget.config.chart.series.colors" chart-labels="widget.config.chart.series.xValues" chart-series="widget.config.chart.series.names">
+        </canvas>
+        <canvas ng-switch-when="pie" class="chart chart-pie" chart-options="widget.config.chart.options" chart-data="widget.config.chart.series.yValues"
+            chart-labels="widget.config.chart.series.xValues" chart-colors="widget.config.chart.series.colors" chart-series="widget.config.chart.series.names">
+        </canvas>
+        <canvas ng-switch-when="doughnut" class="chart chart-doughnut" chart-options="widget.config.chart.options" chart-data="widget.config.chart.series.yValues"
+            chart-labels="widget.config.chart.series.xValues" chart-colors="widget.config.chart.series.colors" chart-series="widget.config.chart.series.names">
+        </canvas>
+        <canvas ng-switch-when="radar" class="chart chart-radar" chart-options="widget.config.chart.options" chart-data="widget.config.chart.series.yValues"
+            chart-labels="widget.config.chart.series.xValues" chart-colors="widget.config.chart.series.colors" chart-series="widget.config.chart.series.names">
+        </canvas>
+        <canvas ng-switch-when="polar" class="chart chart-polar-area" chart-options="widget.config.chart.options" chart-data="widget.config.chart.series.yValues"
+            chart-labels="widget.config.chart.series.xValues" chart-colors="widget.config.chart.series.colors" chart-series="widget.config.chart.series.names">
+        </canvas>
     </div>
     <!-- footer -->
     <div ng-switch="GetWidgetSetting(widget, 'footerContentType')" ng-if="GetWidgetSetting(widget, 'footerVisible')" class="card-footer pt-0 pb-0 pr-1 pl-1 rounded-bottom {{GetWidgetSetting(widget, 'footerAlignment')}}

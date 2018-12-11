@@ -7,13 +7,19 @@
 
     function Controller($scope, $rootScope, $state, $stateParams, $moment, $window, $interval, UserService, DashboardService, MetricsService, FlashService, WidgetFactory) {
         var vm = this;
+        $scope.datapointsWC = [];
+        $scope.datapointsWB = [];
+        $scope.datapointsUR = [];
+
+        $scope.datacolumns = [{ "id": "top-1", "type": "bar", "name": "Series A" }];
+        $scope.datax = { "id": "x" };
         vm.iconText = "";
         vm.itemsByPage = 5;
         $scope.state = $state;
         $scope.myTextFun = function name() {
             return "My name is: <h1>John Doe</h1>";
         }
-       // console.log('timezone', $moment().tz("Asia/Dubai").format());
+        // console.log('timezone', $moment().tz("Asia/Dubai").format());
         //var timeZones = $moment.tz.names();
         //console.log('zones', timeZones);
 
@@ -31,6 +37,15 @@
             console.log('gridster-item-resized', item);
         })
 
+        $scope.GetDataArray= function(key)
+        {
+            if(key == 'WC')
+            return $scope.datapointsWC;
+            else if(key == 'WB')
+            return $scope.datapointsWB;
+            else if(key == 'UR')
+            return $scope.datapointsUR;
+        }
         // Retrive specified widget setting
         $scope.GetWidgetSetting = function (widget, key) {
             var resultArr = widget.config.settings.filter(function (item) {
@@ -56,7 +71,7 @@
 
         // Retrieve the last updated topic value
         $scope.GetTopicValue = function (topicAddress) {
-           // console.log(topicAddress);
+            // console.log(topicAddress);
             //console.log(topicAddress);
             if ($scope.IsTopicValid(topicAddress)) {
                 // if (topic.graph) {
@@ -210,13 +225,13 @@
                                                     //update X-Axis Timestamp labels
                                                     //console.log('xUpdate');
                                                     //if (widget.config.chart.series.xValues.length < timestampArray.length) {
-                                                       // widget.config.chart.series.xValues = timestampArray;
-                                                   // }
-                                                   // else {
-                                                        for (var i = 0; i < valueLimit && i < widget.config.chart.series.xValues.length; i++) {
-                                                            widget.config.chart.series.xValues[i] = moment.utc(timestampArray[i]).tz(widgetTimezone).format(timeStampFormat);
-                                                        }
-                                                  //  }
+                                                    // widget.config.chart.series.xValues = timestampArray;
+                                                    // }
+                                                    // else {
+                                                    for (var i = 0; i < valueLimit && i < widget.config.chart.series.xValues.length; i++) {
+                                                        widget.config.chart.series.xValues[i] = moment.utc(timestampArray[i]).tz(widgetTimezone).format(timeStampFormat);
+                                                    }
+                                                    //  }
 
                                                     //re-initilize time for next metric iteration, currently only for minute, needs to change for all
                                                     timeStart = moment.utc(widgetTimeStart, 'YYYY-MM-DDTHH:mm').format();
@@ -252,10 +267,10 @@
                                 }
                             }
                         })
-                    .catch(function (error) {
-                        FlashService.Error(error, 'Dashboard : Fetch - Series');
-                        console.error(error);
-                    });
+                        .catch(function (error) {
+                            FlashService.Error(error, 'Dashboard : Fetch - Series');
+                            console.error(error);
+                        });
                 }
                 else
                     console.log('Topic address is invalid. Or Mqtt connection not yet initilized.' + topic.address);
@@ -385,9 +400,9 @@
                 });
         }, 1000);
 
-        $scope.$on('$destroy',function(){
-            if(timerWidgetFormulas)
-                $interval.cancel(timerWidgetFormulas);   
+        $scope.$on('$destroy', function () {
+            if (timerWidgetFormulas)
+                $interval.cancel(timerWidgetFormulas);
         });
 
         //evaluate all chart widget relative datetimes & chart data
@@ -432,9 +447,9 @@
                 });
         }, 1000);
 
-        $scope.$on('$destroy',function(){
-            if(timerChartUpdates)
-                $interval.cancel(timerChartUpdates);   
+        $scope.$on('$destroy', function () {
+            if (timerChartUpdates)
+                $interval.cancel(timerChartUpdates);
         });
 
 
@@ -542,9 +557,9 @@
             var iconSize = $scope.GetWidgetSetting(widget, 'bodyIconSize');
             // concat result string
             var result = '';
-           // result = result.concat('font-size:', iconSize, 'px; ', 'color:', state.iconColor, ';');
+            // result = result.concat('font-size:', iconSize, 'px; ', 'color:', state.iconColor, ';');
 
-            result = result.concat( 'color:', state.iconColor, ';');
+            result = result.concat('color:', state.iconColor, ';');
             return result;
         }
 
@@ -909,8 +924,7 @@
         }
 
         function removeTopic(topicIndex) {
-            if(vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length > 0)
-            {
+            if (vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.length > 0) {
                 vm.dashboard.widgets[vm.selectedWidgetIndex].config.topics.splice(topicIndex, 1);
                 vm.selectedTopicIndex = vm.selectedTopicIndex - 1;
             }

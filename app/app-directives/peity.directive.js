@@ -19,9 +19,7 @@
                 options: "="
             },
             link: function (scope, element, attrs) {
-
                 var options = {};
-
                 if (scope.options) {
                     options = scope.options;
                 }

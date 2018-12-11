@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app', ['ngSanitize', 'ngMaterial', 'ui.router', 'smart-table', 'ngMessages', 'gridster', 'angularBootstrapNavTree', 'colorpicker.module', 'ngMap', 'ngAnimate', 'mqttModule', 'pageslide-directive', 'slick', 'angular-momentjs', 'nvd3ChartDirectives', 'chart.js', 'daterangepicker', 'ngFitText', 'elif'])
+        .module('app', ['ngSanitize', 'ngMaterial', 'ui.router', 'smart-table', 'ngMessages', 'gridster', 'angularBootstrapNavTree', 'colorpicker.module', 'ngMap', 'ngAnimate', 'mqttModule', 'pageslide-directive', 'slick', 'angular-momentjs', 'nvd3ChartDirectives', 'chart.js', 'daterangepicker', 'ngFitText', 'elif', 'gridshore.c3js.chart'])
         .config(config)
         .run(run);
 
@@ -241,6 +241,20 @@
                 controllerAs: 'vm',
                 data: { activeTab: 'reports', breadcrumb: 'Reports' }
             })
+            .state('reports_facility_stats', {
+                url: '/reports/facilitystats/view',
+                templateUrl: 'reports/report.facilitystats.view.html',
+                controller: 'Reports.IndexController',
+                controllerAs: 'vm',
+                data: { activeTab: 'settings', breadcrumb: 'Control Panel > Reports > Facility Statistics' }
+            })
+            .state('reports_mqtt_client', {
+                url: '/reports/mqtt/view',
+                templateUrl: 'reports/report.mqttClient.view.html',
+                controller: 'Reports.IndexController',
+                controllerAs: 'vm',
+                data: { activeTab: 'settings', breadcrumb: 'Control Panel > Reports > MQTT Client' }
+            })
             .state('support', {
                 url: '/support',
                 templateUrl: 'support/index.html',
@@ -334,6 +348,8 @@
 
             function subscribeMqttTopic(topicName) {
                 //FlashService.Success('Subscribed to topic name ' + topicName + '.', 'MQTT Connection');
+                
+                console.log(topicName);
                 MqttClient.subscribe(topicName);
                 $rootScope.mqtt.subscribedTopics[topicName] = ['*', Date.now()];
                 $rootScope.mqtt.subscribedTopicCount++;

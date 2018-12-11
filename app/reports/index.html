@@ -1,4 +1,96 @@
-﻿
+﻿<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    /* th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 0px solid #ddd;
+    } */
+
+    .st-selected {
+        background: #f5f5f5 !important;
+        color: black !important;
+        font-weight: bold;
+    }
+</style>
+<form id="form-user" name="form-user" method="post">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <h6 class="with-border semibold d-flex p-2">
+                    Reports > View
+                </h6>
+            </a>
+                <div class="card-body">
+                    <div class="text-center semibold color-blue" ng-if="vm.loadingSharedDashboards">
+                        <br>
+                        <br> Loading data...
+                        <br>
+                        <br>
+                        <i class="fa fa-spinner fa-spin fa-4x"></i>
+                        <br>
+                    </div>
+                    <table st-table="" st-safe-src="" class="table table-sm">
+                        <thead>
+                            <tr style="background-color: #f5f5f5;">
+                                <td colspan="3" class="align-top">
+                                    <div class="float-left align-top semibold" st-template="pagination.html" st-pagination="" st-items-by-page="vm.itemsSharedPerPage"></div>
+                                    <div class="float-right">
+                                        <select ng-model="vm.itemsSharedPerPage" class="form-control form-control-sm" title="Items Per Page">
+                                            <option ng-value=5>5</option>
+                                            <option ng-value=7>7</option>
+                                            <option ng-value=10>10</option>
+                                            <option ng-value=9999999>All</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th st-sort="name">Name</th>
+                                <th st-sort="description">Description</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="vm.dashboardsShared.length == 0">
+                                <td colspan="3" class="semibold text-center">No shared dashboards found.</td>
+                            </tr>
+                            <tr ng-click="vm.setClickedRow($index)">
+                                <td title="Facility Statistics Report">MQTT - Data Monitoring</td>
+                                <td><div style="width: 10em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" ng-attr-title="Live / Realtime Data Monitoring">Live / Realtime Data Monitoring</div></td>
+                                <td>
+                                    <a title="View Report" class="btn btn-sm btn-primary-success no-animate" ui-sref="reports_mqtt_client">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr ng-click="vm.setClickedRow($index)">
+                                    <td title="Facility Statistics Report">Report - Facility Statistics</td>
+                                    <td><div style="width: 10em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" ng-attr-title="Facility Statistics">Facility Statistics</div></td>
+                                    <td>
+                                        <a title="View Report" class="btn btn-sm btn-primary-success no-animate" ui-sref="reports_facility_stats">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--.row-->
+    </div>
+
+    <!--.row-->
+</form>
                
 	
 

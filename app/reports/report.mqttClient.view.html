@@ -1,0 +1,232 @@
+﻿<form id="form-user" name="form-user" method="post">
+    <div class="card">
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <h6 class="semibold"><a ui-sref="reports">Reports</a> > MQTT Client</h6>
+                </div>
+                <div class="col-6">
+                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#demo" class="text-primary {{vm.filterExpanded ? 'fas fa-chevron-circle-up' : 'fas fa-chevron-circle-down'}} float-right" ng-click="vm.filterExpanded = !vm.filterExpanded"></a>
+                </div>
+            </div>
+            <br>
+            <div id="demo" class="row panel-collapse collapse show">
+                <div class="col-12 col-sm-12 col-md-12">
+                    <!-- <b>Topic / Filter String:</b> <input class="form-control" type="text" ng-model="vm.mqttFilter" />
+                    <br> -->
+                    <b>Monitoring:</b><br />
+                    <button type="button" ng-class="vm.mqttConnected ? 'btn btn-success' : 'btn btn-success-outline'" ng-click="vm.mqttConnected = true" onclick="mqttConnect()"><i class="fas fa-play"></i>&nbsp;&nbsp;Start Monitoring</button>&nbsp;
+                    <button type="button" class="btn btn-danger-outline" ng-click="vm.mqttConnected = false" onclick="mqttDisconnect()"><i class="fas fa-stop"></i>&nbsp;&nbsp;Stop Monitoring</button>&nbsp;
+                    <button type="button" class="btn btn-warning-outline float-right" onclick="clearMessageCards()"><i class="fas fa-eraser"></i>&nbsp;&nbsp;Clear History</button>&nbsp;
+                    <!-- <button type="button" class="btn btn-primary float-right" onclick="clearMessageCards()" >Add Topic / Filter</button> -->
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
+                <div id="mqttMesssageWindow" name="mqttMesssageWindow" class="col-12 col-sm-12 col-md-12">
+                    <!-- Mqtt Client -->
+                    <!-- <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">
+                                        <i class="far fa-envelope"></i>
+                                        </i>&nbsp;&nbsp;MQTT Client Toolkit : Messages Count [
+                                        <span id="messageCount"></span>]</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div> -->
+                    <div class="alert alert-info alert-white rounded">
+                        <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+                        <div class="icon">
+                            <i class="fa fa-info-circle"></i>
+                        </div>
+                        <div class="pl-5 text-justify">
+                            <strong>Introduction&nbsp;&nbsp;</strong>
+                            <utility-date-now class="pull-right pr-4"></utility-date-now>
+                            <br>Welcome! to MQTT client toolkit. This toolkit is intended for use by administrators to monitor communication and
+                            messaging taking place between devices and Cloud IoT Broker via MQTT protocol. It can be used to diagnose potential
+                            problems and bottlenecks in your IoT network.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--.row-->
+</form>
+
+	<script type="text/javascript">
+        //sample HTML/JS script that will publish/subscribe to topics in the Google Chrome Console
+        //by Matthew Bordignon @bordignon on twitter.
+        var wsbroker = "fortuitous-nurse.cloudmqtt.com";  //mqtt websocket enabled broker
+        var wsport = 443; // port for above
+        var client = new Paho.MQTT.Client(wsbroker, wsport, "myclientid_" + parseInt(Math.random() * 100, 10));
+        console.log(client);
+        var messageTypeEnum = Object.freeze({ "information": "alert-info", "message": "alert-info msg", "success": "alert-success", "warning": "alert-warn", "danger": "alert-danger", "error": "alert-danger err" });
+        var iconType = Object.freeze({ "information": "fa fa-info-circle", "success": "fas fa-check", "warning": "fas fa-exclamation-triangle", "danger": "fas fa-times-circle", "error": "fas fa-times-circle", "message": "fas fa-envelope", });
+
+        client.onConnected = function (isReconnect, brokerUri) {
+            //console.log("Connected to " + brokerUri);
+            //console.log('onConnected', isReconnect);
+            if (isReconnect) {
+                //console.log("It was a result of automatic reconnect.");
+                createMessageCard(messageTypeEnum.success, 'MQTT : Reconnection', iconType.success, 'A secure communication channel with Cloud IoT Broker is successfully established.')
+            }
+            else
+                createMessageCard(messageTypeEnum.success, 'MQTT : Connection', iconType.success, 'A secure communication channel with Cloud IoT Broker is successfully established.')
+
+            $('#btnConnectMqttClient').html('<i class="fas fa-plug">&nbsp;&nbsp;</i>Disconnect');
+            $('#btnConnectMqttClient').removeAttr("disabled");
+            $('#btnConnectMqttClient').attr("connected");
+
+
+        };
+
+        client.onConnectionLost = function (responseObject) {
+            if (responseObject.errorCode !== 0) {
+                createMessageCard(messageTypeEnum.error, 'MQTT : Message', iconType.error, 'Connection to Cloud IoT broker is lost.', responseObject.errorMessage)
+                //console.log("connection lost: " + responseObject.errorMessage);
+            }
+            else
+                createMessageCard(messageTypeEnum.success, 'MQTT : Connection', iconType.success, 'The communication channel with Cloud IoT Broker is successfully closed.')
+
+            $('#btnConnectMqttClient').removeAttr("connected");
+        };
+        client.onMessageArrived = function (message) {
+            createMessageCard(messageTypeEnum.information, 'MQTT : Message', iconType.message, message.destinationName, message.payloadString)
+            //console.log(message.destinationName, ' -- ', message.payloadString);
+        };
+        var options = {
+            timeout: 3,
+            reconnect: true,
+            keepAliveInterval: 30,
+            useSSL: true,
+            userName : 'wfuphwmn',
+            password : 'D9Ybq6FchNj2',
+            onSuccess: function () {
+                //console.log("mqtt connected");
+                //createMessageCard(messageTypeEnum.success, 'MQTT : Connection', iconType.success, 'A secure communication channel with Cloud IoT Broker is successfully established.')
+                // Connection succeeded; subscribe to our topic, you can add multile lines of these
+                client.subscribe('#', { qos: 1 });
+                //use the below if you want to publish to a topic on connect
+                //message = new Paho.MQTT.Message("Hello");
+                //message.destinationName = "/World";
+                //client.send(message);
+            },
+            onFailure: function (message) {
+                createMessageCard(messageTypeEnum.error, 'MQTT : Connection', iconType.error, 'Failed to establish a secure communication channel with Cloud IoT Broker.', message.errorMessage)
+                console.log("Connection failed: " + message.errorMessage);
+            }
+        };
+
+        jQuery.fn.insertAt = function (index, element) {
+            var lastIndex = $("#mqttMesssageWindow > div").length;
+            if (index < 0) {
+                index = Math.max(0, lastIndex + 1 + index);
+            }
+            this.append(element);
+            if (index < lastIndex) {
+                $("#mqttMesssageWindow").children().eq(index).before($("#mqttMesssageWindow").children().last());
+            }
+            return this;
+        }
+        function createMessageCard(messageType, title, icon, message, detail) {
+            console.log(messageType);
+
+            if (messageType === messageTypeEnum.message) {
+                $("#mqttMesssageWindow").insertAt(0, `
+                <div class="alert ` + messageType + ` alert-white rounded">
+                    <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+                    <div class="icon">
+                        <i class="` + icon + `"></i>
+                    </div>
+                    <div class="pl-5">			
+                        <strong>`+ title + `&nbsp;&nbsp;</strong><div class="pull-right pr-4">` + new Date().toLocaleString() + `</div>
+                        <br><strong>Topic :&nbsp;</strong>` + message + (detail ? '<br><strong>Payload :&nbsp;</strong>' + detail : '') + `
+                    </div>
+                </div>`);
+            }
+            else if (messageType === messageTypeEnum.error) {
+                $("#mqttMesssageWindow").insertAt(0, `
+                <div class="alert ` + messageType + ` alert-white rounded">
+                    <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+                    <div class="icon">
+                        <i class="` + icon + `"></i>
+                    </div>
+                    <div class="pl-5">			
+                        <strong>`+ title + `&nbsp;&nbsp;</strong><div class="pull-right pr-4">` + new Date().toLocaleString() + `</div>
+                        <br><strong>Message :&nbsp;</strong>` + message + (detail ? '<br><strong>Detail :&nbsp;</strong>' + detail : '') + `
+                    </div>
+                </div>`);
+            }
+            else if (messageType === messageTypeEnum.success || messageType === messageTypeEnum.information) {
+                $("#mqttMesssageWindow").insertAt(0, `
+                <div class="alert ` + messageType + ` alert-white rounded">
+                    <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+                    <div class="icon">
+                        <i class="` + icon + `"></i>
+                    </div>
+                    <div class="pl-5">			
+                        <strong>`+ title + `&nbsp;&nbsp;</strong><div class="pull-right pr-4">` + new Date().toLocaleString() + `</div>
+                        <br><strong>Topic :&nbsp;</strong>` + message + (detail ? '<br><strong>Payload :&nbsp;</strong>' + detail : '') + `
+                    </div>
+                </div>`);
+            }
+            else {
+                $("#mqttMesssageWindow").insertAt(0, `
+                <div class="alert ` + messageType + ` alert-white rounded">
+                    <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+                    <div class="icon">
+                        <i class="` + icon + `"></i>
+                    </div>
+                    <div class="pl-5">			
+                        <strong> `+ title + `&nbsp;&nbsp;</strong><div class="pull-right pr-4">` + new Date().toLocaleString() + `</div>
+                        <br><strong>Topic :&nbsp;</strong>` + message + (detail ? '<br><strong>Payload :&nbsp;</strong>' + detail : '') + `
+                    </div>
+                </div>`);
+            }
+
+            $("#messageCount").text($("#mqttMesssageWindow > div").length);
+        }
+
+
+        function clearMessageCards() {
+            $("#mqttMesssageWindow").empty();
+        }
+
+        function mqttConnection() {
+            var myVals = [];
+            // $('#btnConnectMqttClient').map(function () {
+            //     myVals.push($('#btnConnectMqttClient').attr('value'));
+            // });
+            //console.log(myVals);
+
+            //alert($(this).text());
+
+            // if ($(this).attr("connected"))
+            //     mqttDisconnect();
+            // else
+                mqttConnect();
+        }
+
+        function mqttConnect() {
+            //alert('mqttConnect');
+
+            //$('#btnConnectMqttClient').attr("disabled");
+            //$('#btnConnectMqttClient').attr("connected");
+
+            createMessageCard(messageTypeEnum.information, 'MQTT : Connection', iconType.information, 'Attempting to establish communications with Cloud IoT Broker.');
+            //connect mqtt cient
+            client.connect(options);
+        }
+
+        function mqttDisconnect() {
+            //alert('mqttDisconnect');
+            //$('#btnConnectMqttClient').removeAttr("connected");
+
+            createMessageCard(messageTypeEnum.information, 'MQTT : Connection', iconType.information, 'System user requested to close connection.');
+            //connect mqtt cient
+            client.disconnect();
+        }
+    </script>

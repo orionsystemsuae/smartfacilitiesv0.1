@@ -1,0 +1,133 @@
+﻿<form id="form-user" name="form-user" method="post">
+    <div class="card">
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <h6 class="semibold"><a ui-sref="reports">Reports</a> > Facility Statistics </h6>
+                </div>
+                <div class="col-6">
+                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#demo" class="text-primary {{vm.filterExpanded ? 'fas fa-chevron-circle-up' : 'fas fa-chevron-circle-down'}} float-right" ng-click="vm.filterExpanded = !vm.filterExpanded"></a>
+                </div>
+            </div>
+            <br>
+            <div id="demo" class="row panel-collapse collapse show">
+                <div class="col-12 col-sm-12 col-md-12">
+                    <b>Report Date:</b> <input date-range-picker class="form-control date-picker" type="text" ng-model="vm.currentDate" options="{singleDatePicker: true, timePicker: false}" />
+                    <br>
+                    <b>Area:</b><br />
+                    <select class="form-control" ng-model="vm.area">
+                        <option value="arded4dd0f82">Dubai Airport - Golden Toilet - Male </option>
+                        <option value="ar34d6dc11e1">Dubai Airport - Golden Toilet - Female </option>
+                        <option value="ar2f3772d213">Dubai Airport - Toilet 8 - Male </option>
+                        <option value="ared3f2d4e9a">Dubai Airport - Toilet 8 - Female </option>
+                        <option value="ar981b606e39">Dubai Airport - Toilet 7 - Male </option>
+                        <option value="ard71dbfee54">Dubai Airport - Toilet 7 - Female </option>
+                        <option value="ar5b78328af7">Dubai Airport - Toilet 21 - Male </option>
+                        <option value="ar74407122f1">Dubai Airport - Toilet 21 - Female </option>
+                        <option value="araac3929121">Dubai Airport - Toilet 22 - Male </option>
+                        <option value="arb98a7fb4a4">Dubai Airport - Toilet 22 - Female </option>
+                    </select>
+                    <br>
+                    <b>Report Type(s):</b><br />
+                    <button type="button" ng-class="vm.reportSummary ? 'btn btn-primary' : 'btn btn-primary-outline'" ng-click="vm.reportSummary =!vm.reportSummary">Summary&nbsp;<i ng-class="vm.reportSummary ? 'fas fa-check' : ''"></i></button>&nbsp;
+                    <button type="button" ng-class="vm.reportWC ? 'btn btn-primary' : 'btn btn-primary-outline'" ng-click="vm.reportWC =!vm.reportWC">Water Closet - WC&nbsp;<i ng-class="vm.reportWC ? 'fas fa-check' : ''"></i></button>&nbsp;
+                    <button type="button" ng-class="vm.reportWB ? 'btn btn-primary' : 'btn btn-primary-outline'" ng-click="vm.reportWB =!vm.reportWB">Washbasin - WB&nbsp;<i ng-class="vm.reportWB ? 'fas fa-check' : ''"></i></button>&nbsp;
+                    <button type="button" ng-class="vm.reportUR ? 'btn btn-primary' : 'btn btn-primary-outline'" ng-click="vm.reportUR =!vm.reportUR">Urinal - UR&nbsp;<i ng-class="vm.reportUR ? 'fas fa-check' : ''"></i></button>&nbsp;
+                    <button type="button" class="btn btn-primary float-right" ng-click="vm.generateAllFacilitiesReport()">Generate Report</button>
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12">
+                    <!-- Summary -->
+                    <div class="breadcrumb" ng-if="vm.isReportGenerated || vm.isReportLoading">
+                            <li class="breadcrumb-item active" aria-current="page">All Facilities - Summary</li>
+                        </div>
+                        <span ng-if="vm.isReportGenerated && vm.datapoints.length == 0" class="text-danger"><b>*No records found.</b></span>
+
+                    <div class="text-center semibold color-blue" ng-if="vm.isReportLoading">
+                        <br> Generating Report...
+                        <br>
+                        <br>
+                        <i class="fa fa-spinner fa-spin fa-4x"></i>
+                        <br>
+                    </div>
+
+                    <c3chart ng-if="vm.isReportGenerated && vm.datapoints.length > 0" class="w-100" bindto-id="chartGroupDataPoints" chart-data="vm.datapoints" chart-columns="vm.datacolumns" chart-x="vm.datax">
+                        <chart-bar ratio="0.5" />
+                        <chart-axes values-x="x" />
+                        <chart-axis>
+                            <chart-axis-x axis-position="outer-center" axis-label="Facilities" axis-type="category" />
+                        </chart-axis>
+                    </c3chart>
+
+                    <!-- Water Closet (WC) -->
+                    <div class="breadcrumb" ng-if="vm.isReportWCGenerated || vm.isReportWCLoading">
+                            <li class="breadcrumb-item active" aria-current="page">Water Closets (WC) - Details</li>
+                        </div>
+                        <span ng-if="vm.isReportWCGenerated && vm.datapointsWC.length == 0" class="text-danger"><b>*No records found.</b></span>
+
+                    <div class="text-center semibold color-blue" ng-if="vm.isReportWCLoading">
+                        <br> Generating Report...
+                        <br>
+                        <br>
+                        <i class="fa fa-spinner fa-spin fa-4x"></i>
+                        <br>
+                    </div>
+                    <c3chart ng-if="vm.isReportWCGenerated && vm.datapointsWC.length > 0" class="w-100" bindto-id="chartGroupDataPointsWC" chart-data="vm.datapointsWC" chart-columns="vm.datacolumnsWC" chart-x="vm.datax">
+                        <chart-bar ratio="0.5" />
+                        <chart-axes values-x="x" />
+                        <chart-axis>
+                            <chart-axis-x axis-position="outer-center" axis-label="Water Closets - WC" axis-type="category" />
+                        </chart-axis>
+                    </c3chart>
+
+                    <!-- Washbasin (WB) -->
+
+                    <div class="breadcrumb" ng-if="vm.isReportWBGenerated || vm.isReportWBLoading">
+                            <li class="breadcrumb-item active" aria-current="page">Washbasins (WB) - Details</li>
+                        </div>
+                        <span ng-if="vm.isReportWBGenerated && vm.datapointsWB.length == 0" class="text-danger"><b>*No records found.</b></span>
+
+                    <div class="text-center semibold color-blue" ng-if="vm.isReportWBLoading">
+                        <br> Generating Report...
+                        <br>
+                        <br>
+                        <i class="fa fa-spinner fa-spin fa-4x"></i>
+                        <br>
+                    </div>
+                    <c3chart ng-if="vm.isReportWBGenerated && vm.datapointsWB.length > 0" class="w-100" bindto-id="chartGroupDataPointsWB" chart-data="vm.datapointsWB" chart-columns="vm.datacolumnsWB" chart-x="vm.datax">
+                        <chart-bar ratio="0.5" />
+                        <chart-axes values-x="x" />
+                        <chart-axis>
+                            <chart-axis-x axis-position="outer-center" axis-label="Washbasins - WB" axis-type="category" />
+                        </chart-axis>
+                    </c3chart>
+
+                    <!-- Urinal (UR) -->
+                    <div class="breadcrumb" ng-if="vm.isReportURGenerated || vm.isReportURLoading">
+                            <li class="breadcrumb-item active" aria-current="page">Urinals (UR) - Details</li>
+                        </div>
+                        <span ng-if="vm.isReportURGenerated && vm.datapointsUR.length == 0" class="text-danger"><b>*No records found.</b></span>
+                    <div class="text-center semibold color-blue" ng-if="vm.isReportURLoading">
+                        <br> Generating Report...
+                        <br>
+                        <br>
+                        <i class="fa fa-spinner fa-spin fa-4x"></i>
+                        <br>
+                    </div>
+                    <c3chart ng-if="vm.isReportURGenerated && vm.datapointsUR.length > 0" class="w-100" bindto-id="chartGroupDataPointsUR" chart-data="vm.datapointsUR" chart-columns="vm.datacolumnsUR" chart-x="vm.datax">
+                        <chart-bar ratio="0.5" />
+                        <chart-axes values-x="x" />
+                        <chart-axis>
+                            <chart-axis-x axis-position="outer-center" axis-label="Urinals - UR" axis-type="category" />
+                        </chart-axis>
+                    </c3chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--.row-->
+</form>
