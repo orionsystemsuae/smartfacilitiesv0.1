@@ -1,12 +1,12 @@
 ﻿{
-    "connectionString": "mongodb://admin:admin@cluster0-shard-00-00-lyyii.mongodb.net:27017,cluster0-shard-00-01-lyyii.mongodb.net:27017,cluster0-shard-00-02-lyyii.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true",
-    "connectionString1": "mongodb+srv://admin:admin@cluster0-lyyii.mongodb.net/test?retryWrites=true",
+    "connectionString": "mongodb://admin:admin@cluster0-shard-00-00-lfb73.mongodb.net:27017,cluster0-shard-00-01-lfb73.mongodb.net:27017,cluster0-shard-00-02-lfb73.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true",
+    "connectionString1": "mongodb+srv://admin:admin@cluster0-lfb73.mongodb.net/test?retryWrites=true",
    
     "apiUrl": "http://localhost:3000/api",
     "secret": "REPLACE THIS WITH YOUR OWN SECRET, IT CAN BE ANY STRING",
-    "mqttBrokerConnectionString" : "mqtt://wfuphwmn:D9Ybq6FchNj2@fortuitous-nurse.cloudmqtt.com:443",
-    "mqttBrokerApiKey":"f5a45585-15cd-4d6d-a0b8-29047a2cc0df",
+    "mqttBrokerConnectionString" : "mqtt://vkliygmv:xoK5tix01duU@m11.cloudmqtt.com:14462",
+    "mqttBrokerApiKey":"a5aff263-9bbe-44c0-8d0a-eaae296fce32",
     "mqttBrokerUserUrl":"api.cloudmqtt.com/api/user",
     "mqttBrokerAclRuleUrl":"api.cloudmqtt.com/api/acl",
-    "influx" : "influx -host pepsifree-4f1140ad.influxcloud.net -port 8086 -username haroon.rehman -password Letmein100 -ssl"
+    "influx" : ""
 }

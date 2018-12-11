@@ -59,8 +59,8 @@
 	<script type="text/javascript">
         //sample HTML/JS script that will publish/subscribe to topics in the Google Chrome Console
         //by Matthew Bordignon @bordignon on twitter.
-        var wsbroker = "fortuitous-nurse.cloudmqtt.com";  //mqtt websocket enabled broker
-        var wsport = 443; // port for above
+        var wsbroker = "m11.cloudmqtt.com";  //mqtt websocket enabled broker
+        var wsport = 34462; // port for above
         var client = new Paho.MQTT.Client(wsbroker, wsport, "myclientid_" + parseInt(Math.random() * 100, 10));
         console.log(client);
         var messageTypeEnum = Object.freeze({ "information": "alert-info", "message": "alert-info msg", "success": "alert-success", "warning": "alert-warn", "danger": "alert-danger", "error": "alert-danger err" });
@@ -102,8 +102,8 @@
             reconnect: true,
             keepAliveInterval: 30,
             useSSL: true,
-            userName : 'wfuphwmn',
-            password : 'D9Ybq6FchNj2',
+            userName : 'vkliygmv',
+            password : 'xoK5tix01duU',
             onSuccess: function () {
                 //console.log("mqtt connected");
                 //createMessageCard(messageTypeEnum.success, 'MQTT : Connection', iconType.success, 'A secure communication channel with Cloud IoT Broker is successfully established.')

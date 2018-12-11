@@ -331,8 +331,8 @@
 
             //if platfrom admin then use mqtt admin rights
             if (user.role == 'Platform Admin.') {
-                $rootScope.mqtt.options.userName = "wfuphwmn";
-                $rootScope.mqtt.options.password = "D9Ybq6FchNj2";
+                $rootScope.mqtt.options.userName = "vkliygmv";
+                $rootScope.mqtt.options.password = "xoK5tix01duU";
             }
             else {
                 if (user.organisation.length > 0) {
@@ -343,7 +343,7 @@
 
 
 
-            MqttClient.init($rootScope.mqtt.serverUrl, 443, $rootScope.mqtt.clientId);
+            MqttClient.init($rootScope.mqtt.serverUrl, 34462, $rootScope.mqtt.clientId);
             MqttClient.connect($rootScope.mqtt.options);
 
             function subscribeMqttTopic(topicName) {

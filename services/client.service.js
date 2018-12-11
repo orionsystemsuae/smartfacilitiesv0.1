@@ -122,7 +122,7 @@ function create(clientParam) {
         client.logo = clientParam.logo;
         client.servicePackage = clientParam.servicePackage;
         client.mqttClientId = clientParam.abbrv + '_' +shortid.generate();
-        client.mqttServerUrl = 'fortuitous-nurse.cloudmqtt.com';
+        client.mqttServerUrl = 'm11.cloudmqtt.com';
 
         db.clients.insert(
             client,
